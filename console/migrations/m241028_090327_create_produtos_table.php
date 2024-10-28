@@ -23,8 +23,8 @@ class m241028_090327_create_produtos_table extends Migration
             'preco' => $this->float()->notNull(),
             'descricao' => $this->string(255)->notNull(),
             'categoria_id' => $this->integer()->notNull(),
-            'ivas_id' => $this->integer()->notNull(),
-            'marcas_id' => $this->integer()->notNull(),
+            'iva_id' => $this->integer()->notNull(),
+            'marca_id' => $this->integer()->notNull(),
         ]);
 
         // creates index for column `categoria_id`
@@ -44,35 +44,35 @@ class m241028_090327_create_produtos_table extends Migration
             'CASCADE'
         );
 
-        // creates index for column `ivas_id`
+        // creates index for column `iva_id`
         $this->createIndex(
-            '{{%idx-produtos-ivas_id}}',
+            '{{%idx-produtos-iva_id}}',
             '{{%produtos}}',
-            'ivas_id'
+            'iva_id'
         );
 
         // add foreign key for table `{{%ivas}}`
         $this->addForeignKey(
-            '{{%fk-produtos-ivas_id}}',
+            '{{%fk-produtos-iva_id}}',
             '{{%produtos}}',
-            'ivas_id',
+            'iva_id',
             '{{%ivas}}',
             'id',
             'CASCADE'
         );
 
-        // creates index for column `marcas_id`
+        // creates index for column `marca_id`
         $this->createIndex(
-            '{{%idx-produtos-marcas_id}}',
+            '{{%idx-produtos-marca_id}}',
             '{{%produtos}}',
-            'marcas_id'
+            'marca_id'
         );
 
         // add foreign key for table `{{%marcas}}`
         $this->addForeignKey(
             '{{%fk-produtos-marcas_id}}',
             '{{%produtos}}',
-            'marcas_id',
+            'marca_id',
             '{{%marcas}}',
             'id',
             'CASCADE'
@@ -98,25 +98,25 @@ class m241028_090327_create_produtos_table extends Migration
 
         // drops foreign key for table `{{%ivas}}`
         $this->dropForeignKey(
-            '{{%fk-produtos-ivas_id}}',
+            '{{%fk-produtos-iva_id}}',
             '{{%produtos}}'
         );
 
-        // drops index for column `ivas_id`
+        // drops index for column `iva_id`
         $this->dropIndex(
-            '{{%idx-produtos-ivas_id}}',
+            '{{%idx-produtos-iva_id}}',
             '{{%produtos}}'
         );
 
         // drops foreign key for table `{{%marcas}}`
         $this->dropForeignKey(
-            '{{%fk-produtos-marcas_id}}',
+            '{{%fk-produtos-marca_id}}',
             '{{%produtos}}'
         );
 
         // drops index for column `marcas_id`
         $this->dropIndex(
-            '{{%idx-produtos-marcas_id}}',
+            '{{%idx-produtos-marca_id}}',
             '{{%produtos}}'
         );
 
