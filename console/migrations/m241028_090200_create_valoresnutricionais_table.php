@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%valoresnutricionais}}`.
  */
-class m241028_155307_create_valoresnutricionais_table extends Migration
+class m241028_090200_create_valoresnutricionais_table extends Migration
 {
     /**
      * {@inheritdoc}

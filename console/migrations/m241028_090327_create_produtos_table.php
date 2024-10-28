@@ -26,6 +26,7 @@ class m241028_090327_create_produtos_table extends Migration
             'categoria_id' => $this->integer()->notNull(),
             'iva_id' => $this->integer()->notNull(),
             'marca_id' => $this->integer()->notNull(),
+            'valornutricional_id' => $this->integer()->notNull(),
         ], $tableOptions);
 
         // creates index for column `categoria_id`
@@ -78,6 +79,23 @@ class m241028_090327_create_produtos_table extends Migration
             'id',
             'CASCADE'
         );
+
+        // creates index for column `valornutricional_id`
+        $this->createIndex(
+            '{{%idx-produtos-valornutricional_id}}',
+            '{{%produtos}}',
+            'valornutricional_id'
+        );
+
+        // add foreign key for table `{{%valoresnutricionais}}`
+        $this->addForeignKey(
+            '{{%fk-produtos-valornutricional_id}}',
+            '{{%produtos}}',
+            'valornutricional_id',
+            '{{%valoresnutricionais}}',
+            'id',
+            'CASCADE'
+        );
     }
 
     /**
@@ -118,6 +136,18 @@ class m241028_090327_create_produtos_table extends Migration
         // drops index for column `marcas_id`
         $this->dropIndex(
             '{{%idx-produtos-marca_id}}',
+            '{{%produtos}}'
+        );
+
+        // drops foreign key for table `{{%valoresnutricionais}}`
+        $this->dropForeignKey(
+            '{{%fk-produtos-valornutricional_id}}',
+            '{{%produtos}}'
+        );
+
+        // drops index for column `valornutricional_id`
+        $this->dropIndex(
+            '{{%idx-produtos-valornutricional_id}}',
             '{{%produtos}}'
         );
 
