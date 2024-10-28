@@ -17,6 +17,7 @@ class m241028_090327_create_produtos_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%produtos}}', [
             'id' => $this->primaryKey(),
             'nome' => $this->string(30)->notNull(),
@@ -25,7 +26,7 @@ class m241028_090327_create_produtos_table extends Migration
             'categoria_id' => $this->integer()->notNull(),
             'iva_id' => $this->integer()->notNull(),
             'marca_id' => $this->integer()->notNull(),
-        ]);
+        ], $tableOptions);
 
         // creates index for column `categoria_id`
         $this->createIndex(

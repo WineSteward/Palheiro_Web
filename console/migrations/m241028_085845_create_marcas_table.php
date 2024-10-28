@@ -12,10 +12,11 @@ class m241028_085845_create_marcas_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%marcas}}', [
             'id' => $this->primaryKey(),
             'nome' => $this->string(30)->notNull()->unique(),
-        ]);
+        ], $tableOptions);
     }
 
     /**

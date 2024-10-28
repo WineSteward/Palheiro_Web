@@ -16,12 +16,13 @@ class m241028_101002_create_userdecontos_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%userdecontos}}', [
             'id' => $this->primaryKey(),
             'valido' => $this->boolean()->notNull(),
             'userprofile_id' => $this->integer()->notNull(),
             'desconto_id' => $this->integer()->notNull(),
-        ]);
+        ], $tableOptions);
 
         // creates index for column `userprofile_id`
         $this->createIndex(

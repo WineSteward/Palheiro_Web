@@ -16,6 +16,7 @@ class m241028_100226_create_userprofiles_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%userprofiles}}', [
             'id' => $this->primaryKey(),
             'nif' => $this->integer(9)->notNull()->unique(),
@@ -24,7 +25,7 @@ class m241028_100226_create_userprofiles_table extends Migration
             'codigoPostal' => $this->string(30)->notNull(),
             'user_id' => $this->integer()->notNull()->unique(),
             'carrinho_id' => $this->integer()->notNull()->unique(),
-        ]);
+        ], $tableOptions);
 
         // creates index for column `user_id`
         $this->createIndex(

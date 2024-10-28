@@ -12,11 +12,12 @@ class m241028_090755_create_metodosexpedicao_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%metodosexpedicao}}', [
             'id' => $this->primaryKey(),
             'nome' => $this->string(30)->notNull()->unique(),
             'vigor' => $this->boolean()->notNull(),
-        ]);
+        ],$tableOptions);
     }
 
     /**

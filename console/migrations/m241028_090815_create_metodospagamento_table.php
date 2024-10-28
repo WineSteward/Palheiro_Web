@@ -12,11 +12,12 @@ class m241028_090815_create_metodospagamento_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%metodospagamento}}', [
             'id' => $this->primaryKey(),
             'nome' => $this->string(30)->notNull()->unique(),
             'vigor' => $this->boolean()->notNull(),
-        ]);
+        ],$tableOptions);
     }
 
     /**

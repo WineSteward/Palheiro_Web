@@ -16,13 +16,14 @@ class m241028_091555_create_linhascarrinhos_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%linhascarrinhos}}', [
             'id' => $this->primaryKey(),
             'quantidade' => $this->integer()->notNull(),
             'precoProduto' => $this->float()->notNull(),
             'carrinho_id' => $this->integer()->notNull(),
             'produto_id' => $this->integer()->notNull(),
-        ]);
+        ], $tableOptions);
 
         // creates index for column `carrinho_id`
         $this->createIndex(

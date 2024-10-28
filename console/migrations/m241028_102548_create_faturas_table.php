@@ -15,6 +15,7 @@ class m241028_102548_create_faturas_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%faturas}}', [
             'id' => $this->primaryKey(),
             'total' => $this->float()->notNull(),
@@ -22,7 +23,7 @@ class m241028_102548_create_faturas_table extends Migration
             'valida' => $this->boolean()->notNull(),
             'estadoEncomenda' => $this->boolean()->notNull(),
             'userprofile_id' => $this->integer()->notNull(),
-        ]);
+        ], $tableOptions);
 
         // creates index for column `userprofile_id`
         $this->createIndex(

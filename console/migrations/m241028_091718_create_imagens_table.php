@@ -15,11 +15,12 @@ class m241028_091718_create_imagens_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%imagens}}', [
             'id' => $this->primaryKey(),
             'ficheiro' => $this->string(255)->notNull(),
             'produto_id' => $this->integer()->notNull(),
-        ]);
+        ], $tableOptions);
 
         // creates index for column `produto_id`
         $this->createIndex(

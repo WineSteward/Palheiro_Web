@@ -15,6 +15,7 @@ class m241028_103431_create_linhasfaturas_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%linhasfaturas}}', [
             'id' => $this->primaryKey(),
             'total' => $this->float()->notNull(),
@@ -23,7 +24,7 @@ class m241028_103431_create_linhasfaturas_table extends Migration
             'valorIva' => $this->float()->notNull(),
             'subtotal' => $this->float()->notNull(),
             'fatura_id' => $this->integer()->notNull(),
-        ]);
+        ], $tableOptions);
 
         // creates index for column `fatura_id`
         $this->createIndex(

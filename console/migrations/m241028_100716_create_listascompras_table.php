@@ -15,12 +15,13 @@ class m241028_100716_create_listascompras_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%listascompras}}', [
             'id' => $this->primaryKey(),
             'titulo' => $this->string(30)->notNull(),
             'descricao' => $this->string(255),
             'userprofile_id' => $this->integer()->notNull(),
-        ]);
+        ], $tableOptions);
 
         // creates index for column `userprofile_id`
         $this->createIndex(

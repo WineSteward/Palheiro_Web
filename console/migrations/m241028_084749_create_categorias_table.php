@@ -12,10 +12,11 @@ class m241028_084749_create_categorias_table extends Migration
      */
     public function safeUp()
     {
+        $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%categorias}}', [
             'id' => $this->primaryKey(),
             'nome' => $this->string(30)->notNull()->unique(),
-        ]);
+        ], $tableOptions);
     }
 
     /**
