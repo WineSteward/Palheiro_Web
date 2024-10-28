@@ -8,7 +8,7 @@ use yii\db\Migration;
  *
  * - `{{%faturas}}`
  */
-class m241028_103431_create_linhasfaturas_table extends Migration
+class m241028_144804_create_linhasfaturas_table extends Migration
 {
     /**
      * {@inheritdoc}
