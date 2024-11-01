@@ -24,11 +24,29 @@ class m241028_144754_create_faturas_table extends Migration
             'dataVenda' => $this->dateTime()->notNull(),
             'valida' => $this->boolean()->notNull(),
             'estadoEncomenda' => $this->boolean()->notNull(),
+            'desconto_id' => $this->integer()->notNull(),
             'userprofile_id' => $this->integer()->notNull(),
             'metodoexpedicao_id' => $this->integer()->notNull(),
             'metodopagamento_id' => $this->integer()->notNull(),
         ], $tableOptions);
 
+        // creates index for column `desconto_id`
+        $this->createIndex(
+            '{{%idx-faturas-desconto_id}}',
+            '{{%faturas}}',
+            'desconto_id'
+        );
+
+        // add foreign key for table `{{%descontos}}`
+        $this->addForeignKey(
+            '{{%fk-faturas-desconto_id}}',
+            '{{%faturas}}',
+            'desconto_id',
+            '{{%descontos}}',
+            'id',
+            'CASCADE'
+        );
+        
         // creates index for column `userprofile_id`
         $this->createIndex(
             '{{%idx-faturas-userprofile_id}}',
@@ -86,6 +104,18 @@ class m241028_144754_create_faturas_table extends Migration
      */
     public function safeDown()
     {
+        // drops foreign key for table `{{%descontos}}`
+        $this->dropForeignKey(
+            '{{%fk-faturas-desconto_id}}',
+            '{{%faturas}}'
+        );
+
+        // drops index for column `desconto_id`
+        $this->dropIndex(
+            '{{%idx-faturas-desconto_id}}',
+            '{{%faturas}}'
+        );
+
         // drops foreign key for table `{{%userprofiles}}`
         $this->dropForeignKey(
             '{{%fk-faturas-userprofile_id}}',
