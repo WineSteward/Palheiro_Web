@@ -18,8 +18,9 @@ class m241028_144804_create_linhasfaturas_table extends Migration
         $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%linhasfaturas}}', [
             'id' => $this->primaryKey(),
-            'total' => $this->float()->notNull(),
+            'valorUnitario' => $this->float()->notNull(),
             'quantidade' => $this->integer()->notNull(),
+            'total' => $this->float()->notNull(),
             'porcentagemIva' => $this->integer()->notNull(),
             'valorIva' => $this->float()->notNull(),
             'subtotal' => $this->float()->notNull(),

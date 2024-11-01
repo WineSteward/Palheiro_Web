@@ -19,8 +19,9 @@ class m241028_091555_create_linhascarrinhos_table extends Migration
         $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%linhascarrinhos}}', [
             'id' => $this->primaryKey(),
+            'precoUnitario' => $this->float()->notNull(),
             'quantidade' => $this->integer()->notNull(),
-            'precoProduto' => $this->float()->notNull(),
+            'total' => $this->float()->notNull(),
             'carrinho_id' => $this->integer()->notNull(),
             'produto_id' => $this->integer()->notNull(),
         ], $tableOptions);
