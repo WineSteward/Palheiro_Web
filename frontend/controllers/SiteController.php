@@ -137,13 +137,23 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays about page.
+     * Displays shop page.
      *
      * @return mixed
      */
-    public function actionAbout()
+    public function actionShop()
     {
-        return $this->render('about');
+        return $this->render('shop');
+    }
+
+    /**
+     * Displays shop page.
+     *
+     * @return mixed
+     */
+    public function actionProduto()
+    {
+        return $this->render('produto');
     }
 
     /**
