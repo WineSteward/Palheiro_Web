@@ -25,6 +25,7 @@ class m241028_144804_create_linhasfaturas_table extends Migration
             'valorIva' => $this->float()->notNull(),
             'subtotal' => $this->float()->notNull(),
             'fatura_id' => $this->integer()->notNull(),
+            'produto_id' => $this->integer()->notNull(),
         ], $tableOptions);
 
         // creates index for column `fatura_id`
@@ -40,6 +41,23 @@ class m241028_144804_create_linhasfaturas_table extends Migration
             '{{%linhasfaturas}}',
             'fatura_id',
             '{{%faturas}}',
+            'id',
+            'CASCADE'
+        );
+
+        // creates index for column `produto_id`
+        $this->createIndex(
+            '{{%idx-linhasfaturas-produto_id}}',
+            '{{%linhasfaturas}}',
+            'produto_id'
+        );
+
+        // add foreign key for table `{{%produtos}}`
+        $this->addForeignKey(
+            '{{%fk-linhasfaturas-produto_id}}',
+            '{{%linhasfaturas}}',
+            'produto_id',
+            '{{%produtos}}',
             'id',
             'CASCADE'
         );
@@ -59,6 +77,18 @@ class m241028_144804_create_linhasfaturas_table extends Migration
         // drops index for column `fatura_id`
         $this->dropIndex(
             '{{%idx-linhasfaturas-fatura_id}}',
+            '{{%linhasfaturas}}'
+        );
+
+        // drops foreign key for table `{{%produtos}}`
+        $this->dropForeignKey(
+            '{{%fk-linhasfaturas-produto_id}}',
+            '{{%linhasfaturas}}'
+        );
+
+        // drops index for column `produto_id`
+        $this->dropIndex(
+            '{{%idx-linhasfaturas-produto_id}}',
             '{{%linhasfaturas}}'
         );
 
