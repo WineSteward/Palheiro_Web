@@ -55,7 +55,7 @@ class RbacController extends Controller
 
 
 
-        //ViewMarcas
+        //View Marcas
         $viewMarcas = $auth->createPermission('viewMarcas');
         $viewMarcas->description = 'User can view Marcas';
         $auth->add($viewMarcas);
@@ -73,28 +73,6 @@ class RbacController extends Controller
         //Delete Marcas
         $deleteMarcas = $auth->createPermission('deleteMarcas');
         $deleteMarcas->description = 'User can delete Marcas';
-
-
-
-        //View LinhasCarrinho
-        $viewLinhasCarrinho = $auth->createPermission('viewLinhasCarrinho');
-        $viewLinhasCarrinho->description = 'User can view LinhasCarrinho';
-        $auth->add($viewLinhasCarrinho);
-
-        //Create LinhasCarrinho
-        $createLinhasCarrinho = $auth->createPermission('createLinhasCarrinho');
-        $createLinhasCarrinho->description = 'User can create LinhasCarrinho';
-        $auth->add($createLinhasCarrinho);
-
-        //Edit LinhasCarrinho
-        $editLinhasCarrinho = $auth->createPermission('editLinhasCarrinho');
-        $editLinhasCarrinho->description = 'User can edit LinhasCarrinho';
-        $auth->add($editLinhasCarrinho);
-
-        //Delete LinhasCarrinho
-        $deleteLinhasCarrinho = $auth->createPermission('deleteLinhasCarrinho');
-        $deleteLinhasCarrinho->description = 'User can delete LinhasCarrinho';
-
 
 
         //View Ivas
@@ -117,7 +95,6 @@ class RbacController extends Controller
         $deleteIvas->description = 'User can delete Ivas';
 
 
-
         //View Imagens
         $viewImagens = $auth->createPermission('viewImagens');
         $viewImagens->description = 'User can view Imagens';
@@ -136,6 +113,32 @@ class RbacController extends Controller
         //Delete Imagens
         $deleteImagens = $auth->createPermission('deleteImagens');
         $deleteImagens->description = 'User can delete Imagens';
+
+
+        //View LinhasCarrinho
+        $viewLinhasCarrinho = $auth->createPermission('viewLinhasCarrinho');
+        $viewLinhasCarrinho->description = 'User can view LinhasCarrinho';
+        $auth->add($viewLinhasCarrinho);
+
+        //Create LinhasCarrinho
+        $createLinhasCarrinho = $auth->createPermission('createLinhasCarrinho');
+        $createLinhasCarrinho->description = 'User can create LinhasCarrinho';
+        $auth->add($createLinhasCarrinho);
+
+        //Edit LinhasCarrinho
+        $editLinhasCarrinho = $auth->createPermission('editLinhasCarrinho');
+        $editLinhasCarrinho->description = 'User can edit LinhasCarrinho';
+        $auth->add($editLinhasCarrinho);
+
+        //Delete LinhasCarrinho
+        $deleteLinhasCarrinho = $auth->createPermission('deleteLinhasCarrinho');
+        $deleteLinhasCarrinho->description = 'User can delete LinhasCarrinho';
+
+        
+        //View Carrinho
+        $viewCarrinho = $auth->createPermission('viewCarrinho');
+        $viewCarrinho->description = 'User can view Carrinho';
+        $auth->add($viewCarrinho);
 
 
 
@@ -159,7 +162,123 @@ class RbacController extends Controller
         $deleteDescontos->description = 'User can delete Descontos';
 
 
+
+        //View MetodosExpedicao
+        $viewMetodosExpedicao = $auth->createPermission('viewMetodosExpedicao');
+        $viewMetodosExpedicao->description = 'User can view MetodosExpedicao';
+        $auth->add($viewMetodosExpedicao);
+
+        //Create MetodosExpedicao
+        $createMetodosExpedicao = $auth->createPermission('createMetodosExpedicao');
+        $createMetodosExpedicao->description = 'User can create MetodosExpedicao';
+        $auth->add($createMetodosExpedicao);
+
+        //Edit MetodosExpedicao
+        $editMetodosExpedicao = $auth->createPermission('editMetodosExpedicao');
+        $editMetodosExpedicao->description = 'User can edit MetodosExpedicao';
+        $auth->add($editMetodosExpedicao);
+
+        //Delete MetodosExpedicao
+        $deleteMetodosExpedicao = $auth->createPermission('deleteMetodosExpedicao');
+        $deleteMetodosExpedicao->description = 'User can delete MetodosExpedicao';
+
+
         
+        //View MetodosPagamento
+        $viewMetodosPagamento = $auth->createPermission('viewMetodosPagamento');
+        $viewMetodosPagamento->description = 'User can view MetodosPagamento';
+        $auth->add($viewMetodosPagamento);
+
+        //Create MetodosPagamento
+        $createMetodosPagamento = $auth->createPermission('createMetodosPagamento');
+        $createMetodosPagamento->description = 'User can create MetodosPagamento';
+        $auth->add($createMetodosPagamento);
+
+        //Edit MetodosPagamento
+        $editMetodosPagamento = $auth->createPermission('editMetodosPagamento');
+        $editMetodosPagamento->description = 'User can edit MetodosPagamento';
+        $auth->add($editMetodosPagamento);
+
+        //Delete MetodosPagamento
+        $deleteMetodosPagamento = $auth->createPermission('deleteMetodosPagamento');
+        $deleteMetodosPagamento->description = 'User can delete MetodosPagamento';
+
+
+
+        //View Faturas
+        $viewFaturas = $auth->createPermission('viewFaturas');
+        $viewFaturas->description = 'User can view Faturas';
+        $auth->add($viewFaturas);
+
+        //Create Faturas
+        $createFaturas = $auth->createPermission('createFaturas');
+        $createFaturas->description = 'User can create Faturas';
+        $auth->add($createFaturas);
+
+        //Edit Faturas
+        $editFaturas = $auth->createPermission('editFaturas');
+        $editFaturas->description = 'User can edit Faturas';
+        $auth->add($editFaturas);
+
+        //Delete Faturas
+        $deleteFaturas = $auth->createPermission('deleteFaturas');
+        $deleteFaturas->description = 'User can delete Faturas';        
+
+
+
+        //View LinhasFatura
+        $viewLinhasFatura = $auth->createPermission('viewLinhasFatura');
+        $viewLinhasFatura->description = 'User can view LinhasFatura';
+        $auth->add($viewLinhasFatura);
+
+        //Create LinhasFatura
+        $createLinhasFatura = $auth->createPermission('createLinhasFatura');
+        $createLinhasFatura->description = 'User can createLinhasFatura';
+        $auth->add($createLinhasFatura);
+
+        //Edit LinhasFatura
+        $editLinhasFatura = $auth->createPermission('editLinhasFatura');
+        $editLinhasFatura->description = 'User can edit LinhasFatura';
+        $auth->add($editLinhasFatura);
+
+        //Delete LinhasFatura
+        $deleteLinhasFatura = $auth->createPermission('deleteLinhasFatura');
+        $deleteLinhasFatura->description = 'User can delete LinhasFatura';
+        
+        
+
+        //View Listas
+        $viewListas = $auth->createPermission('viewListas');
+        $viewListas->description = 'User can view Listas';
+        $auth->add($viewListas);
+
+        //Create Listas
+        $createListas = $auth->createPermission('createListas');
+        $createListas->description = 'User can createListas';
+        $auth->add($createListas);
+
+        //Edit Listas
+        $editListas = $auth->createPermission('editListas');
+        $editListas->description = 'User can edit Listas';
+        $auth->add($editListas);
+
+        //Delete Listas
+        $deleteListas = $auth->createPermission('deleteListas');
+        $deleteListas->description = 'User can delete Listas';
+
+        // create all the roles
+        $client = $auth->createRole('client');
+        $admin = $auth->createRole('admin');
+        $employee = $auth->createRole('employee');
+        $auth->add($client);
+        $auth->add($admin);
+        $auth->add($employee);
+
+        // associate all the roles with their permissions
+
+        /////////////CONTINUAR//////////////////////////////////
+
+
 /*         // add "createPost" permission
         $createPost = $auth->createPermission('createPost');
         $createPost->description = 'Create a post';
