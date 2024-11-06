@@ -24,7 +24,7 @@ class m241028_144754_create_faturas_table extends Migration
             'dataVenda' => $this->dateTime()->notNull(),
             'valida' => $this->boolean()->notNull(),
             'estadoEncomenda' => $this->boolean()->notNull(),
-            'desconto_id' => $this->integer()->notNull(),
+            'desconto_id' => $this->integer(),
             'userprofile_id' => $this->integer()->notNull(),
             'metodoexpedicao_id' => $this->integer()->notNull(),
             'metodopagamento_id' => $this->integer()->notNull(),
