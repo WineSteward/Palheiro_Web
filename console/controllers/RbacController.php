@@ -140,6 +140,10 @@ class RbacController extends Controller
         $viewCarrinho->description = 'User can view Carrinho';
         $auth->add($viewCarrinho);
 
+        //Create Carrinho
+        $createCarrinho = $auth->createPermission('createCarrinho');
+        $createCarrinho->description = 'User can create Carrinho';
+        $auth->add($createCarrinho);
 
 
         //View Descontos
@@ -160,6 +164,27 @@ class RbacController extends Controller
         //Delete Descontos
         $deleteDescontos = $auth->createPermission('deleteDescontos');
         $deleteDescontos->description = 'User can delete Descontos';
+
+
+
+        //View User Descontos
+        $viewUserDescontos = $auth->createPermission('viewUserDescontos');
+        $viewUserDescontos->description = 'User can view UserDescontos';
+        $auth->add($viewUserDescontos);
+
+        //Create User Descontos
+        $createUserDescontos = $auth->createPermission('createUserDescontos');
+        $createUserDescontos->description = 'User can create UserDescontos';
+        $auth->add($createUserDescontos);
+
+        //Edit User Descontos
+        $editUserDescontos = $auth->createPermission('editUserDescontos');
+        $editUserDescontos->description = 'User can edit UserDescontos';
+        $auth->add($editUserDescontos);
+
+        //Delete User Descontos
+        $deleteUserDescontos = $auth->createPermission('deleteUserDescontos');
+        $deleteUserDescontos->description = 'User can delete UserDescontos';
 
 
 
@@ -274,25 +299,151 @@ class RbacController extends Controller
         $auth->add($admin);
         $auth->add($employee);
 
-        // associate all the roles with their permissions
+        //everything a employee does an admin can also do
+        $auth->add($admin, $employee);
 
+
+        // associate all the roles with their permissions
+        $auth->addChild($client, $viewProdutos);
+        $auth->addChild($employee, $viewProdutos);
+
+        $auth->addChild($employee, $createProdutos);
+        
+        $auth->addChild($employee, $editProdutos);
+        
+        $auth->addChild($admin, $deleteProdutos);
+
+
+        $auth->addChild($client, $viewCategorias);
+        $auth->addChild($employee, $viewCategorias);
+
+        $auth->addChild($employee, $createCategorias);
+        
+        $auth->addChild($employee, $editCategorias);
+
+        $auth->addChild($admin, $deleteCategorias);
+        
+        
+        $auth->addChild($client, $viewMarcas);
+        $auth->addChild($employee, $viewMarcas);
+        
+        $auth->addChild($employee, $createMarcas);
+
+        $auth->addChild($employee, $editMarcas);
+        
+        $auth->addChild($admin, $deleteMarcas);
+        
+        
+        $auth->addChild($client, $viewIvas);
+        $auth->addChild($employee, $viewIvas);
+        
+        $auth->addChild($employee, $createIvas);
+
+        $auth->addChild($employee, $editIvas);
+
+        $auth->addChild($admin, $deleteIvas);
+
+
+        $auth->addChild($client, $viewImagens);
+        $auth->addChild($employee, $viewImagens);
+
+        $auth->addChild($employee, $createImagens);
+
+        $auth->addChild($employee, $editImagens);
+
+        $auth->addChild($admin, $deleteImagens);
+
+
+        $auth->addChild($client, $viewLinhasCarrinho);
+
+        $auth->addChild($client, $createLinhasCarrinho);
+
+        $auth->addChild($client, $editLinhasCarrinho);
+
+        $auth->addChild($client, $deleteLinhasCarrinho);
+
+
+        $auth->addChild($client, $viewCarrinho);
+
+        $auth->addChild($client, $createCarrinho);
+
+
+        $auth->addChild($employee, $viewDescontos);
+
+        $auth->addChild($employee, $createDescontos);
+
+        $auth->addChild($employee, $editDescontos);
+
+        $auth->addChild($admin, $deleteDescontos);
+
+
+        $auth->addChild($employee, $viewUserDescontos);
+
+        $auth->addChild($admin, $createUserDescontos);
+
+        $auth->addChild($admin, $editUserDescontos);
+        
+        $auth->addChild($admin, $deleteUserDescontos);
+
+        
+        $auth->addChild($client, $viewMetodosExpedicao);
+        $auth->addChild($employee, $viewMetodosExpedicao);
+
+        $auth->addChild($employee, $createMetodosExpedicao);
+
+        $auth->addChild($employee, $editMetodosExpedicao);
+
+        $auth->addChild($admin, $deleteMetodosExpedicao);
+
+
+        $auth->addChild($client, $viewMetodosPagamento);
+        $auth->addChild($employee, $viewMetodosPagamento);
+
+        $auth->addChild($employee, $createMetodosPagamento);
+
+        $auth->addChild($employee, $editMetodosPagamento);
+
+        $auth->addChild($admin, $deleteMetodosPagamento);
+
+
+        $auth->addChild($client, $viewFaturas);
+        $auth->addChild($employee, $viewFaturas);
+
+        $auth->addChild($client, $createFaturas);
+
+        $auth->addChild($admin, $editFaturas);
+
+        $auth->addChild($admin, $deleteFaturas);
+
+
+        $auth->addChild($client, $viewLinhasFatura);
+        $auth->addChild($employee, $viewLinhasFatura);
+
+        $auth->addChild($client, $createLinhasFatura);
+
+        $auth->addChild($admin, $editLinhasFatura);
+
+        $auth->addChild($admin, $deleteLinhasFatura);
+
+
+        $auth->addChild($client, $viewListas);
+
+        $auth->addChild($client, $createListas);
+
+        $auth->addChild($client, $editListas);
+
+        $auth->addChild($client, $deleteListas);
+
+
+        
+        
         /////////////CONTINUAR//////////////////////////////////
 
 
-/*         // add "createPost" permission
-        $createPost = $auth->createPermission('createPost');
-        $createPost->description = 'Create a post';
-        $auth->add($createPost);
-
-        // add "updatePost" permission
-        $updatePost = $auth->createPermission('updatePost');
-        $updatePost->description = 'Update post';
-        $auth->add($updatePost);
-
+/*      
         // add "author" role and give this role the "createPost" permission
         $author = $auth->createRole('author');
         $auth->add($author);
-        $auth->addChild($author, $createPost);
 
         // add "admin" role and give this role the "updatePost" permission
         // as well as the permissions of the "author" role
