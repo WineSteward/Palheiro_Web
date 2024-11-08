@@ -3,13 +3,13 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%userdecontos}}`.
+ * Handles the creation of table `{{%userdescontos}}`.
  * Has foreign keys to the tables:
  *
  * - `{{%userprofiles}}`
  * - `{{%descontos}}`
  */
-class m241028_101002_create_userdecontos_table extends Migration
+class m241028_101002_create_userdescontos_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -17,7 +17,7 @@ class m241028_101002_create_userdecontos_table extends Migration
     public function safeUp()
     {
         $tableOptions = 'ENGINE=InnoDB';
-        $this->createTable('{{%userdecontos}}', [
+        $this->createTable('{{%userdescontos}}', [
             'id' => $this->primaryKey(),
             'valido' => $this->boolean()->notNull(),
             'userprofile_id' => $this->integer()->notNull(),
@@ -26,15 +26,15 @@ class m241028_101002_create_userdecontos_table extends Migration
 
         // creates index for column `userprofile_id`
         $this->createIndex(
-            '{{%idx-userdecontos-userprofile_id}}',
-            '{{%userdecontos}}',
+            '{{%idx-userdescontos-userprofile_id}}',
+            '{{%userdescontos}}',
             'userprofile_id'
         );
 
         // add foreign key for table `{{%userprofiles}}`
         $this->addForeignKey(
-            '{{%fk-userdecontos-userprofile_id}}',
-            '{{%userdecontos}}',
+            '{{%fk-userdescontos-userprofile_id}}',
+            '{{%userdescontos}}',
             'userprofile_id',
             '{{%userprofiles}}',
             'id',
@@ -43,15 +43,15 @@ class m241028_101002_create_userdecontos_table extends Migration
 
         // creates index for column `desconto_id`
         $this->createIndex(
-            '{{%idx-userdecontos-desconto_id}}',
-            '{{%userdecontos}}',
+            '{{%idx-userdescontos-desconto_id}}',
+            '{{%userdescontos}}',
             'desconto_id'
         );
 
         // add foreign key for table `{{%descontos}}`
         $this->addForeignKey(
-            '{{%fk-userdecontos-desconto_id}}',
-            '{{%userdecontos}}',
+            '{{%fk-userdescontos-desconto_id}}',
+            '{{%userdescontos}}',
             'desconto_id',
             '{{%descontos}}',
             'id',
@@ -66,28 +66,28 @@ class m241028_101002_create_userdecontos_table extends Migration
     {
         // drops foreign key for table `{{%userprofiles}}`
         $this->dropForeignKey(
-            '{{%fk-userdecontos-userprofile_id}}',
-            '{{%userdecontos}}'
+            '{{%fk-userdescontos-userprofile_id}}',
+            '{{%userdescontos}}'
         );
 
         // drops index for column `userprofile_id`
         $this->dropIndex(
-            '{{%idx-userdecontos-userprofile_id}}',
-            '{{%userdecontos}}'
+            '{{%idx-userdescontos-userprofile_id}}',
+            '{{%userdescontos}}'
         );
 
         // drops foreign key for table `{{%descontos}}`
         $this->dropForeignKey(
-            '{{%fk-userdecontos-desconto_id}}',
-            '{{%userdecontos}}'
+            '{{%fk-userdescontos-desconto_id}}',
+            '{{%userdescontos}}'
         );
 
         // drops index for column `desconto_id`
         $this->dropIndex(
-            '{{%idx-userdecontos-desconto_id}}',
-            '{{%userdecontos}}'
+            '{{%idx-userdescontos-desconto_id}}',
+            '{{%userdescontos}}'
         );
 
-        $this->dropTable('{{%userdecontos}}');
+        $this->dropTable('{{%userdescontos}}');
     }
 }
