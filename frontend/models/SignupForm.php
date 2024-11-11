@@ -56,6 +56,15 @@ class SignupForm extends Model
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
+        // setting user as verified client
+        $user->status = 10;
+
+        // setting the user as a client
+        $auth = Yii::$app->authManager;
+        $clientRole = $auth->getRole('client');
+        $auth->assign($clientRole, $user->getId());
+
+
         return $user->save() && $this->sendEmail($user);
     }
 
