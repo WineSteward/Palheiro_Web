@@ -1,4 +1,4 @@
-<?php ?>
+<?php use yii\helpers\Html; ?>
 
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
@@ -43,8 +43,8 @@
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="product__details__text">
-                    <h3>Vetgetable’s Package</h3>
-                    <div class="product__details__price">$50.00</div>
+                    <h3><?= Html::encode($produto->nome)?></h3>
+                    <div class="product__details__price"><?= Html::encode($produto->preco)?>€</div>
                     <div class="product__details__quantity">
                         <div class="quantity">
                             <div class="pro-qty">
@@ -75,13 +75,13 @@
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                             <div class="product__details__tab__desc">
                                 <h6>Descrição</h6>
-                                <p>Very good, BUY NOW</p>
+                                <p><?= Html::encode($produto->descricao)?></p>
                             </div>
                         </div>
                         <div class="tab-pane" id="tabs-2" role="tabpanel">
                             <div class="product__details__tab__desc">
                                 <h6>Informação nutricional</h6>
-                                <p>Very healthy,very good</p>
+                                <p><?= Html::encode($produto->descricao)?></p>
                             </div>
                         </div>
                     </div>

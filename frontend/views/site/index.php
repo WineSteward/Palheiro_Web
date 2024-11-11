@@ -2,6 +2,9 @@
 
 /** @var yii\web\View $this */
 
+use yii\helpers\Html;
+use yii\helpers\Url;
+
 $this->title = 'Palheiro';
 ?>
 <!-- Page Preloder -->
@@ -17,20 +20,12 @@ $this->title = 'Palheiro';
                 <div class="hero__categories">
                     <div class="hero__categories__all">
                         <i class="fa fa-bars"></i>
-                        <span>All departments</span>
+                        <span>Categorias</span>
                     </div>
                     <ul>
-                        <li><a href="#">Fresh Meat</a></li>
-                        <li><a href="#">Vegetables</a></li>
-                        <li><a href="#">Fruit & Nut Gifts</a></li>
-                        <li><a href="#">Fresh Berries</a></li>
-                        <li><a href="#">Ocean Foods</a></li>
-                        <li><a href="#">Butter & Eggs</a></li>
-                        <li><a href="#">Fastfood</a></li>
-                        <li><a href="#">Fresh Onion</a></li>
-                        <li><a href="#">Papayaya & Crisps</a></li>
-                        <li><a href="#">Oatmeal</a></li>
-                        <li><a href="#">Fresh Bananas</a></li>
+                        <?php foreach ($categorias as $categoria):?>
+                            <li><a href="#"><?= Html::encode($categoria->nome)?></a></li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
             </div>
