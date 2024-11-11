@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\Categoria;
+use common\models\Produto;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -75,7 +77,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $produtos = Produto::find()->all();
+        $categorias = Categoria::find()->all();
+
+        return $this->render('index',[
+            'produtos' => $produtos,
+            'categorias' => $categorias,
+        ]);
     }
 
     /**
@@ -134,26 +142,6 @@ class SiteController extends Controller
         return $this->render('contact', [
             'model' => $model,
         ]);
-    }
-
-    /**
-     * Displays shop page.
-     *
-     * @return mixed
-     */
-    public function actionShop()
-    {
-        return $this->render('shop');
-    }
-
-    /**
-     * Displays shop page.
-     *
-     * @return mixed
-     */
-    public function actionProduto()
-    {
-        return $this->render('produto');
     }
 
     /**
