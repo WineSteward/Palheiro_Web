@@ -10,12 +10,12 @@ class RbacController extends Controller
     {
         $auth = Yii::$app->authManager;
         $auth->removeAll();
-        
+
         //View Produtos
         $viewProdutos = $auth->createPermission('viewProdutos');
-        $viewProdutos->description = 'User can view Produtos';
+        $viewProdutos->description = 'User can viewProdutos';
         $auth->add($viewProdutos);
-
+        
         //Create Produtos
         $createProdutos = $auth->createPermission('createProdutos');
         $createProdutos->description = 'User can create Produtos';
@@ -31,8 +31,6 @@ class RbacController extends Controller
         $deleteProdutos->description = 'User can delete Produtos';
         $auth->add($deleteProdutos);
 
-
-        
         //View Categorias
         $viewCategorias = $auth->createPermission('viewCategorias');
         $viewCategorias->description = 'User can view Categorias';
@@ -53,8 +51,6 @@ class RbacController extends Controller
         $deleteCategorias->description = 'User can delete Categorias';
         $auth->add($deleteCategorias);
 
-
-
         //View Marcas
         $viewMarcas = $auth->createPermission('viewMarcas');
         $viewMarcas->description = 'User can view Marcas';
@@ -73,6 +69,7 @@ class RbacController extends Controller
         //Delete Marcas
         $deleteMarcas = $auth->createPermission('deleteMarcas');
         $deleteMarcas->description = 'User can delete Marcas';
+        $auth->add($deleteMarcas);
 
 
         //View Ivas
@@ -93,6 +90,8 @@ class RbacController extends Controller
         //Delete Ivas
         $deleteIvas = $auth->createPermission('deleteIvas');
         $deleteIvas->description = 'User can delete Ivas';
+        $auth->add($deleteIvas);
+
 
 
         //View Imagens
@@ -113,6 +112,8 @@ class RbacController extends Controller
         //Delete Imagens
         $deleteImagens = $auth->createPermission('deleteImagens');
         $deleteImagens->description = 'User can delete Imagens';
+        $auth->add($deleteImagens);
+
 
 
         //View LinhasCarrinho
@@ -133,8 +134,10 @@ class RbacController extends Controller
         //Delete LinhasCarrinho
         $deleteLinhasCarrinho = $auth->createPermission('deleteLinhasCarrinho');
         $deleteLinhasCarrinho->description = 'User can delete LinhasCarrinho';
+        $auth->add($deleteLinhasCarrinho);
 
-        
+
+
         //View Carrinho
         $viewCarrinho = $auth->createPermission('viewCarrinho');
         $viewCarrinho->description = 'User can view Carrinho';
@@ -144,6 +147,7 @@ class RbacController extends Controller
         $createCarrinho = $auth->createPermission('createCarrinho');
         $createCarrinho->description = 'User can create Carrinho';
         $auth->add($createCarrinho);
+
 
 
         //View Descontos
@@ -164,27 +168,7 @@ class RbacController extends Controller
         //Delete Descontos
         $deleteDescontos = $auth->createPermission('deleteDescontos');
         $deleteDescontos->description = 'User can delete Descontos';
-
-
-
-        //View User Descontos
-        $viewUserDescontos = $auth->createPermission('viewUserDescontos');
-        $viewUserDescontos->description = 'User can view UserDescontos';
-        $auth->add($viewUserDescontos);
-
-        //Create User Descontos
-        $createUserDescontos = $auth->createPermission('createUserDescontos');
-        $createUserDescontos->description = 'User can create UserDescontos';
-        $auth->add($createUserDescontos);
-
-        //Edit User Descontos
-        $editUserDescontos = $auth->createPermission('editUserDescontos');
-        $editUserDescontos->description = 'User can edit UserDescontos';
-        $auth->add($editUserDescontos);
-
-        //Delete User Descontos
-        $deleteUserDescontos = $auth->createPermission('deleteUserDescontos');
-        $deleteUserDescontos->description = 'User can delete UserDescontos';
+        $auth->add($deleteDescontos);
 
 
 
@@ -206,9 +190,11 @@ class RbacController extends Controller
         //Delete MetodosExpedicao
         $deleteMetodosExpedicao = $auth->createPermission('deleteMetodosExpedicao');
         $deleteMetodosExpedicao->description = 'User can delete MetodosExpedicao';
-
-
+        $auth->add($deleteMetodosExpedicao);
         
+
+
+
         //View MetodosPagamento
         $viewMetodosPagamento = $auth->createPermission('viewMetodosPagamento');
         $viewMetodosPagamento->description = 'User can view MetodosPagamento';
@@ -227,6 +213,7 @@ class RbacController extends Controller
         //Delete MetodosPagamento
         $deleteMetodosPagamento = $auth->createPermission('deleteMetodosPagamento');
         $deleteMetodosPagamento->description = 'User can delete MetodosPagamento';
+        $auth->add($deleteMetodosPagamento);
 
 
 
@@ -248,7 +235,7 @@ class RbacController extends Controller
         //Delete Faturas
         $deleteFaturas = $auth->createPermission('deleteFaturas');
         $deleteFaturas->description = 'User can delete Faturas';        
-
+        $auth->add($deleteFaturas);
 
 
         //View LinhasFatura
@@ -269,8 +256,9 @@ class RbacController extends Controller
         //Delete LinhasFatura
         $deleteLinhasFatura = $auth->createPermission('deleteLinhasFatura');
         $deleteLinhasFatura->description = 'User can delete LinhasFatura';
-        
-        
+        $auth->add($deleteLinhasFatura);
+
+
 
         //View Listas
         $viewListas = $auth->createPermission('viewListas');
@@ -290,18 +278,18 @@ class RbacController extends Controller
         //Delete Listas
         $deleteListas = $auth->createPermission('deleteListas');
         $deleteListas->description = 'User can delete Listas';
+        $auth->add($deleteListas);
 
         // create all the roles
         $client = $auth->createRole('client');
         $admin = $auth->createRole('admin');
         $employee = $auth->createRole('employee');
+
         $auth->add($client);
         $auth->add($admin);
         $auth->add($employee);
 
-        //everything a employee does an admin can also do
-        $auth->add($admin, $employee);
-
+        $auth->addChild($admin, $employee);
 
         // associate all the roles with their permissions
         $auth->addChild($client, $viewProdutos);
@@ -314,6 +302,7 @@ class RbacController extends Controller
         $auth->addChild($admin, $deleteProdutos);
 
 
+
         $auth->addChild($client, $viewCategorias);
         $auth->addChild($employee, $viewCategorias);
 
@@ -322,8 +311,8 @@ class RbacController extends Controller
         $auth->addChild($employee, $editCategorias);
 
         $auth->addChild($admin, $deleteCategorias);
-        
-        
+
+
         $auth->addChild($client, $viewMarcas);
         $auth->addChild($employee, $viewMarcas);
         
@@ -332,7 +321,7 @@ class RbacController extends Controller
         $auth->addChild($employee, $editMarcas);
         
         $auth->addChild($admin, $deleteMarcas);
-        
+
         
         $auth->addChild($client, $viewIvas);
         $auth->addChild($employee, $viewIvas);
@@ -367,7 +356,7 @@ class RbacController extends Controller
 
         $auth->addChild($client, $createCarrinho);
 
-
+ 
         $auth->addChild($employee, $viewDescontos);
 
         $auth->addChild($employee, $createDescontos);
@@ -377,15 +366,7 @@ class RbacController extends Controller
         $auth->addChild($admin, $deleteDescontos);
 
 
-        $auth->addChild($employee, $viewUserDescontos);
 
-        $auth->addChild($admin, $createUserDescontos);
-
-        $auth->addChild($admin, $editUserDescontos);
-        
-        $auth->addChild($admin, $deleteUserDescontos);
-
-        
         $auth->addChild($client, $viewMetodosExpedicao);
         $auth->addChild($employee, $viewMetodosExpedicao);
 
@@ -405,7 +386,7 @@ class RbacController extends Controller
 
         $auth->addChild($admin, $deleteMetodosPagamento);
 
-
+ 
         $auth->addChild($client, $viewFaturas);
         $auth->addChild($employee, $viewFaturas);
 
@@ -415,7 +396,7 @@ class RbacController extends Controller
 
         $auth->addChild($admin, $deleteFaturas);
 
-
+ 
         $auth->addChild($client, $viewLinhasFatura);
         $auth->addChild($employee, $viewLinhasFatura);
 
@@ -424,7 +405,7 @@ class RbacController extends Controller
         $auth->addChild($admin, $editLinhasFatura);
 
         $auth->addChild($admin, $deleteLinhasFatura);
-
+ 
 
         $auth->addChild($client, $viewListas);
 
@@ -434,28 +415,5 @@ class RbacController extends Controller
 
         $auth->addChild($client, $deleteListas);
 
-
-        
-        
-        /////////////CONTINUAR//////////////////////////////////
-
-
-/*      
-        // add "author" role and give this role the "createPost" permission
-        $author = $auth->createRole('author');
-        $auth->add($author);
-
-        // add "admin" role and give this role the "updatePost" permission
-        // as well as the permissions of the "author" role
-        $admin = $auth->createRole('admin');
-        $auth->add($admin);
-        $auth->addChild($admin, $updatePost);
-        $auth->addChild($admin, $author);
-
-        // Assign roles to users. 1 and 2 are IDs returned by IdentityInterface::getId()
-        // usually implemented in your User model.
-        $auth->assign($author, 2);
-        $auth->assign($admin, 1);
- */
     }
 }

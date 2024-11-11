@@ -29,7 +29,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup', 'shop', 'contact', 'faturas', 'encomendas', 'cupoes', 'carrinho', 'produto'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -37,9 +37,14 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'faturas', 'encomendas', 'cupoes', 'carrinho'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['client'],
+                    ],
+                    [
+                        'actions' => ['index', 'shop', 'contact', 'produto'],
+                        'allow' => true,
+                        'roles' => ['?','client'],
                     ],
                 ],
             ],
@@ -90,7 +95,9 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        
+        if ($model->load(Yii::$app->request->post()) && $model->login()) 
+        {
             return $this->goBack();
         }
 
