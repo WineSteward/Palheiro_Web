@@ -5,11 +5,40 @@ namespace frontend\controllers;
 use common\models\Categoria;
 use common\models\Produto;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 class ProdutoController extends \yii\web\Controller
 {
+
+        /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['logout', 'signup', 'shop', 'contact', 'faturas', 'encomendas', 'cupoes', 'carrinho', 'produto'],
+                'rules' => [
+                    [
+                        'actions' => ['index', 'shop', 'contact', 'produto'],
+                        'allow' => true,
+                        'roles' => ['?','client'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
+
 
     public function actionIndex()
     {
