@@ -7,6 +7,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\Response;
 
 /**
@@ -79,8 +80,17 @@ class SiteController extends Controller
         $this->layout = 'blank';
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        if ($model->load(Yii::$app->request->post()) && $model->login())
+        {
+            var_dump(Yii::$app->authManager->getRolesByUser(\Yii::$app->user->identity->id)['name'] == 'admin');
+            die();
+
+            if(Yii::$app->authManager->getRolesByUser(\Yii::$app->user->identity->id) == "admin" ||
+                 Yii::$app->authManager->getRolesByUser(\Yii::$app->user->identity->id) == "employee")
+                return $this->goBack();
+
+            Yii::$app->user->logout();
+            throw new ForbiddenHttpException();
         }
 
         $model->password = '';
