@@ -55,8 +55,7 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'Loja', 'url' => ['/shop/index']],
-        ['label' => 'Produto', 'url' => ['/produto/index']],
+        ['label' => 'Produtos', 'url' => ['/produto/index']],
         ['label' => 'Contact', 'url' => ['/site/contact']],
         [
             'label' => Html::tag('i', '', ['class' => 'fa fa-shopping-bag']), // Icon-only label
