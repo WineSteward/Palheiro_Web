@@ -78,7 +78,7 @@ class ProdutoController extends \yii\web\Controller
             throw new NotFoundHttpException('The requested produto does not exist.');
         }
 
-        return $this->render('index', [
+        return $this->render('show', [
             'produto' => $produto,
             'dataProvider' => $dataProvider,
         ]);
