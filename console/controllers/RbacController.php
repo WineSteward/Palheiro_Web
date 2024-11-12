@@ -415,5 +415,6 @@ class RbacController extends Controller
 
         $auth->addChild($client, $deleteListas);
 
+        $auth->assign($admin, 1);
     }
 }

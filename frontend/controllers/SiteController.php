@@ -17,7 +17,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
-
+use yii\web\ForbiddenHttpException;
 /**
  * Site controller
  */
@@ -31,7 +31,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup', 'shop', 'contact', 'faturas', 'encomendas', 'cupoes', 'carrinho', 'produto'],
+                'only' => ['logout', 'signup', 'contact', 'faturas', 'encomendas', 'cupoes', 'carrinho', 'produtos'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -44,7 +44,7 @@ class SiteController extends Controller
                         'roles' => ['client'],
                     ],
                     [
-                        'actions' => ['index', 'shop', 'contact', 'produto'],
+                        'actions' => ['index', 'contact', 'produtos'],
                         'allow' => true,
                         'roles' => ['?','client'],
                     ],
@@ -104,9 +104,13 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         
-        if ($model->load(Yii::$app->request->post()) && $model->login()) 
+        if ($model->load(Yii::$app->request->post()) && $model->login())
         {
-            return $this->goBack();
+            if(Yii::$app->authManager->checkAccess(\Yii::$app->user->identity->id ,"client"))
+                return $this->goBack();
+
+            Yii::$app->user->logout();
+            throw new ForbiddenHttpException;
         }
 
         $model->password = '';
@@ -159,7 +163,8 @@ class SiteController extends Controller
     public function actionSignup()
     {
         $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+        if ($model->load(Yii::$app->request->post()) && $model->signup()) 
+        {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
             return $this->goHome();
         }
