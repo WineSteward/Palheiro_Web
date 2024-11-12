@@ -82,12 +82,11 @@ class SiteController extends Controller
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login())
         {
-            var_dump(Yii::$app->authManager->getRolesByUser(\Yii::$app->user->identity->id)['name'] == 'admin');
-            die();
 
-            if(Yii::$app->authManager->getRolesByUser(\Yii::$app->user->identity->id) == "admin" ||
-                 Yii::$app->authManager->getRolesByUser(\Yii::$app->user->identity->id) == "employee")
+            if(Yii::$app->authManager->checkAccess(Yii::$app->user->id, "admin") || Yii::$app->authManager->checkAccess(Yii::$app->user->id, "employee"))
+            {
                 return $this->goBack();
+            }
 
             Yii::$app->user->logout();
             throw new ForbiddenHttpException();
