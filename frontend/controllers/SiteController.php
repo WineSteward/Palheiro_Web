@@ -17,7 +17,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
-
+use yii\web\ForbiddenHttpException;
 /**
  * Site controller
  */
@@ -104,9 +104,13 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         
-        if ($model->load(Yii::$app->request->post()) && $model->login()) 
+        if ($model->load(Yii::$app->request->post()) && $model->login())
         {
-            return $this->goBack();
+            if(Yii::$app->authManager->checkAccess(\Yii::$app->user->identity->id ,"client"))
+                return $this->goBack();
+
+            Yii::$app->user->logout();
+            throw new ForbiddenHttpException;
         }
 
         $model->password = '';
