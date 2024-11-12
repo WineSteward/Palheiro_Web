@@ -1,3 +1,8 @@
+<?php
+
+use common\models\User;
+
+?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
@@ -35,23 +40,22 @@
             <?php
             echo \hail812\adminlte\widgets\Menu::widget([
                 'items' => [
-//                  ['label' => 'Simple Link', 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
                     ['label' => 'Login', 'url' => ['site/login'], 'icon' => 'sign-in-alt', 'visible' => Yii::$app->user->isGuest],
-                    ['label' => 'Produtos', 'header' => true],
+                    ['label' => 'Gestão', 'header' => true],
                     ['label' => 'Produtos',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
                     ['label' => 'Categorias',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
                     ['label' => 'Ivas',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
                     ['label' => 'Marcas',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
-                    ['label' => 'Contabilidade', 'header' => true],
                     ['label' => 'Métodos de Pagamento',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
                     ['label' => 'Métodos de Expedição',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
+                    ['label' => 'Cupões',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
+                    ['label' => 'Contabilidade', 'header' => true],
                     ['label' => 'Faturas',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
                     ['label' => 'Encomendas',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
-                    ['label' => 'Cupões',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
                     ['label' => 'Utilizadores', 'header' => true],
-                    ['label' => 'Clientes',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank', 'visible' => Yii::$app->user->asRole('admin')],
-                    ['label' => 'Funcionários',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank', 'visible' => Yii::$app->user->asRole('admin')],
-                    ['label' => 'Administradores',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank', 'visible' => Yii::$app->user->asRole('admin')],
+                    ['label' => 'Clientes',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank', 'visible' => User::asRole('admin')],
+                    ['label' => 'Funcionários',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank', 'visible' => User::asRole('admin')],
+                    ['label' => 'Administradores',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank', 'visible' => User::asRole('admin')],
                 ],
             ]);
             ?>

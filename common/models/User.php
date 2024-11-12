@@ -135,6 +135,17 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Finds out if the user is a certain role
+     *
+     * @param string $role role of the user
+     * @return bool
+     */
+    public static function asRole($role)
+    {
+        return Yii::$app->authManager->checkAccess(Yii::$app->user->id, $role);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getId()

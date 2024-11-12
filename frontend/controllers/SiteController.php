@@ -31,10 +31,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup', 'contact', 'faturas', 'encomendas', 'cupoes', 'carrinho', 'produtos'],
+                'only' => ['login', 'logout', 'signup', 'contact', 'faturas', 'encomendas', 'cupoes', 'carrinho', 'produtos'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup','login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -106,7 +106,8 @@ class SiteController extends Controller
         
         if ($model->load(Yii::$app->request->post()) && $model->login())
         {
-            if(Yii::$app->authManager->getRolesByUser(\Yii::$app->user->identity->id) == "client")
+
+            if(Yii::$app->authManager->checkAccess(Yii::$app->user->id, "client"))
                 return $this->goBack();
 
             Yii::$app->user->logout();
