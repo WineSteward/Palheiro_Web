@@ -31,7 +31,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup', 'shop', 'contact', 'faturas', 'encomendas', 'cupoes', 'carrinho', 'produto'],
+                'only' => ['logout', 'signup', 'contact', 'faturas', 'encomendas', 'cupoes', 'carrinho', 'produtos'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -44,7 +44,7 @@ class SiteController extends Controller
                         'roles' => ['client'],
                     ],
                     [
-                        'actions' => ['index', 'shop', 'contact', 'produto'],
+                        'actions' => ['index', 'contact', 'produtos'],
                         'allow' => true,
                         'roles' => ['?','client'],
                     ],
