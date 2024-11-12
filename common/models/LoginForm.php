@@ -56,7 +56,7 @@ class LoginForm extends Model
      */
     public function login()
     {
-        if ($this->validate()) {
+        if ($this->validate() && \Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id) == "client") {
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
         
