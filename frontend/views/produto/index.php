@@ -70,12 +70,12 @@ $this->title = 'Palheiro'
                             <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
                                     <ul class="product__item__pic__hover">
-                                        <li><a href="<?= Url::to(['produto/index', 'id' => $produto->id]) ?>"><i class="fa fa-magnifying-glass"></i></a></li>
+                                        <li><a href="<?= Url::to(['produto/show', 'id' => $produto->id]) ?>"><i class="fa fa-magnifying-glass"></i></a></li>
                                         <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="<?= Url::to(['produto/index', 'id' => $produto->id]) ?>"><?= Html::encode($produto->nome)?></a></h6>
+                                    <h6><a href="<?= Url::to(['produto/show', 'id' => $produto->id]) ?>"><?= Html::encode($produto->nome)?></a></h6>
                                     <h5><?= Html::encode($produto->preco)?>€</h5>
                                 </div>
                             </div>
