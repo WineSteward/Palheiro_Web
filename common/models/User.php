@@ -28,7 +28,8 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
-
+    public $password;
+    public $role; //prop needed for displaying the role of the user
 
     /**
      * {@inheritdoc}
@@ -58,6 +59,18 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
         ];
     }
+
+        /**
+     * Finds out if the user is a certain role
+     *
+     * @param string $role role of the user
+     * @return bool
+     */
+    public static function asRole($role)
+    {
+        return Yii::$app->authManager->checkAccess(Yii::$app->user->id, $role);
+    }
+
 
     /**
      * {@inheritdoc}
@@ -135,17 +148,6 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Finds out if the user is a certain role
-     *
-     * @param string $role role of the user
-     * @return bool
-     */
-    public static function asRole($role)
-    {
-        return Yii::$app->authManager->checkAccess(Yii::$app->user->id, $role);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getId()
@@ -220,5 +222,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    /**
+     * Gets query for [[Userprofile]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserprofile()
+    {
+        return $this->hasOne(Userprofile::class, ['user_id' => 'id']);
     }
 }

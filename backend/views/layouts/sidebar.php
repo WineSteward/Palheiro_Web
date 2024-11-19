@@ -1,6 +1,7 @@
 <?php
 
 use common\models\User;
+use yii\helpers\Url;
 
 ?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -41,21 +42,20 @@ use common\models\User;
             echo \hail812\adminlte\widgets\Menu::widget([
                 'items' => [
                     ['label' => 'Login', 'url' => ['site/login'], 'icon' => 'sign-in-alt', 'visible' => Yii::$app->user->isGuest],
-                    ['label' => 'Gestão', 'header' => true],
-                    ['label' => 'Produtos',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
-                    ['label' => 'Categorias',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
-                    ['label' => 'Ivas',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
-                    ['label' => 'Marcas',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
-                    ['label' => 'Métodos de Pagamento',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
-                    ['label' => 'Métodos de Expedição',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
-                    ['label' => 'Cupões',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
-                    ['label' => 'Contabilidade', 'header' => true],
-                    ['label' => 'Faturas',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
-                    ['label' => 'Encomendas',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank'],
-                    ['label' => 'Utilizadores', 'header' => true],
-                    ['label' => 'Clientes',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank', 'visible' => User::asRole('admin')],
-                    ['label' => 'Funcionários',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank', 'visible' => User::asRole('admin')],
-                    ['label' => 'Administradores',  'icon' => 'th', 'url' => ['/gii'], 'target' => '_blank', 'visible' => User::asRole('admin')],
+                    ['label' => 'Gestão de Negócio', 'header' => true],
+                    ['label' => 'Produtos',  'icon' => 'th', 'url' => ['/gii']],
+                    ['label' => 'Categorias',  'icon' => 'th', 'url' => ['/gii']],
+                    ['label' => 'Ivas',  'icon' => 'th', 'url' => ['/gii']],
+                    ['label' => 'Marcas',  'icon' => 'th', 'url' => ['/gii']],
+                    ['label' => 'Métodos de Pagamento',  'icon' => 'th', 'url' => ['/gii']],
+                    ['label' => 'Métodos de Expedição',  'icon' => 'th', 'url' => ['/gii']],
+                    ['label' => 'Cupões',  'icon' => 'th', 'url' => ['/gii']],
+                    ['label' => 'Contabilidade e Encomendas', 'header' => true],
+                    ['label' => 'Faturas',  'icon' => 'th', 'url' => ['/gii']],
+                    ['label' => 'Encomendas',  'icon' => 'th', 'url' => ['/gii']],
+                    ['label' => 'Gestão de Utilizadores', 'header' => true, 'visible' => User::asRole('admin')],
+                    ['label' => 'Clientes',  'icon' => 'th', 'url' => Url::to(['userprofile/index']), 'visible' => User::asRole('admin')],
+                    ['label' => 'Administrativos',  'icon' => 'th', 'url' => Url::to(['user/index']), 'visible' => (User::asRole('admin')||User::asRole('admin'))],
                 ],
             ]);
             ?>

@@ -13,7 +13,6 @@ use Yii;
  * @property string $nome
  * @property int $vigor
  *
- * @property Carrinho[] $carrinhos
  * @property Fatura[] $faturas
  */
 class Metodopagamento extends \yii\db\ActiveRecord
@@ -49,16 +48,6 @@ class Metodopagamento extends \yii\db\ActiveRecord
             'nome' => 'Nome',
             'vigor' => 'Vigor',
         ];
-    }
-
-    /**
-     * Gets query for [[Carrinhos]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCarrinhos()
-    {
-        return $this->hasMany(Carrinho::class, ['metodopagamento_id' => 'id']);
     }
 
     /**

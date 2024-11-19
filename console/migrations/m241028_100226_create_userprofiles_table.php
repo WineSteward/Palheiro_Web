@@ -19,7 +19,7 @@ class m241028_100226_create_userprofiles_table extends Migration
         $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%userprofiles}}', [
             'id' => $this->primaryKey(),
-            'nif' => $this->integer(9)->notNull()->unique(),
+            'nif' => $this->string(9)->notNull()->unique(),
             'morada' => $this->string(30)->notNull(),
             'morada2' => $this->string(30),
             'codigoPostal' => $this->string(30)->notNull(),

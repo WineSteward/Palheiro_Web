@@ -29,7 +29,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index','client'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -42,6 +42,16 @@ class SiteController extends Controller
                 ],
             ],
         ];
+    }
+    
+    /**
+     * Displays homepage.
+     *
+     * @return string
+     */
+    public function actionClient()
+    {
+        return $this->render('client/index');
     }
 
     /**

@@ -2,9 +2,6 @@
 
 namespace frontend\models;
 
-use common\models\Desconto;
-use common\models\Metodoexpedicao;
-use common\models\Metodopagamento;
 use common\models\Userprofile;
 
 
@@ -15,14 +12,8 @@ use Yii;
  *
  * @property int $id
  * @property float $total
- * @property int|null $desconto_id
- * @property int $metodoexpedicao_id
- * @property int $metodopagamento_id
  *
- * @property Desconto $desconto
  * @property Linhacarrinho[] $linhascarrinhos
- * @property Metodoexpedicao $metodoexpedicao
- * @property Metodopagamento $metodopagamento
  * @property Userprofile $userprofile
  */
 class Carrinho extends \yii\db\ActiveRecord
@@ -41,13 +32,9 @@ class Carrinho extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['total', 'metodoexpedicao_id', 'metodopagamento_id'], 'required'],
+            [['total'], 'required'],
             [['total'], 'number'],
-            [['desconto_id', 'metodoexpedicao_id', 'metodopagamento_id'], 'integer'],
-            [['desconto_id'], 'exist', 'skipOnError' => true, 'targetClass' => Desconto::class, 'targetAttribute' => ['desconto_id' => 'id']],
-            [['metodoexpedicao_id'], 'exist', 'skipOnError' => true, 'targetClass' => Metodoexpedicao::class, 'targetAttribute' => ['metodoexpedicao_id' => 'id']],
-            [['metodopagamento_id'], 'exist', 'skipOnError' => true, 'targetClass' => Metodopagamento::class, 'targetAttribute' => ['metodopagamento_id' => 'id']],
-        ];
+            ];
     }
 
     /**
@@ -58,20 +45,7 @@ class Carrinho extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'total' => 'Total',
-            'desconto_id' => 'Desconto ID',
-            'metodoexpedicao_id' => 'Metodoexpedicao ID',
-            'metodopagamento_id' => 'Metodopagamento ID',
         ];
-    }
-
-    /**
-     * Gets query for [[Desconto]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDesconto()
-    {
-        return $this->hasOne(Desconto::class, ['id' => 'desconto_id']);
     }
 
     /**
@@ -85,26 +59,6 @@ class Carrinho extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Metodoexpedicao]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMetodoexpedicao()
-    {
-        return $this->hasOne(Metodoexpedicao::class, ['id' => 'metodoexpedicao_id']);
-    }
-
-    /**
-     * Gets query for [[Metodopagamento]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMetodopagamento()
-    {
-        return $this->hasOne(Metodopagamento::class, ['id' => 'metodopagamento_id']);
-    }
-
-    /**
      * Gets query for [[Userprofile]].
      *
      * @return \yii\db\ActiveQuery
@@ -112,5 +66,20 @@ class Carrinho extends \yii\db\ActiveRecord
     public function getUserprofile()
     {
         return $this->hasOne(Userprofile::class, ['carrinho_id' => 'id']);
+    }
+
+        /**
+     * Creates carrinho for default.
+     *
+     * @return 
+     */
+    public static function defaultCarrinho()
+    {
+        $carrinho = new Carrinho();
+        $carrinho->total = 0;
+
+        $carrinho->save();
+        
+        return $carrinho;
     }
 }
