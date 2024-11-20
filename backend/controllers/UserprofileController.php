@@ -100,7 +100,7 @@ class UserprofileController extends Controller
             }
         } else 
         {
-            $userprofile->loadDefaultValues();
+            //$userprofile->loadDefaultValues();
         }
 
         return $this->render('create', [
