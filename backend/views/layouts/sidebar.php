@@ -47,6 +47,7 @@ use yii\helpers\Url;
                     ['label' => 'Categorias',  'icon' => 'th', 'url' => Url::to(['categoria/index'])],
                     ['label' => 'Ivas',  'icon' => 'th', 'url' => Url::to(['iva/index'])],
                     ['label' => 'Marcas',  'icon' => 'th', 'url' => Url::to(['marca/index'])],
+                    ['label' => 'Valores Nutricionais',  'icon' => 'th', 'url' => Url::to(['valornutricional/index'])],
                     ['label' => 'Métodos de Pagamento',  'icon' => 'th', 'url' => Url::to(['metodopagamento/index'])],
                     ['label' => 'Métodos de Expedição',  'icon' => 'th', 'url' => Url::to(['metodoexpedicao/index'])],
                     ['label' => 'Cupões',  'icon' => 'th', 'url' => Url::to(['cupao/index']), 'visible' => Yii::$app->user->isAdmin],
