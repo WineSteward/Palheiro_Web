@@ -8,7 +8,7 @@ use yii\helpers\Html;
 $this->title = 'Editar Valor Nutricional';
 $this->params['breadcrumbs'][] = ['label' => 'Valores Nutricionais', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Editar';
 ?>
 <div class="valornutricional-update">
 
