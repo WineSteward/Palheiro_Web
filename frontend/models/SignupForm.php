@@ -55,7 +55,7 @@ class SignupForm extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
-        $user->save(false); //create a user without validation -- ofr 
+        $user->save(false); //create a user without validation
         // setting user as verified client
         $user->status = 10;
 

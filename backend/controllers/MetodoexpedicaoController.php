@@ -2,52 +2,57 @@
 
 namespace backend\controllers;
 
-use backend\models\SignupFormUser;
-use common\models\User;
-use backend\models\UserSearch;
-use Yii;
-use yii\data\ActiveDataProvider;
+use common\models\Metodoexpedicao;
+use backend\models\MetodoexpedicaoSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * UserController implements the CRUD actions for User model.
+ * MetodoexpedicaoController implements the CRUD actions for Metodoexpedicao model.
  */
-class UserController extends Controller
+class MetodoexpedicaoController extends Controller
 {
     /**
      * @inheritDoc
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update'],
+                        'allow' => true,
+                        'roles' => ['admin', 'employee'],
+                    ],
+                    [
+                        'actions' => ['delete'],
+                        'allow' => true,
+                        'roles' => ['admin'],
                     ],
                 ],
-            ]
-        );
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
     }
 
     /**
-     * Lists all User models.
+     * Lists all Metodoexpedicao models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
-        $dataProvider = new ActiveDataProvider([
-            'query' => User::find()
-                ->select(['user.*', 'auth_assignment.item_name AS role']) // select item_name from auth_assignment table as role
-                ->join('INNER JOIN', 'auth_assignment', 'auth_assignment.user_id = user.id') // join RBAC table
-                ->andWhere(['!=', 'auth_assignment.item_name', 'client']), // every record that is not a client
-        ]);
+        $searchModel = new MetodoexpedicaoSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -56,8 +61,8 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a single User model.
-     * @param int $id
+     * Displays a single Metodoexpedicao model.
+     * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -69,39 +74,31 @@ class UserController extends Controller
     }
 
     /**
-     * Creates a new User model.
+     * Creates a new Metodoexpedicao model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new SignupFormUser();
+        $model = new Metodoexpedicao();
 
-        if ($this->request->isPost)
-        {
-            if ($model->load($this->request->post()) && $model->signup())
-            {
-                // assigning to the user its role
-                $auth = Yii::$app->authManager;
-                $role = $auth->getRole($_POST['role']);
-                $auth->assign($role, $model->id);
-
-                return $this->redirect(['index']);
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
             }
-        } else 
-        {
-            //$model->loadDefaultValues();
+        } else {
+            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 
     /**
-     * Updates an existing User model.
+     * Updates an existing Metodoexpedicao model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id
+     * @param int $id ID
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -119,9 +116,9 @@ class UserController extends Controller
     }
 
     /**
-     * Deletes an existing User model.
+     * Deletes an existing Metodoexpedicao model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id
+     * @param int $id ID
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -133,15 +130,15 @@ class UserController extends Controller
     }
 
     /**
-     * Finds the User model based on its primary key value.
+     * Finds the Metodoexpedicao model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id
-     * @return User the loaded model
+     * @param int $id ID
+     * @return Metodoexpedicao the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne(['id' => $id])) !== null) {
+        if (($model = Metodoexpedicao::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
