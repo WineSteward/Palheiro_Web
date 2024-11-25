@@ -4,9 +4,15 @@ namespace backend\controllers;
 
 use common\models\Produto;
 use backend\models\ProdutoSearch;
+use common\models\Categoria;
+use common\models\Iva;
+use common\models\Marca;
+use common\models\Valornutricional;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * ProdutoController implements the CRUD actions for Produto model.
@@ -18,17 +24,29 @@ class ProdutoController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update'],
+                        'allow' => true,
+                        'roles' => ['admin', 'employee'],
+                    ],
+                    [
+                        'actions' => ['delete'],
+                        'allow' => true,
+                        'roles' => ['admin'],
                     ],
                 ],
-            ]
-        );
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -55,8 +73,13 @@ class ProdutoController extends Controller
      */
     public function actionView($id)
     {
+        $produto = Produto::find()
+                            ->where(['id' => $id])
+                            ->with(['categoria', 'iva', 'marca', 'valornutricional']) //Eager loading fix
+                            ->one();
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $produto,
         ]);
     }
 
@@ -69,9 +92,29 @@ class ProdutoController extends Controller
     {
         $model = new Produto();
 
+        // Fetch das categorias para o dropdown
+        $categorias = Categoria::find()->select(['id', 'nome'])->orderBy('nome')->asArray()->all();
+        $mappedCategorias = ArrayHelper::map($categorias, 'id', 'nome');
+
+
+        // Fetch dos ivas para o dropdown
+        $ivas = Iva::find()->select(['id', 'valorPorcentagem'])->orderBy('valorPorcentagem')->asArray()->all();
+        $mappedIvas = ArrayHelper::map($ivas, 'id', 'valorPorcentagem');
+
+
+        // Fetch dos marcas para o dropdown
+        $marcas = Marca::find()->select(['id', 'nome'])->orderBy('nome')->asArray()->all();
+        $mappedMarcas = ArrayHelper::map($marcas, 'id', 'nome');
+
+
+        // Fetch dos valores nutricionais para o dropdown
+        $valores = Valornutricional::find()->select(['id', 'nome'])->orderBy('nome')->asArray()->all();
+        $mappedValores = ArrayHelper::map($valores, 'id', 'nome');
+
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
         } else {
             $model->loadDefaultValues();
@@ -79,6 +122,10 @@ class ProdutoController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'categorias' => $mappedCategorias,
+            'ivas' => $mappedIvas,
+            'marcas' => $mappedMarcas,
+            'valoresnutricionais' => $mappedValores
         ]);
     }
 
@@ -93,12 +140,35 @@ class ProdutoController extends Controller
     {
         $model = $this->findModel($id);
 
+        // Fetch das categorias para o dropdown
+        $categorias = Categoria::find()->select(['id', 'nome'])->orderBy('nome')->asArray()->all();
+        $mappedCategorias = ArrayHelper::map($categorias, 'id', 'nome');
+
+
+        // Fetch dos ivas para o dropdown
+        $ivas = Iva::find()->select(['id', 'valorPorcentagem'])->orderBy('valorPorcentagem')->asArray()->all();
+        $mappedIvas = ArrayHelper::map($ivas, 'id', 'valorPorcentagem');
+
+
+        // Fetch dos marcas para o dropdown
+        $marcas = Marca::find()->select(['id', 'nome'])->orderBy('nome')->asArray()->all();
+        $mappedMarcas = ArrayHelper::map($marcas, 'id', 'nome');
+
+
+        // Fetch dos valores nutricionais para o dropdown
+        $valores = Valornutricional::find()->select(['id', 'nome'])->orderBy('nome')->asArray()->all();
+        $mappedValores = ArrayHelper::map($valores, 'id', 'nome');
+
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'categorias' => $mappedCategorias,
+            'ivas' => $mappedIvas,
+            'marcas' => $mappedMarcas,
+            'valoresnutricionais' => $mappedValores
         ]);
     }
 

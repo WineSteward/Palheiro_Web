@@ -14,20 +14,24 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'nome')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'preco')->textInput() ?>
+    <?= $form->field($model, 'preco')->textInput()->label('Preço sem IVA') ?>
 
-    <?= $form->field($model, 'descricao')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'descricao')->label('Descrição')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'categoria_id')->textInput() ?>
+    <?= $form->field($model, 'categoria_id')->dropDownList($categorias, [
+        'prompt' => 'Selecione uma categoria'])->label('Categoria');?>
 
-    <?= $form->field($model, 'iva_id')->textInput() ?>
+    <?= $form->field($model, 'iva_id')->dropDownList($ivas, [
+        'prompt' => 'Selecione um IVA'])->label('Ivas');?>
 
-    <?= $form->field($model, 'marca_id')->textInput() ?>
+    <?= $form->field($model, 'marca_id')->dropDownList($marcas, [
+            'prompt' => 'Selecione uma Marca'])->label('Marcas');?>
 
-    <?= $form->field($model, 'valornutricional_id')->textInput() ?>
+    <?= $form->field($model, 'valornutricional_id')->dropDownList($valoresnutricionais, [
+            'prompt' => 'Selecione um Valor Nutricional'])->label('Valores Nutricionais');?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Criar', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
