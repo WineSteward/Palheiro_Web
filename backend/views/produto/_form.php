@@ -30,6 +30,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'valornutricional_id')->dropDownList($valoresnutricionais, [
             'prompt' => 'Selecione um Valor Nutricional'])->label('Valores Nutricionais');?>
 
+    <?= $form->field($model, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
+
     <div class="form-group">
         <?= Html::submitButton('Criar', ['class' => 'btn btn-success']) ?>
     </div>

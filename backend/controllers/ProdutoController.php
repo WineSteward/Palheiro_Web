@@ -4,15 +4,18 @@ namespace backend\controllers;
 
 use common\models\Produto;
 use backend\models\ProdutoSearch;
+use backend\models\UploadForm;
 use common\models\Categoria;
 use common\models\Iva;
 use common\models\Marca;
 use common\models\Valornutricional;
+use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\web\UploadedFile;
 
 /**
  * ProdutoController implements the CRUD actions for Produto model.
@@ -83,6 +86,21 @@ class ProdutoController extends Controller
         ]);
     }
 
+    public function actionUpload($model, $produto_id)
+    {
+        
+        if (Yii::$app->request->isPost) {
+            $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
+            if ($model->upload($produto_id)) 
+            {
+                // file is uploaded successfully
+                return;
+            }
+        }
+
+        return $this->render('upload', ['model' => $model]);
+    }
+
     /**
      * Creates a new Produto model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -91,6 +109,7 @@ class ProdutoController extends Controller
     public function actionCreate()
     {
         $model = new Produto();
+        $uploadModel = new UploadForm();
 
         // Fetch das categorias para o dropdown
         $categorias = Categoria::find()->select(['id', 'nome'])->orderBy('nome')->asArray()->all();
@@ -114,6 +133,9 @@ class ProdutoController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                
+                $this->actionUpload($uploadModel, $model->id);
+
                 return $this->redirect(['index']);
             }
         } else {
