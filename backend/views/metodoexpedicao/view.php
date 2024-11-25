@@ -31,7 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'nome',
-            'vigor',
+            [
+                'attribute' => 'vigor',
+                'value' => function ($model) {
+                    return $model->vigor == 1 ? 'Válido' : 'Não Válido';
+                },
+            ],
         ],
     ]) ?>
 

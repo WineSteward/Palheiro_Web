@@ -41,7 +41,6 @@ use yii\helpers\Url;
             <?php
             echo \hail812\adminlte\widgets\Menu::widget([
                 'items' => [
-                    ['label' => 'Login', 'url' => ['site/login'], 'icon' => 'sign-in-alt', 'visible' => Yii::$app->user->isGuest],
                     ['label' => 'Gestão de Negócio', 'header' => true],
                     ['label' => 'Produtos',  'icon' => 'th', 'url' => Url::to(['produto/index'])],
                     ['label' => 'Categorias',  'icon' => 'th', 'url' => Url::to(['categoria/index'])],
