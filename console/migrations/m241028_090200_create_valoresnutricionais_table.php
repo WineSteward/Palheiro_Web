@@ -15,7 +15,7 @@ class m241028_090200_create_valoresnutricionais_table extends Migration
         $tableOptions = 'ENGINE=InnoDB';
         $this->createTable('{{%valoresnutricionais}}', [
             'id' => $this->primaryKey(),
-            'nome' => $this->string(1)->notNull(),
+            'nome' => $this->string(1)->notNull()->unique(),
         ], $tableOptions);
     }
 

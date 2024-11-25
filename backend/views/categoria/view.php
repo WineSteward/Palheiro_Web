@@ -6,15 +6,15 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Categoria $model */
 
-$this->title = "Categoria";
+$this->title = "Detalhes Categoria";
 $this->params['breadcrumbs'][] = ['label' => 'Categorias', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $model->nome;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="categoria-view">
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php if(Yii::$app->user->isAdmin)
         {
             echo Html::a('Delete', ['delete', 'id' => $model->id], [

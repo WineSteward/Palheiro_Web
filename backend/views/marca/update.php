@@ -7,8 +7,8 @@ use yii\helpers\Html;
 
 $this->title = 'Atualizar Marca: ' . $model->nome;
 $this->params['breadcrumbs'][] = ['label' => 'Marcas', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => $model->nome, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Editar Marca';
 ?>
 <div class="marca-update">
 

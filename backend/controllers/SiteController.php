@@ -6,9 +6,12 @@ use common\models\LoginForm;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\Response;
+
+use function PHPUnit\Framework\throwException;
 
 /**
  * Site controller
@@ -88,7 +91,7 @@ class SiteController extends Controller
         }
 
         $this->layout = 'blank';
-
+        
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login())
         {
@@ -97,9 +100,12 @@ class SiteController extends Controller
             {
                 return $this->goBack();
             }
-
-            Yii::$app->user->logout();
-            throw new ForbiddenHttpException();
+            else
+            {
+                Yii::$app->user->logout();
+                Yii::$app->session->setFlash('forbidden', "Acesso Negado");
+                return $this->redirect(Url::to(['site/login']));
+            }
         }
 
         $model->password = '';

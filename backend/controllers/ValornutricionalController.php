@@ -76,7 +76,7 @@ class ValornutricionalController extends Controller
 
     /**
      * Creates a new Valornutricional model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * If creation is successful, the browser will be redirected to the 'index' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
@@ -84,10 +84,12 @@ class ValornutricionalController extends Controller
         $model = new Valornutricional();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post()) && $model->save())
+            {
+                return $this->redirect(['index']);
             }
-        } else {
+        } else
+        {
             $model->loadDefaultValues();
         }
 

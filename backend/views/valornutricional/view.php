@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Valornutricional $model */
 
-$this->title = "Detalhe do Valor Nutricional";
+$this->title = "Detalhe Valor Nutricional";
 $this->params['breadcrumbs'][] = ['label' => 'Valores Nutricionais', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);

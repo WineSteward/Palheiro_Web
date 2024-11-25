@@ -29,6 +29,7 @@ class Valornutricional extends \yii\db\ActiveRecord
     {
         return [
             [['nome'], 'required'],
+            [['nome'], 'unique'],
             [['nome'], 'string', 'max' => 1],
         ];
     }

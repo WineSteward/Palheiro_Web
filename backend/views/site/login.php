@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 ?>
 <div class="card">
@@ -7,7 +8,7 @@ use yii\helpers\Html;
 
         <?php $form = \yii\bootstrap4\ActiveForm::begin(['id' => 'login-form']) ?>
 
-        <?= $form->field($model,'username', [
+        <?= $form->field($model, 'username', [
             'options' => ['class' => 'form-group has-feedback'],
             'inputTemplate' => '{input}<div class="input-group-append"><div class="input-group-text"><span class="fas fa-envelope"></span></div></div>',
             'template' => '{beginWrapper}{input}{error}{endWrapper}',
@@ -42,6 +43,11 @@ use yii\helpers\Html;
 
         <?php \yii\bootstrap4\ActiveForm::end(); ?>
 
+        <?php if (Yii::$app->session->hasFlash('forbidden')): ?>
+            <div class="mt-5 alert alert-danger alert-dismissable">
+                <?= Yii::$app->session->getFlash('forbidden') ?>
+            </div>
+        <?php endif; ?>
 
         <p class="mb-1">
             <a href="forgot-password.html">I forgot my password</a>

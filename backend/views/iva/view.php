@@ -6,17 +6,15 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Iva $model */
 
-$this->title = $model->id;
+$this->title = 'Detalhes Iva';
 $this->params['breadcrumbs'][] = ['label' => 'Ivas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="iva-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php if(Yii::$app->user->isAdmin)
         {
             echo Html::a('Delete', ['delete', 'id' => $model->id], [
