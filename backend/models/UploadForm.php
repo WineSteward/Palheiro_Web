@@ -22,9 +22,17 @@ class UploadForm extends Model
     
     public function upload($produto_id)
     {
-        if ($this->validate()) {
+        if ($this->validate()) 
+        {
             foreach ($this->imageFiles as $file) 
             {
+                //validations
+
+                //check if folder exists
+                
+                //if yes, proceed to save the img to that folder
+
+                //if no, create a folder and save the img
                 $path = 'frontend/web/img/product/' . Yii::$app->getSecurity()->generateRandomString() . '.' . $file->extension;
                 $file->saveAs($path);
                 

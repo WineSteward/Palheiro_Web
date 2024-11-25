@@ -93,12 +93,10 @@ class ProdutoController extends Controller
             $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
             if ($model->upload($produto_id)) 
             {
-                // file is uploaded successfully
-                return;
+                //success in saving the imgs
             }
+            return;
         }
-
-        return $this->render('upload', ['model' => $model]);
     }
 
     /**
@@ -147,7 +145,8 @@ class ProdutoController extends Controller
             'categorias' => $mappedCategorias,
             'ivas' => $mappedIvas,
             'marcas' => $mappedMarcas,
-            'valoresnutricionais' => $mappedValores
+            'valoresnutricionais' => $mappedValores,
+            'imageForm' => $uploadModel
         ]);
     }
 
