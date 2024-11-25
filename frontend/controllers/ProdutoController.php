@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use common\models\Categoria;
 use common\models\Produto;
+use frontend\models\ProdutoSearch;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -42,12 +44,16 @@ class ProdutoController extends \yii\web\Controller
 
     public function actionIndex()
     {
-        $produtos = Produto::find()->all();
+
         $categorias = Categoria::find()->all();
+        $produtoSearch = new ProdutoSearch();
+        $dataProvider = $produtoSearch->search(Yii::$app->request->queryParams);
 
         return $this->render('index',[
-            'produtos' => $produtos,
+
             'categorias' => $categorias,
+            'produtoSearch' => $produtoSearch,
+            'dataProvider' => $dataProvider
         ]);
     }
 
