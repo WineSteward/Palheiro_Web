@@ -33,10 +33,10 @@ $this->title = 'Palheiro'
                     <div class="search-form">
                         <?php $form = ActiveForm::begin([
                             'method' => 'get',
-                            'action' => ['index'], // Ensure it points to your action
+                            'action' => ['index'], // garante que vai par a action
                         ]); ?>
 
-                        <?= $form->field($produtoSearch, 'nome')->textInput(['placeholder' => 'Search products...'])->label(false) ?>
+                        <?= $form->field($produtoSearch, 'nome')->textInput(['placeholder' => 'Procure por produtos'])->label(false) ?>
 
                         <div class="form-group">
                             <?= Html::submitButton('Search', ['class' => 'site-btn']) ?>
@@ -53,8 +53,18 @@ $this->title = 'Palheiro'
                     <div class="sidebar__item">
                         <h4>Categorias</h4>
                         <ul>
-                            <?php foreach ($categorias as $categoria):?>
-                            <li><a href="#"><?= Html::encode($categoria->nome)?></a></li>
+                            <!-- Link to reset filter -->
+                            <li>
+                                <a href="<?= Url::to(['produto/index']) ?>">
+                                    All Categories
+                                </a>
+                            </li>
+                            <?php foreach ($categorias as $categoria): ?>
+                                <li>
+                                    <a href="<?= Url::to(['produto/index', 'categoria_nome' => $categoria->nome]) ?>">
+                                        <?= Html::encode($categoria->nome) ?>
+                                    </a>
+                                </li>
                             <?php endforeach; ?>
                         </ul>
                     </div>

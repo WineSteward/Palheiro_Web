@@ -14,11 +14,11 @@ class ProdutoSearch extends Produto
         ];
     }
 
-    public function search($params)
+    public function search($params, $query = null)
     {
-        $query = Produto::find();
-
-        // add conditions that should always apply here
+        if ($query === null) {
+            $query = Produto::find();
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -27,14 +27,12 @@ class ProdutoSearch extends Produto
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            // Retorna os produtos todos se falhar
             return $dataProvider;
         }
 
-        // grid filtering conditions
+        // filtros de pesquisa
         $query->andFilterWhere(['like', 'nome', $this->nome]);
-
 
         return $dataProvider;
     }
