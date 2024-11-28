@@ -65,6 +65,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
         ],
-    ]) ?>
+    ])
+    ?>
+
+    <h3>Imagens</h3>
+
+
+        
+        <?php foreach($model->imagens as $imagem): ?>
+            <?= Html::img(Yii::getAlias('@web/products/'). $imagem->ficheiro)?>
+        <?php endforeach ?>
+
 
 </div>

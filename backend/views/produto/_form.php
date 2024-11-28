@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
+/** @var backend\models\UploadForm $uploadModel */
 /** @var common\models\Produto $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
@@ -30,10 +31,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'valornutricional_id')->dropDownList($valoresnutricionais, [
             'prompt' => 'Selecione um Valor Nutricional'])->label('Valores Nutricionais');?>
 
-    <?= $form->field($model, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
+    <?= $form->field($uploadModel, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Criar', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

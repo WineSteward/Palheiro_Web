@@ -4,11 +4,11 @@ use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var common\models\Produto $model */
+/** @var backend\models\UploadForm $uploadModel */
 /** @var yii\helpers\ArrayHelper $categorias */
 /** @var yii\helpers\ArrayHelper $ivas */
 /** @var yii\helpers\ArrayHelper $marcas */
 /** @var yii\helpers\ArrayHelper $valoresnutricionais */
-
 
 $this->title = 'Editar Produto';
 $this->params['breadcrumbs'][] = ['label' => 'Produtos', 'url' => ['index']];
@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = 'Editar Produto';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'uploadModel' => $uploadModel,
         'categorias' => $categorias,
         'ivas' => $ivas,
         'marcas' => $marcas,

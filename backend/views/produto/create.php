@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var common\models\Produto $model */
+/** @var backend\models\UploadForm $uploadModel */
 /** @var yii\helpers\ArrayHelper $categorias */
 /** @var yii\helpers\ArrayHelper $ivas */
 /** @var yii\helpers\ArrayHelper $marcas */
@@ -17,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'uploadModel' => $uploadModel,
         'categorias' => $categorias,
         'ivas' => $ivas,
         'marcas' => $marcas,

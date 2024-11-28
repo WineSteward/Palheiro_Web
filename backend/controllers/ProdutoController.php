@@ -6,6 +6,7 @@ use common\models\Produto;
 use backend\models\ProdutoSearch;
 use backend\models\UploadForm;
 use common\models\Categoria;
+use common\models\Imagem;
 use common\models\Iva;
 use common\models\Marca;
 use common\models\Valornutricional;
@@ -76,9 +77,10 @@ class ProdutoController extends Controller
      */
     public function actionView($id)
     {
+
         $produto = Produto::find()
                             ->where(['id' => $id])
-                            ->with(['categoria', 'iva', 'marca', 'valornutricional']) //Eager loading fix
+                            ->with(['categoria', 'iva', 'marca', 'valornutricional', 'imagens']) //Eager loading fix
                             ->one();
 
         return $this->render('view', [
@@ -86,19 +88,20 @@ class ProdutoController extends Controller
         ]);
     }
 
-    public function actionUpload($model, $produto_id)
+    public function actionUpload(UploadForm $uploadModel, $produto_id)
     {
         
-        if (Yii::$app->request->isPost) {
-            $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
-            if ($model->upload($produto_id)) 
+        if (Yii::$app->request->isPost) 
+        {
+            $uploadModel->imageFiles = UploadedFile::getInstances($uploadModel, 'imageFiles');
+            if ($uploadModel->upload($produto_id)) 
             {
                 // file is uploaded successfully
-                return;
+                return true;
             }
         }
 
-        return $this->render('upload', ['model' => $model]);
+        return false;
     }
 
     /**
@@ -131,19 +134,22 @@ class ProdutoController extends Controller
         $mappedValores = ArrayHelper::map($valores, 'id', 'nome');
 
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                
-                $this->actionUpload($uploadModel, $model->id);
-
-                return $this->redirect(['index']);
+        if ($this->request->isPost) 
+        {
+            if ($model->load($this->request->post()) && $model->save())
+            {
+                if($this->actionUpload($uploadModel, $model->id))
+                    return $this->redirect(['index']);
             }
-        } else {
+        } 
+        else 
+        {
             $model->loadDefaultValues();
         }
 
         return $this->render('create', [
             'model' => $model,
+            'uploadModel' => $uploadModel,
             'categorias' => $mappedCategorias,
             'ivas' => $mappedIvas,
             'marcas' => $mappedMarcas,
@@ -161,6 +167,7 @@ class ProdutoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $uploadModel = new UploadForm();
 
         // Fetch das categorias para o dropdown
         $categorias = Categoria::find()->select(['id', 'nome'])->orderBy('nome')->asArray()->all();
@@ -181,12 +188,23 @@ class ProdutoController extends Controller
         $valores = Valornutricional::find()->select(['id', 'nome'])->orderBy('nome')->asArray()->all();
         $mappedValores = ArrayHelper::map($valores, 'id', 'nome');
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+
+        if ($this->request->isPost) 
+        {
+            if ($model->load($this->request->post()) && $model->save())
+            {
+                if($this->actionUpload($uploadModel, $model->id))
+                    return $this->redirect(['view', 'id' => $model->id]);
+            }
+        } 
+        else 
+        {
+            $model->loadDefaultValues();
         }
 
         return $this->render('update', [
             'model' => $model,
+            'uploadModel' => $uploadModel,
             'categorias' => $mappedCategorias,
             'ivas' => $mappedIvas,
             'marcas' => $mappedMarcas,
