@@ -47,7 +47,7 @@ AppAsset::register($this);
 
     <?php
     NavBar::begin([
-        'brandLabel' => Html::img('@web/img/logo.png', ['alt' => Yii::$app->name]),
+        'brandLabel' => Html::img('@web/img/logo-verde.png', ['alt' => Yii::$app->name]),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar navbar-expand-md navbar-light bg-light fixed-top',
@@ -59,7 +59,7 @@ AppAsset::register($this);
         ['label' => 'Contact', 'url' => ['/site/contact']],
         [
             'label' => Html::tag('i', '', ['class' => 'fa fa-shopping-bag']), // Icon-only label
-            'url' => ['/site/cart'],
+            'url' => ['/carrinho/index'],
             'encode' => false, // Allow HTML in the label
         ],
     ];

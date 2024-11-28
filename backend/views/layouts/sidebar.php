@@ -49,13 +49,13 @@ use yii\helpers\Url;
                     ['label' => 'Valores Nutricionais',  'icon' => 'th', 'url' => Url::to(['valornutricional/index'])],
                     ['label' => 'Métodos de Pagamento',  'icon' => 'th', 'url' => Url::to(['metodopagamento/index'])],
                     ['label' => 'Métodos de Expedição',  'icon' => 'th', 'url' => Url::to(['metodoexpedicao/index'])],
-                    ['label' => 'Cupões',  'icon' => 'th', 'url' => Url::to(['cupao/index']), 'visible' => Yii::$app->user->isAdmin],
+                    ['label' => 'Cupões',  'icon' => 'th', 'url' => Url::to(['cupao/index']),'visible' => Yii::$app->user->isAdmin],
                     ['label' => 'Contabilidade e Encomendas', 'header' => true],
                     ['label' => 'Faturas',  'icon' => 'th', 'url' => Url::to(['fatura/index'])],
                     ['label' => 'Encomendas',  'icon' => 'th', 'url' => Url::to(['encomenda/index'])],
-                    ['label' => 'Gestão de Utilizadores', 'header' => true, 'visible' => Yii::$app->user->isAdmin],
-                    ['label' => 'Clientes',  'icon' => 'th', 'url' => Url::to(['userprofile/index']), 'visible' => Yii::$app->user->isAdmin],
-                    ['label' => 'Administrativos',  'icon' => 'th', 'url' => Url::to(['user/index']), 'visible' => Yii::$app->user->isAdmin],
+                    ['label' => 'Gestão de Utilizadores', 'header' => true,'visible' => Yii::$app->user->isAdmin],
+                    ['label' => 'Clientes',  'icon' => 'th', 'url' => Url::to(['userprofile/index']),'visible' => Yii::$app->user->isAdmin],
+                    ['label' => 'Administrativos',  'icon' => 'th', 'url' => Url::to(['user/index']),'visible' => Yii::$app->user->isAdmin],
                 ],
             ]);
             ?>

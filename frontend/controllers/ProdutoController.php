@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use common\models\Categoria;
 use common\models\Produto;
+use frontend\models\ProdutoSearch;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -40,18 +42,35 @@ class ProdutoController extends \yii\web\Controller
     }
 
 
-    public function actionIndex()
+    public function actionIndex($categoria_nome = null)
     {
-        $produtos = Produto::find()->all();
+        $query = Produto::find();
+
+        if ($categoria_nome !== null) {
+            // Get the category based on the name
+            $category = Categoria::find()->where(['nome' => $categoria_nome])->one();
+
+            if ($category) {
+                // Filter products by the found category's ID
+                $query->andWhere(['categoria_id' => $category->id]);
+            }
+        }
+
+        // aplica filtros do ProdutoSearch
+        $produtoSearch = new ProdutoSearch();
+        $dataProvider = $produtoSearch->search(Yii::$app->request->queryParams, $query);
+
+        // Categorias para a sidebar
         $categorias = Categoria::find()->all();
 
-        return $this->render('index',[
-            'produtos' => $produtos,
+        return $this->render('index', [
             'categorias' => $categorias,
+            'produtoSearch' => $produtoSearch,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
-    public function actionShow($id = 2)
+    public function actionShow($id)
     {
 
         $produto = Produto::findOne($id);
