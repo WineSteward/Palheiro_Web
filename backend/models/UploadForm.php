@@ -23,7 +23,8 @@ class UploadForm extends Model
     
     public function upload($produto_id)
     {
-        if ($this->validate()) {
+        if ($this->validate()) 
+        {
             foreach ($this->imageFiles as $file) 
             {
 

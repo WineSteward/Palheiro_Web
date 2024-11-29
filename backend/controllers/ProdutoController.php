@@ -99,6 +99,7 @@ class ProdutoController extends Controller
                 // file is uploaded successfully
                 return true;
             }
+            return;
         }
 
         return false;
@@ -153,7 +154,8 @@ class ProdutoController extends Controller
             'categorias' => $mappedCategorias,
             'ivas' => $mappedIvas,
             'marcas' => $mappedMarcas,
-            'valoresnutricionais' => $mappedValores
+            'valoresnutricionais' => $mappedValores,
+            'imageForm' => $uploadModel
         ]);
     }
 

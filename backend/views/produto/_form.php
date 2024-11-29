@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var backend\models\UploadForm $uploadModel */
 /** @var common\models\Produto $model */
+/** @var backend\models\UploadForm $imageForm */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
