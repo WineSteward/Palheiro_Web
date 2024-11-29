@@ -3,21 +3,18 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var common\models\Userprofile $model  */
-/** @var common\models\User $user */
+/** @var common\models\Userprofile $userprofile  */
 
-$this->title = 'Editar Cliente: ' . $userprofile->id;
-$this->params['breadcrumbs'][] = ['label' => 'Userprofiles', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $userprofile->id, 'url' => ['view', 'id' => $userprofile->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Editar Cliente';
+$this->params['breadcrumbs'][] = ['label' => 'Clientes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $userprofile->user->username, 'url' => ['view', 'id' => $userprofile->id]];
+$this->params['breadcrumbs'][] = 'Editar';
 ?>
 <div class="userprofile-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <?= $this->render('_form', [
         'userprofile' => $userprofile,
-        'user' => $user
+        'user' => $userprofile->user
     ]) ?>
 
 </div>

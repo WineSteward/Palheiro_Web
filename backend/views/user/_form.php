@@ -19,13 +19,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'email')->textInput() ?>
 
-    <?= $form->field($model, 'auth_key')->hiddenInput(['value' => ''])->label(false) ?>
-
-    <?= $form->field($model, 'verification_token')->hiddenInput(['value' => ''])->label(false) ?>
-
     <?= '<div class="form-group">' ?>
         <?= Html::label('Escolha a role do utilizador a criar', 'role', ['class' => 'control-label']) ?>
-        <?= Html::dropDownList('role', 'employee', [
+        <?= Html::dropDownList('role', '', [
             'employee' => 'Funcionário',
             'admin' => 'Administrador',
         ], 
@@ -37,7 +33,7 @@ use yii\widgets\ActiveForm;
 
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

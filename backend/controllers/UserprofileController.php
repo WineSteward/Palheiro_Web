@@ -8,7 +8,7 @@ use common\models\Userprofile;
 use backend\models\UserprofileSearch;
 use backend\models\UserSearch;
 use common\models\User;
-use frontend\models\Carrinho;
+use common\models\Carrinho;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -87,19 +87,17 @@ class UserprofileController extends Controller
 
         //TRANSACTIONS!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        if ($this->request->isPost)
-        {
+        if ($this->request->isPost) {
             if ($userForm->load($this->request->post()) && $userForm->signup()) 
             {
                 $carrinho = Carrinho::defaultCarrinho();
 
-                if ($userprofile->load($this->request->post()) && $userprofile->signup($userForm->id, $carrinho)) 
+                if ($userprofile->load($this->request->post()) && $userprofile->signup($userForm->id, $carrinho))
                 {
                     return $this->redirect(['index']);
                 }
             }
-        } else 
-        {
+        } else {
             //$userprofile->loadDefaultValues();
         }
 
@@ -119,20 +117,18 @@ class UserprofileController extends Controller
     public function actionUpdate($id)
     {
         //TRANSACTIONS!!!!!!!!!!!!!!!!!!!!!!!!!
-        
-        $userprofile = UserProfile::findOne($id);
-        $user = User::findOne($userprofile->user_id);
-        
-        if ($this->request->isPost && $user->load($this->request->post()) && $user->save())
-        {
-            if ($userprofile->load($this->request->post()) && $userprofile->save()) 
+
+        $userprofile = $this->findModel($id);
+
+        if ($this->request->isPost && $userprofile->user->load($this->request->post()) && $userprofile->user->save()) {
+            if ($userprofile->load($this->request->post()) && $userprofile->save())
             {
                 return $this->redirect(['view', 'id' => $userprofile->id]);
             }
         }
 
         return $this->render('update', [
-            'user' => $user,
+            'user' => $userprofile->user,
             'userprofile' => $userprofile
         ]);
     }
@@ -152,7 +148,7 @@ class UserprofileController extends Controller
     }
 
     /**
-     * Finds the Userprofile model based on its primary key value.
+     * Finds the Userprofile model (with user) based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
      * @return Userprofile the loaded model
@@ -160,26 +156,14 @@ class UserprofileController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Userprofile::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-
-        /**
-     * Finds the User model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return User the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModelUser($id)
-    {
-        if (($model = User::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
+        if (
+            ($model = Userprofile::find()
+            ->where(['id' => $id])
+            ->with(['user'])
+            ->one()) !== null)
+            {
+                return $model;
+            }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }

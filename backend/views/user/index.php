@@ -14,9 +14,6 @@ $this->title = 'Criar Pessoal Administrativo';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
         <?= Html::a('Criar Pessoal Administrativo', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
@@ -30,16 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'username',
-            'email',
             [
                 'attribute' => 'role',
                 'label' => 'Função',
                 'value' => 'role',
             ],
-            //'status',
-            //'created_at',
-            //'updated_at',
-            //'verification_token',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, User $model, $key, $index, $column) {

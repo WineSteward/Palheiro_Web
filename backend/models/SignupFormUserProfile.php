@@ -2,6 +2,8 @@
 
 namespace backend\models;
 
+use common\models\Carrinho;
+use common\models\User;
 use Yii;
 use yii\base\Model;
 use common\models\Userprofile;
@@ -16,7 +18,7 @@ class SignupFormUserProfile extends Model
     public $morada2;
     public $codigoPostal;
     public $user_id;
-
+    public $carrinho_id;
 
     /**
      * {@inheritdoc}
@@ -24,20 +26,18 @@ class SignupFormUserProfile extends Model
     public function rules()
     {
         return [
-            ['nif', 'trim'],
-            ['nif', 'required'],
-            ['nif', 'unique', 'targetClass' => '\common\models\Userprofile', 'message' => 'This nif has already been taken.'],
-            ['nif', 'string', 'min' => 5, 'max' => 9],
-
-            ['morada', 'required'],
+            [['nif', 'morada', 'codigoPostal'], 'required'],
+            [['user_id', 'carrinho_id'], 'integer'],
+            [['nif', 'morada', 'morada2', 'codigoPostal'], 'string', 'max' => 30],
+            ['nif', 'string', 'min' => 9, 'max' => 9, 'tooShort' => 'NIF must be exactly 9.', 'tooLong' => 'NIF must be exactly 9.'],
+            ['nif', 'unique', 'targetClass' => Userprofile::class],
             ['morada', 'string', 'min' => 2, 'max' => 30],
-
             ['morada2', 'string', 'min' => 2, 'max' => 30],
-
-            ['codigoPostal', 'trim'],
-            ['codigoPostal', 'required'],
             ['codigoPostal', 'string', 'min' => 8, 'max' => 8],
-
+            ['user_id', 'unique'],
+            ['carrinho_id', 'unique'],
+            ['carrinho_id', 'exist', 'skipOnError' => true, 'targetClass' => Carrinho::class, 'targetAttribute' => ['carrinho_id' => 'id']],
+            ['user_id', 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -48,7 +48,9 @@ class SignupFormUserProfile extends Model
      */
     public function signup($user_id, $carrinho)
     {
-        if (!$this->validate()) {
+
+        if (!$this->validate())
+        {
             return null;
         }
         

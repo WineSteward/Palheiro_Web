@@ -2,7 +2,7 @@
 
 namespace common\models;
 
-use frontend\models\Carrinho;
+use common\models\Carrinho;
 use backend\models\Listacompras;
 
 use Yii;
@@ -11,7 +11,7 @@ use Yii;
  * This is the model class for table "userprofiles".
  *
  * @property int $id
- * @property int $nif
+ * @property string $nif
  * @property string $morada
  * @property string|null $morada2
  * @property string $codigoPostal
@@ -41,13 +41,17 @@ class Userprofile extends \yii\db\ActiveRecord
     {
         return [
             [['nif', 'morada', 'codigoPostal', 'user_id', 'carrinho_id'], 'required'],
-            [['nif', 'user_id', 'carrinho_id'], 'integer'],
-            [['morada', 'morada2', 'codigoPostal'], 'string', 'max' => 30],
-            [['nif'], 'unique'],
-            [['user_id'], 'unique'],
-            [['carrinho_id'], 'unique'],
-            [['carrinho_id'], 'exist', 'skipOnError' => true, 'targetClass' => Carrinho::class, 'targetAttribute' => ['carrinho_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id', 'carrinho_id'], 'integer'],
+            [['nif', 'morada', 'morada2', 'codigoPostal'], 'string', 'max' => 30],
+            ['nif', 'string', 'min' => 9, 'max' => 9, 'tooShort' => 'NIF must be exactly 9.', 'tooLong' => 'NIF must be exactly 9.'],
+            ['nif', 'unique', 'targetClass' => Userprofile::class],
+            ['morada', 'string', 'min' => 2, 'max' => 30],
+            ['morada2', 'string', 'min' => 2, 'max' => 30],
+            ['codigoPostal', 'string', 'min' => 8, 'max' => 8],
+            ['user_id', 'unique'],
+            ['carrinho_id', 'unique'],
+            ['carrinho_id', 'exist', 'skipOnError' => true, 'targetClass' => Carrinho::class, 'targetAttribute' => ['carrinho_id' => 'id']],
+            ['user_id', 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
