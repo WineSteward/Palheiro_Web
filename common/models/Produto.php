@@ -2,7 +2,7 @@
 
 namespace common\models;
 
-use frontend\models\Linhacarrinho;
+use common\models\Linhacarrinho;
 
 use Yii;
 

@@ -3,7 +3,7 @@
 namespace common\models;
 
 use Yii;
-use frontend\models\Carrinho;
+use common\models\Carrinho;
 
 /**
  * This is the model class for table "descontos".

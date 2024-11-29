@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use frontend\models\Carrinho;
-
 use Yii;
 
 /**
