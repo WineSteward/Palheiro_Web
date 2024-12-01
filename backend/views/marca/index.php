@@ -19,7 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Criar Marca', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -30,10 +31,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'nome',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Marca $model, $key, $index, $column)
-                {
+                'urlCreator' => function ($action, Marca $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                },
+                'buttons' => [
+                    'delete' => function ($url, $model, $key) {
+                        if (Yii::$app->user->isAdmin) {
+                            return Html::a('<i class="fas fa-trash"></i>', $url, [
+                                'title' => Yii::t('app', 'Delete'),
+                                'data-confirm' => Yii::t('yii', 'Deseja eliminar o produto selecionado?'),
+                                'data-method' => 'post',
+                            ]);
+                        }
+                    },
+                ],
+                'template' => '{delete} {update} {view}',
             ],
         ],
     ]); ?>

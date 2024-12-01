@@ -22,20 +22,35 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'nome',
-            'preco',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Produto $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+    'dataProvider' => $dataProvider,
+    'filterModel' => $searchModel,
+    'columns' => [
+        ['class' => 'yii\grid\SerialColumn'],
+        'nome',
+        'preco',
+        [
+            'class' => ActionColumn::className(),
+            'urlCreator' => function ($action, Produto $model, $key, $index, $column) 
+            {
+                return Url::toRoute([$action, 'id' => $model->id]);
+            },
+            'buttons' => [
+                'delete' => function ($url, $model, $key) {
+                    if (Yii::$app->user->isAdmin)
+                    {
+                        return Html::a('<i class="fas fa-trash"></i>', $url, [
+                            'title' => Yii::t('app', 'Delete'),
+                            'data-confirm' => Yii::t('yii', 'Deseja eliminar o produto selecionado?'),
+                            'data-method' => 'post',
+                        ]);
+                    }
+                },
             ],
+            'template' => '{delete} {update} {view}',
         ],
-    ]); ?>
+    ],
+]); ?>
+
 
 
 </div>

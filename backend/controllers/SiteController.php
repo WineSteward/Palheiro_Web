@@ -28,11 +28,17 @@ class SiteController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['error'],
                         'allow' => true,
+                        'roles' => ['?', '@'],
                     ],
                     [
-                        'actions' => ['logout', 'index','client'],
+                        'actions' => ['login'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -45,16 +51,6 @@ class SiteController extends Controller
                 ],
             ],
         ];
-    }
-    
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
-    public function actionClient()
-    {
-        return $this->render('client/index');
     }
 
     /**
@@ -78,7 +74,7 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
-
+    
     /**
      * Login action.
      *
