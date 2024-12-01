@@ -59,9 +59,6 @@ class UploadForm extends Model
             }
             return true;
         }
-        else 
-        {
             return false;
-        }
     }
 }

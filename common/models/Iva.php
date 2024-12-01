@@ -56,4 +56,17 @@ class Iva extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Produto::class, ['iva_id' => 'id']);
     }
+
+
+    public function replaceIva($newIvaId)
+    {
+        //finds the new iva and put it as valid
+        $newIva = Iva::findOne(['id' => $newIvaId]);
+        $newIva->vigor = 1;
+        $newIva->save();
+
+        //old iva in no longer valid
+        $this->vigor = 0;
+        $this->save();
+    }
 }

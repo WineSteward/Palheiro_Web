@@ -137,7 +137,7 @@ class ProdutoController extends Controller
 
         if ($this->request->isPost) 
         {
-            if ($model->load($this->request->post()) && $model->save())
+            if($model->load($this->request->post()) && $model->save())
             {
                 if($this->actionUpload($uploadModel, $model->id))
                     return $this->redirect(['index']);
@@ -193,7 +193,7 @@ class ProdutoController extends Controller
 
         if ($this->request->isPost) 
         {
-            if ($model->load($this->request->post()) && $model->save())
+            if($model->load($this->request->post()) && $model->save())
             {
                 if($this->actionUpload($uploadModel, $model->id))
                     return $this->redirect(['view', 'id' => $model->id]);

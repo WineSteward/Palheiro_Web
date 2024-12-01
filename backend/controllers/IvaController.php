@@ -4,8 +4,11 @@ namespace backend\controllers;
 
 use backend\models\IvaSearch;
 use common\models\Iva;
+use backend\models\IvaDeleteForm;
+use common\models\Produto;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -117,17 +120,48 @@ class IvaController extends Controller
     }
 
     /**
-     * Deletes an existing Iva model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Get action - renders a view for the user to chose what IVA they want to replace the current IVA with.
+     * 
+     * Post action - Puts the choosen IVA model as "not valid".
+
      * @param int $id ID
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        $oldIva = $this->findModel($id);
+
+        //Form para controlar a alteracao de um iva para outro
+        $model = new IvaDeleteForm();
+
+        if($this->request->isPost && $model->load($this->request->post()) && $model->validate())
+        {            
+            //updates the iva of all products that had it
+            $model->updateIva($oldIva);
+
+            //redirect para o index dos IVAs
+            return $this->redirect(['index']);
+        }
+        else
+        {    
+            // Fetch dos ivas para o dropdown
+            $ivas = Iva::find()->select(['id', 'valorPorcentagem'])
+                                ->where(['!=', 'id', $id])
+                                ->orderBy('valorPorcentagem')
+                                ->asArray()->all();
+                                
+            $mappedIvas = ArrayHelper::map($ivas, 'id', 'valorPorcentagem');
+    
+            return $this->render('delete', [
+                'iva' => $oldIva,
+                'model' => $model,
+                'ivas' => $mappedIvas,
+    
+            ]);
+        }
+        
     }
 
     /**

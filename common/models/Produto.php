@@ -140,4 +140,10 @@ class Produto extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Valornutricional::class, ['id' => 'valornutricional_id']);
     }
+
+    public static function findByIvaID($id)
+    {
+        return static::findAll(['iva_id' => $id]);
+
+    }
 }
