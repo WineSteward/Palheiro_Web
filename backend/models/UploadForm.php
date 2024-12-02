@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace backend\models;
 
 use common\models\Imagem;
@@ -20,45 +21,38 @@ class UploadForm extends Model
             [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg', 'maxFiles' => 4],
         ];
     }
-    
+
     public function upload($produto_id)
     {
-        if ($this->validate()) 
-        {
-            foreach ($this->imageFiles as $file) 
-            {
+        if ($this->validate()) {
+            foreach ($this->imageFiles as $file) {
 
                 $imageFolder = Yii::getAlias('@web/products/');
 
-                
-                if (file_exists($imageFolder))
-                {
+
+                if (file_exists($imageFolder)) {
                     $path = Yii::$app->getSecurity()->generateRandomString() . '.' . $file->extension;
-                    
+
                     $file->saveAs('products/' . $path);
-                    
+
                     $imagem = new Imagem();
                     $imagem->ficheiro = $path;
                     $imagem->produto_id = $produto_id;
-                    
+
                     $imagem->save();
-                }
-                else
-                {
+                } else {
                     FileHelper::createDirectory($imageFolder);
 
                     $path = Yii::$app->getSecurity()->generateRandomString() . '.' . $file->extension;
                     $file->saveAs($path);
-                    
+
                     $imagem = new Imagem();
                     $imagem->ficheiro = $path;
                     $imagem->produto_id = $produto_id;
                 }
-                
-
             }
             return true;
         }
-            return false;
+        return false;
     }
 }

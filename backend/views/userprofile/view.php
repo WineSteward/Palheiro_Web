@@ -14,11 +14,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="userprofile-view">
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Deseja eliminar este cliente permanentemente?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -32,13 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Morada2',
                 'value' => $model->morada2,
-                'visible' => $model->morada2 !== '', // Check if not an empty string
+                'visible' => $model->morada2 != '', // Se a 2ª morada estiver vazia nao é apresentada
             ],
             'codigoPostal',
             [
-                'label' => 'Username', // Custom label
+                'label' => 'Username',
                 'value' => function ($model) {
-                    return $model->user ? $model->user->username : null; // Access the related User model's attribute
+                    return $model->user->username;
                 },
             ],
             'carrinho_id',

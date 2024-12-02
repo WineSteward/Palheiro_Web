@@ -39,7 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         if (Yii::$app->user->isAdmin) {
                             return Html::a('<i class="fas fa-trash"></i>', $url, [
                                 'title' => Yii::t('app', 'Delete'),
-                                'data-confirm' => Yii::t('yii', 'Deseja eliminar o produto selecionado?'),
                                 'data-method' => 'post',
                             ]);
                         }

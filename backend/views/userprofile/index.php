@@ -30,38 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'username',
             'email',
             [
-                'attribute' => 'userprofile.morada',
-                'label' => 'Morada',
-                'value' => function ($model) {
-                    return $model->userprofile->morada ?? '(not set)';
-                },
-            ],
-            [
-                'attribute' => 'userprofile.morada2',
-                'label' => '2ª Morada',
-                'value' => function ($model) {
-                    return $model->userprofile->morada2 ?? '(not set)';
-                },
-            ],
-            [
-                'attribute' => 'userprofile.nif',
-                'label' => 'NIF',
-                'value' => function ($model) {
-                    return $model->userprofile->nif ?? '(not set)';
-                },
-            ],
-            [
-                'attribute' => 'userprofile.codigoPostal',
-                'label' => 'Código Postal',
-                'value' => function ($model) {
-                    return $model->userprofile->codigoPostal ?? '(not set)';
-                },
-            ],
-            //'status',
-            //'created_at',
-            //'updated_at',
-            //'verification_token',
-            [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, User $model, $key, $index, $column)
                 {
