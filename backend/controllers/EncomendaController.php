@@ -3,18 +3,18 @@
 namespace backend\controllers;
 
 use common\models\Fatura;
-use backend\models\FaturaSearch;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * FaturaController implements the CRUD actions for Fatura model.
+ * EncomendaController implements the CRUD actions for Fatura model.
  */
-class FaturaController extends Controller
+class EncomendaController extends Controller
 {
- /**
+/**
      * @inheritDoc
      */
     public function behaviors()
@@ -24,14 +24,9 @@ class FaturaController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index', 'view'],
+                        'actions' => ['index', 'view', 'update'],
                         'allow' => true,
                         'roles' => ['admin', 'employee'],
-                    ],
-                    [
-                        'actions' => ['update'],
-                        'allow' => true,
-                        'roles' => ['admin'],
                     ],
                 ],
             ]
@@ -45,16 +40,24 @@ class FaturaController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new FaturaSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Fatura::find()->with(['userprofiles']),
+            /*
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+            */
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
-
-
 
     /**
      * Displays a single Fatura model.
@@ -68,7 +71,6 @@ class FaturaController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-
 
     /**
      * Updates an existing Fatura model.
@@ -99,7 +101,7 @@ class FaturaController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Fatura::find()->with(['metodopagamento', 'metodoexpedicao'])->where(['id' => $id])) !== null) {
+        if (($model = Fatura::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
