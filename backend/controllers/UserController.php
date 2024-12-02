@@ -139,9 +139,25 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        //find all users that have the role admin
+        $admins = User::find()
+        ->select(['user.*', 'auth_assignment.item_name AS role']) // select item_name from auth_assignment table as role
+        ->join('INNER JOIN', 'auth_assignment', 'auth_assignment.user_id = user.id') // join RBAC table
+        ->andWhere(['auth_assignment.item_name' => 'admin']) // every record that is an admin
+        ->all();
 
-        return $this->redirect(['index']);
+        //count them
+        if(count($admins) > 1)
+//            $this->findModel($id)->delete();
+            {
+                var_dump('DELETED');
+                 die();
+            }
+        else
+            Yii::$app->session->setFlash('showModal', true);
+        
+            return $this->redirect(['index']);
+    
     }
 
     /**
