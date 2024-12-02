@@ -12,7 +12,6 @@ use common\models\Carrinho;
  * @property string $nome
  * @property float $valor
  *
- * @property Carrinho[] $carrinhos
  * @property Fatura[] $faturas
  * @property Userdesconto[] $userdescontos
  */
@@ -33,7 +32,7 @@ class Desconto extends \yii\db\ActiveRecord
     {
         return [
             [['nome', 'valor'], 'required'],
-            [['valor'], 'number'],
+            [['valor'], 'number', 'min' => 0, 'max' => 100],
             [['nome'], 'string', 'max' => 30],
             [['nome'], 'unique'],
         ];
@@ -51,15 +50,6 @@ class Desconto extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[Carrinhos]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCarrinhos()
-    {
-        return $this->hasMany(Carrinho::class, ['desconto_id' => 'id']);
-    }
 
     /**
      * Gets query for [[Faturas]].
