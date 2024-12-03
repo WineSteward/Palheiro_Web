@@ -6,17 +6,17 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Userdesconto $model */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Userdescontos', 'url' => ['index']];
+
+
+$this->title = 'Detalhes do Desconto do Cliente';
+$this->params['breadcrumbs'][] = ['label' => 'Descontos Do Cliente', 'url' => ['index', 'id' => $model->userprofile_id]];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="userdesconto-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -29,10 +29,30 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'valido',
-            'userprofile_id',
-            'desconto_id',
+            [
+                'attribute' => 'valido',
+                'label' => 'Validez',
+                'value' => function($model){
+
+                    return $model->valido == 1 ? 'Válido' : 'Não Válido';
+                }
+            ],
+            [
+                'attribute' => 'desconto_id',
+                'label' => 'Desconto',
+                'value' => function($model) {
+
+                    return $model->desconto->nome;
+                }
+            ],
+            [
+                'attribute' => 'userprofile_id',
+                'label' => 'Cliente',
+                'value' => function($model) {
+
+                    return $model->userprofile->user->username;
+                }
+            ],
         ],
     ]) ?>
 

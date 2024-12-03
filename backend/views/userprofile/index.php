@@ -19,10 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <p class="mr-5">
             <?= Html::a('Criar Cliente', ['create'], ['class' => 'btn btn-success']) ?>
         </p>
-
-        <p class="">
-            <?= Html::a('Gerir Cupões', Url::to(['desconto/index']), ['class' => 'btn btn-success']) ?>
-        </p>
     </div>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); 
@@ -44,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'buttons' => [
                 'custom-button' => function ($url, $model, $key) {
-                    return Html::a('<i class="fas fa-info-circle">Cupões do Cliente</i>', [Url::to('userdesconto/index'), 'id' => $model->id], [
+                    return Html::a('<i class="fas fa-info-circle">Cupões do Cliente</i>', [Url::to('userdesconto/index'), 'id' => $model->userprofile->id], [
                         'title' => Yii::t('app', 'Custom Action'),
                         'class' => 'btn btn-sm btn-info',
                     ]);

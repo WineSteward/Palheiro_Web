@@ -9,6 +9,7 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var app\models\Userdescontosearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
+/** @var int $userprofile_id*/
 
 $this->title = 'Cupões do Cliente' ;
 $this->params['breadcrumbs'][] = $this->title;
@@ -16,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="userdesconto-index">
 
     <p>
-        <?= Html::a('Adicionar Cupão ao Cliente', ['create', 'id' => $id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Adicionar Cupão ao Cliente', ['create', 'id' => $userprofile_id], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

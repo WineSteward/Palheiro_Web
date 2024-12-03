@@ -5,17 +5,16 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Userdesconto $model */
 
-$this->title = 'Update Userdesconto: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Userdescontos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Editar Desconto';
+$this->params['breadcrumbs'][] = ['label' => 'Descontos do Cliente', 'url' => ['index', 'id' => $model->userprofile_id]];
+$this->params['breadcrumbs'][] = ['label' => 'Detalhes do Desconto do Cliente', 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Editar Desconto';
 ?>
 <div class="userdesconto-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <?= $this->render('_form', [
         'model' => $model,
+        'descontos' => $descontos
     ]) ?>
 
 </div>
