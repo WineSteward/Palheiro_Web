@@ -70,4 +70,10 @@ class Userdesconto extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Userprofile::class, ['id' => 'userprofile_id']);
     }
+
+
+    public function associateID($id)
+    {
+        $this->userprofile_id = $id;
+    }
 }
