@@ -2,7 +2,9 @@
 
 namespace backend\controllers;
 
+use common\models\Fatura;
 use common\models\LoginForm;
+use common\models\Produto;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -72,7 +74,17 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $qtddProdutos = count(Produto::find()->all());
+
+        $qtddEncomendasPreparadas = count(Fatura::find()->where(['estadoEncomenda' => 1])->all());
+
+        $qtddEncomendas = count(Fatura::find()->all());
+
+        return $this->render('index',[
+            'qtddProdutos' => $qtddProdutos,
+            'qtddEncomendas' => $qtddEncomendas,
+            'qtddEncomendasPreparadas' => $qtddEncomendasPreparadas
+        ]);
     }
     
     /**
