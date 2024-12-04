@@ -1,10 +1,8 @@
 <?php
 
-use yii\helpers\Html;
-
 /** @var yii\web\View $this */
-/** @var backend\models\SignupFormUserProfile $userprofile */
-/** @var backend\models\SignupFormUser $user */
+/** @var \common\models\SignupFormUserProfile $userprofile */
+/** @var \common\models\SignupFormUser $user */
 
 
 $this->title = 'Criar Cliente';
