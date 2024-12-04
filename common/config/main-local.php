@@ -6,7 +6,7 @@ return [
             'class' => \yii\db\Connection::class,
             'dsn' => 'mysql:host=localhost;dbname=palheiro',
             'username' => 'root',
-            'password' => '12345',
+            'password' => '',
             'charset' => 'utf8',
         ],
         'mailer' => [
