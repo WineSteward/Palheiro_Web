@@ -6,14 +6,12 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Fatura $model */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Faturas', 'url' => ['index']];
+$this->title = 'Encomenda do Cliente';
+$this->params['breadcrumbs'][] = ['label' => 'Encomendas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="fatura-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Editar Estado da Encomenda', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -36,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'metodopagamento_id',
                 'label' => 'Identificação do Cliente',
                 'value' => function($model) {
-                    return $model->userprofile->nome;
+                    return $model->userprofile->user->username;
                 }
             ],
             [
