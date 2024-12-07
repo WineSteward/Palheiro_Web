@@ -39,17 +39,21 @@ class LinhacarrinhoController extends \yii\web\Controller
             $carrinho = $linhaCarrinho->carrinho;
             $linhaCarrinho->delete();
 
-            // Update the cart total
-            $this->updateCartTotal($carrinho);
+            if ($carrinho) {
+                // Update the cart total after deleting the item
+                $this->updateCartTotal($carrinho);
+            }
         }
 
         return $this->redirect(['carrinho/index']);
     }
 
-    private function updateCartTotal($carrinho)
+    private function updateCartTotal(Carrinho $carrinho)
     {
         $total = 0;
-        foreach ($carrinho as $linha) {
+
+        // Iterate over related LinhaCarrinho records
+        foreach ($carrinho->linhascarrinhos as $linha) {
             $produto = $linha->produto;
             $total += $produto->preco * $linha->quantidade;
         }
