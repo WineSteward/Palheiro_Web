@@ -10,27 +10,67 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="userprofile-form">
+    <?php $form = ActiveForm::begin([
+        'options' => ['class' => 'row g-3'],
+    ]); ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+    <div class="col-md-6">
+        <?= $form->field($user, 'username')->textInput([
+            'class' => 'form-control form-control-lg',
+            'placeholder' => 'Enter your username'
+        ]) ?>
+    </div>
 
-    <?= $form->field($user, 'username')->textInput() ?>
+    <div class="col-md-6">
+        <?= $form->field($user, 'password')->passwordInput([
+            'value' => '',
+            'class' => 'form-control form-control-lg',
+            'placeholder' => 'Enter your password'
+        ]) ?>
+    </div>
 
-    <?= $form->field($user, 'password')->passwordInput(['value' => '']) ?>
+    <div class="col-md-6">
+        <?= $form->field($user, 'email')->textInput([
+            'class' => 'form-control form-control-lg',
+            'placeholder' => 'Enter your email'
+        ]) ?>
+    </div>
 
-    <?= $form->field($user, 'email')->textInput() ?>
+    <div class="col-md-6">
+        <?= $form->field($userprofile, 'nif')->textInput([
+            'maxlength' => true,
+            'class' => 'form-control form-control-lg',
+            'placeholder' => 'Enter your NIF'
+        ]) ?>
+    </div>
 
-    <?= $form->field($userprofile, 'nif')->textInput(['maxlength' => true]) ?>
+    <div class="col-md-6">
+        <?= $form->field($userprofile, 'morada')->textInput([
+            'maxlength' => true,
+            'class' => 'form-control form-control-lg',
+            'placeholder' => 'Enter your address'
+        ]) ?>
+    </div>
 
-    <?= $form->field($userprofile, 'morada')->textInput(['maxlength' => true]) ?>
+    <div class="col-md-6">
+        <?= $form->field($userprofile, 'morada2')->textInput([
+            'maxlength' => true,
+            'class' => 'form-control form-control-lg',
+            'placeholder' => 'Enter a second address (optional)'
+        ]) ?>
+    </div>
 
-    <?= $form->field($userprofile, 'morada2')->textInput(['maxlength' => true]) ?>
+    <div class="col-md-6">
+        <?= $form->field($userprofile, 'codigoPostal')->textInput([
+            'maxlength' => true,
+            'class' => 'form-control form-control-lg',
+            'placeholder' => 'Enter postal code'
+        ]) ?>
+    </div>
 
-    <?= $form->field($userprofile, 'codigoPostal')->textInput(['maxlength' => true]) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
+    <div class="col-12 text-center">
+        <?= Html::submitButton('Salvar', ['class' => 'site-btn btn-lg px-5 py-3 w-100']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
-
 </div>

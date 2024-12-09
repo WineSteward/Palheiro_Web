@@ -151,9 +151,9 @@ class ProdutoController extends \yii\web\Controller
 
             // Save line item
             if ($linha->save()) {
-                Yii::$app->session->setFlash('success', 'Product added to cart.');
+                Yii::$app->session->setFlash('success', 'Produto adicionado com sucesso.');
             } else {
-                Yii::$app->session->setFlash('error', 'Failed to add product to cart.');
+                Yii::$app->session->setFlash('error', 'Falha a adicionar produto.');
             }
         }
 
