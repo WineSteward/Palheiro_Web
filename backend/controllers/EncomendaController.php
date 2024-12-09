@@ -41,7 +41,7 @@ class EncomendaController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Fatura::find()->with(['userprofiles']),
+            'query' => Fatura::find()->with(['userprofile']),
             /*
             'pagination' => [
                 'pageSize' => 50

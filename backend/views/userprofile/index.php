@@ -15,11 +15,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
-    <p>
-        <?= Html::a('Criar Cliente', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <div class="flex d-flex mx-3">
+        <p class="mr-5">
+            <?= Html::a('Criar Cliente', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+    </div>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -31,11 +34,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'email',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, User $model, $key, $index, $column)
-                {
-                    if($model->userprofile != null)
+                'urlCreator' => function ($action, User $model, $key, $index, $column) {
+                    if ($model->userprofile != null)
                         return Url::toRoute([$action, 'id' => $model->userprofile->id]);
-                }
+                },
+                'buttons' => [
+                'custom-button' => function ($url, $model, $key) {
+                    return Html::a('<i class="fas fa-info-circle">Cupões do Cliente</i>', [Url::to('userdesconto/index'), 'id' => $model->userprofile->id], [
+                        'title' => Yii::t('app', 'Custom Action'),
+                        'class' => 'btn btn-sm btn-info',
+                    ]);
+                },
+            ],
+            'template' => '{view} {update} {delete} {custom-button}',
             ],
         ],
     ]); ?>

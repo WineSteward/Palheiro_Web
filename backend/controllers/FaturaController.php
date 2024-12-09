@@ -99,7 +99,7 @@ class FaturaController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Fatura::find()->with(['metodopagamento', 'metodoexpedicao'])->where(['id' => $id])) !== null) {
+        if (($model = Fatura::find()->with(['metodopagamento', 'metodoexpedicao'])->where(['id' => $id])->one()) !== null) {
             return $model;
         }
 
