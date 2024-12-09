@@ -23,7 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'ivas' => $ivas,
         'marcas' => $marcas,
         'valoresnutricionais' => $valoresnutricionais,
-        'imageForm' => $imageForm
     ]) ?>
 
 </div>
