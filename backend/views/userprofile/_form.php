@@ -1,12 +1,11 @@
 <?php
 
-use common\models\User;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var backend\models\SignupFormUserProfile $userprofile */
-/** @var backend\models\SignupFormUser $user */
+/** @var \common\models\SignupFormUserProfile $userprofile */
+/** @var \common\models\SignupFormUser $user */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 

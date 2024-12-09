@@ -2,19 +2,17 @@
 
 namespace backend\controllers;
 
-use backend\models\SignupFormUser;
-use backend\models\SignupFormUserProfile;
-use common\models\Userprofile;
-use backend\models\UserprofileSearch;
 use backend\models\UserSearch;
-use common\models\User;
 use common\models\Carrinho;
-use Yii;
+use common\models\SignupFormUser;
+use common\models\SignupFormUserProfile;
+use common\models\User;
+use common\models\Userprofile;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * UserprofileController implements the CRUD actions for Userprofile model.

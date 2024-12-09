@@ -2,8 +2,11 @@
 
 namespace frontend\controllers;
 
+use common\models\Carrinho;
 use common\models\Categoria;
+use common\models\Linhacarrinho;
 use common\models\Produto;
+use common\models\Userprofile;
 use frontend\models\ProdutoSearch;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -102,5 +105,60 @@ class ProdutoController extends \yii\web\Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+    public function actionAddToCart()
+    {
+        $request = Yii::$app->request;
+        if ($request->isPost) {
+            $produtoId = $request->post('produto_id');
+            $quantidade = $request->post('quantidade', 1); // Default to 1 if not provided
+
+            $user = Yii::$app->user->identity;
+            $userProfile = UserProfile::findOne(['user_id' => $user->id]);
+            $carrinho = Carrinho::findOne($userProfile->carrinho_id);
+
+            if (!$carrinho) {
+                Yii::$app->session->setFlash('error', 'Cart not found.');
+                return $this->redirect(['produto/index']);
+            }
+
+            // Fetch product details
+            $produto = Produto::findOne($produtoId);
+            if (!$produto) {
+                Yii::$app->session->setFlash('error', 'Product not found.');
+                return $this->redirect(['produto/index']);
+            }
+
+            // Check if the product is already in the cart
+            $linha = LinhaCarrinho::find()
+                ->where(['carrinho_id' => $carrinho->id, 'produto_id' => $produtoId])
+                ->one();
+
+            if ($linha) {
+                // Update quantity if already in cart
+                $linha->quantidade += $quantidade;
+                $linha->total = $linha->precoUnitario * $linha->quantidade;
+            } else {
+                // Add new line item
+                $linha = new LinhaCarrinho([
+                    'carrinho_id' => $carrinho->id,
+                    'produto_id' => $produtoId,
+                    'quantidade' => $quantidade,
+                    'precoUnitario' => $produto->preco,
+                    'total' => $produto->preco * $quantidade,
+                ]);
+            }
+
+            // Save line item
+            if ($linha->save()) {
+                Yii::$app->session->setFlash('success', 'Product added to cart.');
+            } else {
+                Yii::$app->session->setFlash('error', 'Failed to add product to cart.');
+            }
+        }
+
+        return $this->redirect(['carrinho/index']);
+    }
+
 
 }

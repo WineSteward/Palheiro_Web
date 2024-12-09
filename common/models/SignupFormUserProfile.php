@@ -1,12 +1,9 @@
 <?php
 
-namespace backend\models;
+namespace common\models;
 
-use common\models\Carrinho;
-use common\models\User;
 use Yii;
 use yii\base\Model;
-use common\models\Userprofile;
 
 /**
  * Signup form

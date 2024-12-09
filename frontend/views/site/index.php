@@ -2,6 +2,7 @@
 
 /** @var yii\web\View $this */
 
+use yii\bootstrap4\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -23,8 +24,12 @@ $this->title = 'Palheiro';
                         <span>Categorias</span>
                     </div>
                     <ul>
-                        <?php foreach ($categorias as $categoria):?>
-                            <li><a href="#"><?= Html::encode($categoria->nome)?></a></li>
+                        <?php foreach ($categorias as $categoria): ?>
+                            <li>
+                                <a href="<?= Url::to(['produto/index', 'categoria_nome' => $categoria->nome]) ?>">
+                                    <?= Html::encode($categoria->nome) ?>
+                                </a>
+                            </li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
@@ -33,8 +38,18 @@ $this->title = 'Palheiro';
                 <div class="hero__search">
                     <div class="hero__search__form ">
                         <form action="#">
-                            <input type="text" placeholder="What do yo u need?">
-                            <?= Html::submitButton('Search', ['class' => 'site-btn']) ?>
+                            <?php $form = ActiveForm::begin([
+                                'method' => 'get',
+                                'action' => ['produto/index'], // garante que vai par a action
+                            ]); ?>
+
+                            <?= $form->field($produtoSearch, 'nome')->textInput(['placeholder' => 'Procure por produtos'])->label(false) ?>
+
+                            <div class="form-group">
+                                <?= Html::submitButton('Search', ['class' => 'site-btn']) ?>
+                            </div>
+
+                            <?php ActiveForm::end(); ?>
                         </form>
                     </div>
                 </div>

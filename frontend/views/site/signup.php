@@ -1,35 +1,36 @@
 <?php
 
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
 /** @var yii\web\View $this */
-/** @var yii\bootstrap5\ActiveForm $form */
-/** @var \frontend\models\SignupForm $model */
-
-use yii\bootstrap5\Html;
-use yii\bootstrap5\ActiveForm;
-
-$this->title = 'Signup';
-$this->params['breadcrumbs'][] = $this->title;
+/** @var \common\models\SignupFormUserProfile $userprofile */
+/** @var \common\models\SignupFormUser $user */
+/** @var yii\widgets\ActiveForm $form */
 ?>
-<div class="site-signup">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to signup:</p>
+<div class="userprofile-form">
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+    <?= $form->field($user, 'username')->textInput() ?>
 
-                <?= $form->field($model, 'email') ?>
+    <?= $form->field($user, 'password')->passwordInput(['value' => '']) ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+    <?= $form->field($user, 'email')->textInput() ?>
 
-                <div class="form-group">
-                    <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-                </div>
+    <?= $form->field($userprofile, 'nif')->textInput(['maxlength' => true]) ?>
 
-            <?php ActiveForm::end(); ?>
-        </div>
+    <?= $form->field($userprofile, 'morada')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($userprofile, 'morada2')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($userprofile, 'codigoPostal')->textInput(['maxlength' => true]) ?>
+
+    <div class="form-group">
+        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
     </div>
+
+    <?php ActiveForm::end(); ?>
+
 </div>

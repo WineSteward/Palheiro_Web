@@ -2,22 +2,28 @@
 
 namespace frontend\controllers;
 
+use common\models\Carrinho;
 use common\models\Categoria;
+use common\models\LoginForm;
 use common\models\Produto;
+use common\models\SignupFormUser;
+use common\models\SignupFormUserProfile;
+use common\models\User;
+use frontend\models\ContactForm;
+use frontend\models\PasswordResetRequestForm;
+use frontend\models\ProdutoSearch;
 use frontend\models\ResendVerificationEmailForm;
+use frontend\models\ResetPasswordForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
 use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
+
 /**
  * Site controller
  */
@@ -85,9 +91,46 @@ class SiteController extends Controller
         $produtos = Produto::find()->all();
         $categorias = Categoria::find()->all();
 
+        $produtoSearch = new ProdutoSearch();
+        $dataProvider = $produtoSearch->search(Yii::$app->request->queryParams);
+
         return $this->render('index',[
             'produtos' => $produtos,
+            'produtoSearch' => $produtoSearch,
+            'dataProvider' => $dataProvider,
             'categorias' => $categorias,
+        ]);
+    }
+
+    public function actionPerfil($id)
+    {
+        //echo Yii::getAlias('@web');
+        //die();
+        // Retrieve the user model based on the provided ID
+        $user = User::findOne($id);
+
+        // Check if the user exists
+        if (!$user) {
+            throw new NotFoundHttpException('User not found.');
+        }
+
+        return $this->render('perfil', [
+            'user' => $user,
+        ]);
+    }
+    public function actionEditProfile($id)
+    {
+        // retrieve the user model based on the provided ID
+        $user = User::findOne($id);
+
+        // Check if the user exists
+        if (!$user) {
+            throw new NotFoundHttpException('User not found.');
+        }
+
+
+        return $this->render('edit-profile', [
+            'user' => $user,
         ]);
     }
 
@@ -163,15 +206,29 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) 
-        {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
+
+        $userForm = new SignupFormUser();
+        $userprofile = new SignupFormUserProfile();
+
+        //TRANSACTIONS!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        if ($this->request->isPost) {
+            if ($userForm->load($this->request->post()) && $userForm->signup())
+            {
+                $carrinho = Carrinho::defaultCarrinho();
+
+                if ($userprofile->load($this->request->post()) && $userprofile->signup($userForm->id, $carrinho))
+                {
+                    return $this->redirect(['index']);
+                }
+            }
+        } else {
+            //$userprofile->loadDefaultValues();
         }
 
         return $this->render('signup', [
-            'model' => $model,
+            'userprofile' => $userprofile,
+            'user' => $userForm
         ]);
     }
 
