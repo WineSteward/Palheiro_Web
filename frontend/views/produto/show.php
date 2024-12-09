@@ -1,4 +1,5 @@
-<?php use yii\helpers\Html; ?>
+<?php use yii\helpers\Html;
+use yii\helpers\Url; ?>
 
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
@@ -46,13 +47,18 @@
                     <h3><?= Html::encode($produto->nome)?></h3>
                     <div class="product__details__price"><?= Html::encode($produto->preco)?>€</div>
                     <div class="product__details__quantity">
+                        <?= Html::beginForm(['produto/add-to-cart'], 'post') ?>
+                        <?= Html::hiddenInput('produto_id', $produto->id) ?>
                         <div class="quantity">
                             <div class="pro-qty">
-                                <input type="text" value="1">
+                                <input type="number" name="quantidade" value="1" min="1">
                             </div>
+                            <button type="submit" class="primary-btn">
+                                <i class="fa fa-shopping-cart"></i> Adicionar ao Carrinho
+                            </button>
                         </div>
+                        <?= Html::endForm() ?>
                     </div>
-                    <a href="#" class="primary-btn">ADD TO CARD</a>
                     <ul>
                         <li><b>Availability</b> <span>In Stock</span></li>
                         <li><b>Weight</b> <span>0.5 kg</span></li>

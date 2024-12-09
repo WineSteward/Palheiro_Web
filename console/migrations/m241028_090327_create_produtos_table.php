@@ -23,6 +23,7 @@ class m241028_090327_create_produtos_table extends Migration
             'nome' => $this->string(30)->notNull(),
             'preco' => $this->float()->notNull(),
             'descricao' => $this->string(255)->notNull(),
+            'quantidade' => $this->integer()->notNull(),
             'categoria_id' => $this->integer()->notNull(),
             'iva_id' => $this->integer()->notNull(),
             'marca_id' => $this->integer()->notNull(),
