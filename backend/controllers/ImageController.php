@@ -22,7 +22,7 @@ class ImageController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['get'],
+                        'actions' => ['company', 'products'],
                         'allow' => true,
                         'roles' => ['@', '?'],
                     ],
@@ -31,10 +31,24 @@ class ImageController extends Controller
         ];
     }
 
-    public function actionGet($imageName)
+    public function actionCompany($imageName)
     {
 
         $path = Yii::getAlias('@backend/web/company/') . $imageName;
+        if (file_exists($path)) 
+        {
+            Yii::$app->response->sendFile($path);
+            return;
+        }
+        throw new \yii\web\NotFoundHttpException('Image not found.');
+    
+    }
+
+
+    public function actionProducts($imageName)
+    {
+
+        $path = Yii::getAlias('@backend/web/products/') . $imageName;
         if (file_exists($path)) 
         {
             Yii::$app->response->sendFile($path);
