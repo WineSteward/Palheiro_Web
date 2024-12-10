@@ -22,7 +22,7 @@ class ImageController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['returnimage'],
+                        'actions' => ['get'],
                         'allow' => true,
                         'roles' => ['@', '?'],
                     ],
@@ -31,7 +31,7 @@ class ImageController extends Controller
         ];
     }
 
-    public function actionReturnimage($imageName)
+    public function actionGet($imageName)
     {
 
         $path = Yii::getAlias('@backend/web/company/') . $imageName;

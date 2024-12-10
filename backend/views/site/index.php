@@ -24,9 +24,10 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
                         <div class="progress-bar bg-success" style="width: <?php
                         if($qtddEncomendas == 0)
                             echo '100';
-                        
-                        echo ($qtddEncomendasPreparadas/$qtddEncomendas)*100 ?? ''; 
-                        
+                        else
+                        {
+                            echo ($qtddEncomendasPreparadas/$qtddEncomendas)*100 ?? ''; 
+                        }
                         ?>%"></div>
                     </div>
                     <span class="progress-description">
