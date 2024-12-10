@@ -1,5 +1,6 @@
 <?php
 
+use common\helpers\UrlHelper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -70,11 +71,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h3>Imagens</h3>
 
+    <div class="row">
+        <?php foreach ($model->imagens as $imagem): ?>
+            <div class="col-md-3 col-sm-4 col-6 text-center mb-4">
+                <div class="image-wrapper">
+                    <?= Html::img(UrlHelper::getProductImageUrl($imagem->ficheiro), ['class' => "img-thumbnail"]) ?>
 
-        
-        <?php foreach($model->imagens as $imagem): ?>
-            <?= Html::img(Yii::getAlias('@web/products/'). $imagem->ficheiro, ['style' => 'width: 200px; height:auto;'])?>
-        <?php endforeach ?>
-
+                    <?= \yii\helpers\Html::a('Delete', ['image/deleteimage', 'id' => $imagem->id, 'imageName' => $imagem->ficheiro], [
+                        'class' => 'btn btn-danger btn-sm mt-2',
+                        'data' => [
+                            'confirm' => 'Are you sure you want to delete this image?',
+                            'method' => 'post',
+                        ],
+                    ]) ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
 
 </div>
