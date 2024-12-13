@@ -93,17 +93,20 @@ class UserprofileController extends Controller
 
         //TRANSACTIONS!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        if ($this->request->isPost) {
-            if ($userForm->load($this->request->post()) && $userForm->signup()) 
+        if ($this->request->isPost) 
+        {
+            if($userForm->load($this->request->post()) && $userprofile->load($this->request->post()) && $userprofile->validate() && $userForm->signup())
             {
                 $carrinho = Carrinho::defaultCarrinho();
 
-                if ($userprofile->load($this->request->post()) && $userprofile->signup($userForm->id, $carrinho))
+                if ($userprofile->signup($userForm->id, $carrinho))
                 {
                     return $this->redirect(['index']);
                 }
             }
-        } else {
+        }
+        else
+        {
             //$userprofile->loadDefaultValues();
         }
 
