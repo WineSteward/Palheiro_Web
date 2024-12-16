@@ -10,10 +10,6 @@ use common\models\Userprofile;
 
 class LinhacarrinhoController extends \yii\web\Controller
 {
-    public function actionIndex($id)
-    {
-        return $this->render('index');
-    }
 
     public function actionUpdateQuantity($linha_id, $quantidade)
     {

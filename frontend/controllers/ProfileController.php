@@ -27,7 +27,7 @@ class ProfileController extends \yii\web\Controller
             ->where(['userprofile_id' => $userProfile->id])
             ->with('desconto') // Eager load desconto for better performance
             ->all();
-        $faturas = Fatura::find()->where(['userprofile_id' => $userProfile->id])->all();
+        $faturas = Fatura::find()->where(['userprofile_id' => $userProfile->id  ])->all();
 
         return $this->render('index', [
             'user'=>$user,

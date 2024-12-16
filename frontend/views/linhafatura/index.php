@@ -1,7 +1,7 @@
 <?php
 /** @var yii\web\View $this */
 ?>
-<h1>linhacarrinho/index</h1>
+<h1>linhafatura/index</h1>
 
 <p>
     You may change the content of this page by modifying

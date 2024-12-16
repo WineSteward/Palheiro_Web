@@ -76,25 +76,10 @@ class ProdutoController extends \yii\web\Controller
     public function actionShow($id)
     {
 
-        $produto = Produto::findOne($id);
-
-        $dataProvider = new ActiveDataProvider([
-            //'query' => $produto->getImages(),
-            'query' => $produto->getMarca(),
-            'query' => $produto->getCategoria(),
-            'query' => $produto->getIva(),
-
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
+        $produto = Produto::find()
+            ->where(['id' => $id])
+            ->with(['marca', 'imagens', 'categoria', 'valornutricional'])
+            ->one();
 
         if (!$produto) {
             throw new NotFoundHttpException('The requested produto does not exist.');
@@ -102,7 +87,7 @@ class ProdutoController extends \yii\web\Controller
 
         return $this->render('show', [
             'produto' => $produto,
-            'dataProvider' => $dataProvider,
+
         ]);
     }
 
