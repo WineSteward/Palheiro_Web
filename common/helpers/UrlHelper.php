@@ -2,6 +2,8 @@
 
 namespace common\helpers;
 
+use yii\helpers\Url;
+
 class UrlHelper
 {
     /**
@@ -12,12 +14,10 @@ class UrlHelper
      */
     public static function getCompanyImageUrl($imageName)
     {
-        return \Yii::$app->getRequest()->getHostInfo()
-            . '/palheiro/backend/web/index.php?r=image/company&imageName=' . urlencode($imageName);
+        return \Yii::$app->getRequest()->getHostInfo() . '/palheiro/backend/web/' . 'index.php' . Url::to(['image/company', 'imageName' => $imageName]);
     }
 
-
-    /**
+   /**
      * Generate image URL for the products folder.
      * 
      * @param string $imageName The name of the image.
@@ -25,7 +25,6 @@ class UrlHelper
      */
     public static function getProductImageUrl($imageName)
     {
-        return \Yii::$app->getRequest()->getHostInfo() 
-            . '/palheiro/backend/web/index.php?r=image/products&imageName=' . urlencode($imageName);
+        return \Yii::$app->getRequest()->getHostInfo() . '/palheiro/backend/web/' . 'index.php' . Url::to(['image/products', 'imageName' => $imageName]);
     }
 }
