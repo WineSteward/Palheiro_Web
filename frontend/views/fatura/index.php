@@ -17,12 +17,11 @@ use yii\helpers\Url;
                     <h4>Detalhes da Fatura</h4>
                 </div>
                 <div class="card-body">
-                    <p><strong>ID da Fatura:</strong> <?= $fatura->id ?></p>
-                    <p><strong>Total:</strong> <?= Yii::$app->formatter->asCurrency($fatura->total) ?></p>
-                    <p><strong>Data de Criação:</strong> <?= Yii::$app->formatter->asDatetime($fatura->data_criacao) ?></p>
+                    <p><strong>Total:</strong> <?= Html::encode($fatura->total) ?>€</p>
+                    <p><strong>Data de Criação:</strong> <?= Html::encode($fatura->dataVenda) ?></p>
                     <p><strong>Estado:</strong> <?= Html::encode($fatura->estadoEncomenda) ?></p>
-                    <p><strong>Método de Expedição:</strong> <?= Html::encode($fatura->metodoExpedicao->nome) ?></p>
-                    <p><strong>Método de Pagamento:</strong> <?= Html::encode($fatura->metodoPagamento->nome) ?></p>
+                    <p><strong>Método de Expedição:</strong> <?= Html::encode($fatura->metodoexpedicao->nome) ?></p>
+                    <p><strong>Método de Pagamento:</strong> <?= Html::encode($fatura->metodopagamento->nome) ?></p>
                 </div>
             </div>
         </div>
@@ -45,15 +44,15 @@ use yii\helpers\Url;
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($linhasFatura as $linha): ?>
+                <?php foreach ($fatura->linhasfatura as $linha): ?>
                     <tr>
                         <td><?= Html::encode($linha->produto->nome) ?></td>
-                        <td><?= Yii::$app->formatter->asCurrency($linha->valorUnitario) ?></td>
-                        <td><?= $linha->quantidade ?></td>
-                        <td><?= Yii::$app->formatter->asCurrency($linha->subtotal) ?></td>
-                        <td><?= $linha->porcentagemIva ?>%</td>
-                        <td><?= Yii::$app->formatter->asCurrency($linha->valorIva) ?></td>
-                        <td><?= Yii::$app->formatter->asCurrency($linha->total) ?></td>
+                        <td><?= Html::encode($linha->valorUnitario) ?>€</td>
+                        <td><?= Html::encode($linha->quantidade) ?></td>
+                        <td><?= Html::encode($linha->subtotal) ?>€</td>
+                        <td><?= Html::encode($linha->porcentagemIva) ?>%</td>
+                        <td><?= Html::encode($linha->valorIva) ?>€</td>
+                        <td><?= Html::encode($linha->total) ?>€</td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

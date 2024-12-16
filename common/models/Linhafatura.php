@@ -81,4 +81,5 @@ class Linhafatura extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Produto::class, ['id' => 'produto_id']);
     }
+
 }

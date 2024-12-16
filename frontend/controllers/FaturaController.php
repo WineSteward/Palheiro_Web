@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\Carrinho;
 use common\models\Fatura;
+use common\models\Linhafatura;
 use common\models\Metodoexpedicao;
 use common\models\Metodopagamento;
 use common\models\Userprofile;
@@ -34,10 +35,12 @@ class FaturaController extends \yii\web\Controller
             return $this->redirect(['carrinho/index']);
         }
 
-        if (Yii::$app->request->isPost) {
+        $request = Yii::$app->request;
+        if ($request->isPost) {
 
-            $metodoPagamentoId = Yii::$app->request->post('metodoPagamentoId');
-            $metodoExpedicaoId = Yii::$app->request->post('metodoExpedicaoId');
+            //todo verificar se é entrege na morada ou na loja e dps mostrar os metodso
+            $metodoPagamentoId = $request->post('metodoPagamentoId');
+            $metodoExpedicaoId = $request->post('metodoExpedicaoId');
 
             if (!$metodoPagamentoId || !$metodoExpedicaoId) {
                 Yii::$app->session->setFlash('error', 'Por favor, escolha um método de pagamento e um método de expedição.');
@@ -53,8 +56,7 @@ class FaturaController extends \yii\web\Controller
                 'metodoPagamentoId' => $metodoPagamentoId,
                 'metodoExpedicaoId' => $metodoExpedicaoId]);
         }
-        var_dump(Yii::$app->request->post());
-        die;
+
         $metodospagamento = Metodopagamento::find()->where(['vigor' => 1])->all();
         $metodosexpedicao = Metodoexpedicao::find()->where(['vigor' => 1])->all();
         return $this->render('metodopagamento', [
@@ -74,17 +76,43 @@ class FaturaController extends \yii\web\Controller
         }
 
         $fatura = new Fatura();
-        $fatura->userprofile_id = Yii::$app->user->id;
+        $user = Yii::$app->user->identity;
+        $userProfile = UserProfile::findOne(['user_id' => $user->id]);
+        $fatura->userprofile_id = $userProfile->id;
         $fatura->metodoexpedicao_id = $metodoExpedicao->id;
         $fatura->metodopagamento_id = $metodoPagamento->id;
-        $fatura->dataVenda = date('Y-m-d H:i:s');
+        $fatura->dataVenda = date('d-m-Y H:i:s', time() );
         $fatura->estadoEncomenda = 0;//0=pendente
+        $fatura->total=0;
+        $fatura->valida=0;//por finalizar
 
         if ($fatura->save()) {
-            if ($this->createInvoiceLines($fatura->id)) {
-                $this->updateInvoiceTotal($fatura->id);
-                return $this->redirect(['fatura/index', 'id' => $fatura->id]);
+            $carrinho= Carrinho::findOne(['id'=>$userProfile->carrinho_id]);
+            foreach ($carrinho->linhascarrinhos as $linhaCarrinho)
+            {
+                $linhaFatura = new LinhaFatura();
+                $linhaFatura->fatura_id = $fatura->id;
+                $linhaFatura->produto_id = $linhaCarrinho->produto_id;
+                $linhaFatura->quantidade = $linhaCarrinho->quantidade;
+                $linhaFatura->valorUnitario = $linhaCarrinho->produto->preco;
+                $linhaFatura->total = $linhaCarrinho->quantidade * $linhaFatura->valorUnitario;
+
+                // Calcula Ivas
+                $linhaFatura->porcentagemIva = $linhaCarrinho->produto->iva->valorPorcentagem;//mudar iva  para float na bd
+                $linhaFatura->valorIva = $linhaFatura->total * ($linhaFatura->porcentagemIva /100);
+                $linhaFatura->subtotal = $linhaFatura->total - $linhaFatura->valorIva;
+
+                if (!$linhaFatura->save()) {
+                    Yii::$app->session->setFlash('error', 'Erro ao salvar item da fatura.');
+                    return false;
+                }
             }
+            // Clear cart after creating invoice lines
+            foreach ($carrinho->linhascarrinhos as $linhaCarrinho) {
+                $linhaCarrinho->delete();
+            }
+
+            return $this->redirect(['fatura/index', 'id' => $fatura->id]);
         }
 
         Yii::$app->session->setFlash('error', 'Falha ao criar fatura.');

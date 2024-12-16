@@ -93,6 +93,7 @@ class ProdutoController extends \yii\web\Controller
 
     public function actionAddToCart()
     {
+        //todo verificar a quantidade do stock antes de adicionar
         $request = Yii::$app->request;
         if ($request->isPost) {
             $produtoId = $request->post('produto_id');

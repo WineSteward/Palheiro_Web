@@ -16,7 +16,6 @@ class CarrinhoController extends \yii\web\Controller
         }
 
         $user = Yii::$app->user->identity;
-
         // Retrieve the user profile associated with the current user
         // $userProfile = $user->userprofile;
         $userProfile = UserProfile::findOne(['user_id' => $user->id]);
