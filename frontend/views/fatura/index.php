@@ -19,7 +19,8 @@ use yii\helpers\Url;
                 <div class="card-body">
                     <p><strong>Total:</strong> <?= Html::encode($fatura->total) ?>€</p>
                     <p><strong>Data de Criação:</strong> <?= Html::encode($fatura->dataVenda) ?></p>
-                    <p><strong>Estado:</strong> <?= Html::encode($fatura->estadoEncomenda) ?></p>
+                    <p><strong>Estado da Encomenda:</strong> <?= Html::encode($fatura->estadoEncomenda) ?></p>
+                    <p><strong>Estado da Fatura:</strong> <?= Html::encode($fatura->valida) ?></p>
                     <p><strong>Método de Expedição:</strong> <?= Html::encode($fatura->metodoexpedicao->nome) ?></p>
                     <p><strong>Método de Pagamento:</strong> <?= Html::encode($fatura->metodopagamento->nome) ?></p>
                 </div>

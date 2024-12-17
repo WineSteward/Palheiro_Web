@@ -83,7 +83,7 @@ class FaturaController extends \yii\web\Controller
         $fatura->metodopagamento_id = $metodoPagamento->id;
         $fatura->dataVenda = date('d-m-Y H:i:s', time() );
         $fatura->estadoEncomenda = 0;//0=pendente
-        $fatura->total=0;
+        $fatura->total=0;// por fazer
         $fatura->valida=0;//por finalizar
 
         if ($fatura->save()) {
