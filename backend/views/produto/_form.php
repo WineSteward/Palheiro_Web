@@ -6,7 +6,6 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var backend\models\UploadForm $uploadModel */
 /** @var common\models\Produto $model */
-/** @var backend\models\UploadForm $imageForm */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
@@ -14,11 +13,13 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'nome')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'nome')->textInput() ?>
 
     <?= $form->field($model, 'preco')->textInput()->label('Preço sem IVA') ?>
 
-    <?= $form->field($model, 'descricao')->label('Descrição')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'quantidade')->textInput()->label('Quantidade em stock') ?>
+
+    <?= $form->field($model, 'descricao')->label('Descrição')->textInput() ?>
 
     <?= $form->field($model, 'categoria_id')->dropDownList($categorias, [
         'prompt' => 'Selecione uma categoria'])->label('Categoria');?>

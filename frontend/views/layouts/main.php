@@ -56,7 +56,7 @@ AppAsset::register($this);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
         ['label' => 'Produtos', 'url' => ['/produto/index']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
+        ['label' => 'Contact', 'url' => ['/contact/index']],
         [
             'label' => Html::tag('i', '', ['class' => 'fa fa-shopping-bag']),
             'url' => ['/carrinho/index'],

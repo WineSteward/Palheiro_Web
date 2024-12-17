@@ -176,28 +176,6 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return mixed
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
-            }
-
-            return $this->refresh();
-        }
-
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
 
     /**
      * Signs user up.
@@ -213,16 +191,17 @@ class SiteController extends Controller
         //TRANSACTIONS!!!!!!!!!!!!!!!!!!!!!!!!!
 
         if ($this->request->isPost) {
-            if ($userForm->load($this->request->post()) && $userForm->signup())
+            if($userForm->load($this->request->post()) && $userprofile->load($this->request->post()) && $userprofile->validate() && $userForm->signup())
             {
                 $carrinho = Carrinho::defaultCarrinho();
 
-                if ($userprofile->load($this->request->post()) && $userprofile->signup($userForm->id, $carrinho))
+                if ($userprofile->signup($userForm->id, $carrinho))
                 {
                     return $this->redirect(['index']);
                 }
             }
-        } else {
+        } else 
+        {
             //$userprofile->loadDefaultValues();
         }
 

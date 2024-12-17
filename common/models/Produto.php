@@ -12,6 +12,7 @@ use Yii;
  * @property int $id
  * @property string $nome
  * @property float $preco
+ * @property int $quantidade
  * @property string $descricao
  * @property int $categoria_id
  * @property int $iva_id
@@ -42,9 +43,11 @@ class Produto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nome', 'preco', 'descricao', 'categoria_id', 'iva_id', 'marca_id', 'valornutricional_id'], 'required'],
+            [['nome', 'preco', 'quantidade', 'descricao', 'categoria_id', 'iva_id', 'marca_id', 'valornutricional_id'], 'required'],
             [['preco'], 'number'],
-            [['categoria_id', 'iva_id', 'marca_id', 'valornutricional_id'], 'integer'],
+            [['quantidade', 'categoria_id', 'iva_id', 'marca_id', 'valornutricional_id'], 'integer'],
+            [['preco'], 'number', 'min' => 0],
+            [['quantidade'], 'integer', 'min' => 0],
             [['nome'], 'string', 'max' => 30],
             [['descricao'], 'string', 'max' => 255],
             [['categoria_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categoria::class, 'targetAttribute' => ['categoria_id' => 'id']],
@@ -62,7 +65,8 @@ class Produto extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'nome' => 'Nome',
-            'preco' => 'Preco',
+            'preco' => 'Preço',
+            'quantidade' => 'Quantidade',
             'descricao' => 'Descricao',
             'categoria_id' => 'Categoria ID',
             'iva_id' => 'Iva ID',

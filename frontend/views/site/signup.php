@@ -1,5 +1,6 @@
 <?php
 
+use common\helpers\UrlHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -7,70 +8,77 @@ use yii\widgets\ActiveForm;
 /** @var \common\models\SignupFormUserProfile $userprofile */
 /** @var \common\models\SignupFormUser $user */
 /** @var yii\widgets\ActiveForm $form */
+
 ?>
 
-<div class="userprofile-form">
-    <?php $form = ActiveForm::begin([
-        'options' => ['class' => 'row g-3'],
-    ]); ?>
+<div class="userprofile-form container mt-5 d-flex justify-content-center" style="background-size: cover; background-position: center; background-image: url('<?= UrlHelper::getCompanyImageUrl('fruitsalad.jpg') ?>');">
+<div class="form-wrapper bg-light p-5 rounded shadow-lg" style="max-width: 400px; width: 100%; padding-top: 30px; padding-bottom: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+               <h2 class="text-center mb-4">Signup</h2>
 
-    <div class="col-md-6">
+        <?php $form = ActiveForm::begin([
+            'options' => ['class' => 'form-horizontal'], // Adds Bootstrap styling
+            'fieldConfig' => [
+                'template' => "<div class=\"form-group\">
+                                <label class=\"form-label\">{label}</label>
+                                <div>{input}\n{error}</div>
+                               </div>",
+                'labelOptions' => ['class' => 'form-label'],
+            ],
+        ]); ?>
+
         <?= $form->field($user, 'username')->textInput([
-            'class' => 'form-control form-control-lg',
-            'placeholder' => 'Enter your username'
+            'placeholder' => 'Digite o username que deseja',
+            'class' => 'form-control',
+            'style' => 'width: 100%;'
         ]) ?>
-    </div>
 
-    <div class="col-md-6">
         <?= $form->field($user, 'password')->passwordInput([
-            'value' => '',
-            'class' => 'form-control form-control-lg',
-            'placeholder' => 'Enter your password'
+            'placeholder' => 'Indique uma password',
+            'class' => 'form-control',
+            'style' => 'width: 100%;'
         ]) ?>
-    </div>
 
-    <div class="col-md-6">
         <?= $form->field($user, 'email')->textInput([
-            'class' => 'form-control form-control-lg',
-            'placeholder' => 'Enter your email'
+            'placeholder' => 'Indique o seu email',
+            'class' => 'form-control',
+            'style' => 'width: 100%;'
         ]) ?>
-    </div>
 
-    <div class="col-md-6">
         <?= $form->field($userprofile, 'nif')->textInput([
             'maxlength' => true,
-            'class' => 'form-control form-control-lg',
-            'placeholder' => 'Enter your NIF'
-        ]) ?>
-    </div>
+            'placeholder' => 'Indique o seu NIF',
+            'class' => 'form-control',
+            'style' => 'width: 100%;'
+        ])->label('NIF') ?>
 
-    <div class="col-md-6">
         <?= $form->field($userprofile, 'morada')->textInput([
             'maxlength' => true,
-            'class' => 'form-control form-control-lg',
-            'placeholder' => 'Enter your address'
+            'placeholder' => 'Indique a sua morada',
+            'class' => 'form-control',
+            'style' => 'width: 100%;'
         ]) ?>
-    </div>
 
-    <div class="col-md-6">
         <?= $form->field($userprofile, 'morada2')->textInput([
             'maxlength' => true,
-            'class' => 'form-control form-control-lg',
-            'placeholder' => 'Enter a second address (optional)'
+            'placeholder' => 'Detalhes adicionais de morada',
+            'class' => 'form-control',
+            'style' => 'width: 100%;'
         ]) ?>
-    </div>
 
-    <div class="col-md-6">
         <?= $form->field($userprofile, 'codigoPostal')->textInput([
             'maxlength' => true,
-            'class' => 'form-control form-control-lg',
-            'placeholder' => 'Enter postal code'
+            'placeholder' => 'Indique o seu código postal',
+            'class' => 'form-control',
+            'style' => 'width: 100%;'
         ]) ?>
-    </div>
 
-    <div class="col-12 text-center">
-        <?= Html::submitButton('Salvar', ['class' => 'site-btn btn-lg px-5 py-3 w-100']) ?>
-    </div>
+        <div class="form-group text-center mt-3">
+            <?= Html::submitButton('Sign Up', [
+                'class' => 'btn btn-lg w-100',
+                'style' => 'background-color: rgb(8, 106, 39); border-color: rgb(8, 106, 39); color: white;'
+            ]) ?>
+        </div>
 
-    <?php ActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
+    </div>
 </div>

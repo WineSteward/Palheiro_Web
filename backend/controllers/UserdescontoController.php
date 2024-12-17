@@ -2,22 +2,21 @@
 
 namespace backend\controllers;
 
-use backend\models\UserSearch;
-use common\models\Carrinho;
-use common\models\SignupFormUser;
-use common\models\SignupFormUserProfile;
-use common\models\User;
+use common\models\Userdesconto;
+use app\models\Userdescontosearch;
+use common\models\Desconto;
 use common\models\Userprofile;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
- * UserprofileController implements the CRUD actions for Userprofile model.
+ * UserdescontoController implements the CRUD actions for Userdesconto model.
  */
-class UserprofileController extends Controller
+class UserdescontoController extends Controller
 {
     /**
      * @inheritDoc
@@ -45,30 +44,31 @@ class UserprofileController extends Controller
     }
 
     /**
-     * Lists all Userprofile models.
+     * Lists all the discounts the userprofile has.
+     * @param int $id userprofile ID
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($id)
     {
-        $searchModel = new UserSearch();
 
+        $searchModel = new Userdescontosearch();
         $dataProvider = new ActiveDataProvider([
-            'query' => User::find()
-                ->with('userprofile')
-                ->join('INNER JOIN', 'auth_assignment', 'auth_assignment.user_id = user.id') // join RBAC table
-                ->andWhere(['auth_assignment.item_name' => 'client']) // filter for "client" role
+            'query' => Userdesconto::find()
+                ->with('userprofile', 'desconto')
+                ->where(['userprofile_id' => $id])
         ]);
 
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'userprofile_id' => $id
         ]);
     }
 
     /**
-     * Displays a single Userprofile model.
+     * Displays a single Userdesconto model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -81,69 +81,66 @@ class UserprofileController extends Controller
     }
 
     /**
-     * Creates a new Userprofile model.
+     * Creates a new Userdesconto model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     * @param int $id user ID
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
+        $model = new Userdesconto();
 
-        $userForm = new SignupFormUser();
-        $userprofile = new SignupFormUserProfile();
-
-        //TRANSACTIONS!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        if ($this->request->isPost) 
+        if ($this->request->isPost)
         {
-            if($userForm->load($this->request->post()) && $userprofile->load($this->request->post()) && $userprofile->validate() && $userForm->signup())
+            $model->userprofile_id = $id;
+
+            if ($model->load($this->request->post()) && $model->save())
             {
-                $carrinho = Carrinho::defaultCarrinho();
-
-                if ($userprofile->signup($userForm->id, $carrinho))
-                {
-                    return $this->redirect(['index']);
-                }
+                return $this->redirect(['index', 'id' => $model->userprofile_id]);
             }
-        }
-        else
+        } else 
         {
-            //$userprofile->loadDefaultValues();
+            $model->loadDefaultValues();
         }
 
+        // Fetch dos descontos para o dropdown
+        $descontos = Desconto::find()->select(['id', 'valor'])->orderBy('id')->asArray()->all();
+        $mappedDescontos = ArrayHelper::map($descontos, 'id', 'valor');
+        
         return $this->render('create', [
-            'userprofile' => $userprofile,
-            'user' => $userForm
+            'model' => $model,
+            'descontos' => $mappedDescontos,
+            'id' => $id
         ]);
     }
 
     /**
-     * Updates an existing Userprofile model.
+     * Updates an existing Userdesconto model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
+     * @param int $id userdesconto ID
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
-        //TRANSACTIONS!!!!!!!!!!!!!!!!!!!!!!!!!
+        $model = $this->findModel($id);
 
-        $userprofile = $this->findModel($id);
-
-        if ($this->request->isPost && $userprofile->user->load($this->request->post()) && $userprofile->user->save()) {
-            if ($userprofile->load($this->request->post()) && $userprofile->save())
-            {
-                return $this->redirect(['view', 'id' => $userprofile->id]);
-            }
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['index', 'id' => $model->userprofile_id]);
         }
 
+        // Fetch dos descontos para o dropdown
+        $descontos = Desconto::find()->select(['id', 'valor'])->orderBy('id')->asArray()->all();
+        $mappedDescontos = ArrayHelper::map($descontos, 'id', 'valor');
+
         return $this->render('update', [
-            'user' => $userprofile->user,
-            'userprofile' => $userprofile
+            'model' => $model,
+            'descontos' => $mappedDescontos
         ]);
     }
 
     /**
-     * Deletes an existing Userprofile model.
+     * Deletes an existing Userdesconto model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -151,28 +148,25 @@ class UserprofileController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
-        return $this->redirect(['index']);
+        $model->delete();
+
+        return $this->redirect(['index', 'id' => $model->userprofile_id]);
     }
 
     /**
-     * Finds the Userprofile model (with user) based on its primary key value.
+     * Finds the Userdesconto model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Userprofile the loaded model
+     * @return Userdesconto the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (
-            ($model = Userprofile::find()
-            ->where(['id' => $id])
-            ->with(['user'])
-            ->one()) !== null)
-            {
-                return $model;
-            }
+        if (($model = Userdesconto::find()->where(['id' => $id])->with(['userprofile', 'desconto'])->one()) !== null) {
+            return $model;
+        }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }

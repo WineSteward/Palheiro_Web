@@ -145,7 +145,7 @@ class ProdutoController extends Controller
         } 
         else 
         {
-            $model->loadDefaultValues();
+            //$model->loadDefaultValues();
         }
 
         return $this->render('create', [
