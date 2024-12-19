@@ -32,7 +32,7 @@ class CarrinhoController extends \yii\web\Controller
             Yii::$app->session->setFlash('error', 'Carrinho not found.');
             return $this->redirect(['produto/index']); // Redirect to a safe page
         }
-
+        $carrinho->updateTotal();
         // Retrieve all LinhasCarrinho associated with this Carrinho
         $linhasCarrinho = LinhaCarrinho::find()->where(['carrinho_id' => $carrinho->id])->all();
 
@@ -41,6 +41,5 @@ class CarrinhoController extends \yii\web\Controller
             'linhascarrinhos' => $linhasCarrinho,
         ]);
     }
-
 
 }

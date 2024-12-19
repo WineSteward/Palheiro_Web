@@ -37,12 +37,12 @@ $this->title = 'Profile';
                         </div>
                         <div class="col-md-6">
                             <h5 class="strong">Outros</h5>
-                            <p><strong>Joined On:</strong> <?= Html::encode(Yii::$app->formatter->asDate($user->created_at, 'long')) ?></p>
+                            <p><strong>Data de criação:</strong> <?= Html::encode(Yii::$app->formatter->asDate($user->created_at, 'long')) ?></p>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer text-end bg-light">
-                    <?= Html::a('Editar Profile', ['/user/edit-profile'], ['class' => 'site-btn']) ?>
+                    <?= Html::a('Editar Profile', ['profile/editar-profile'], ['class' => 'site-btn']) ?>
                 </div>
             </div>
             <!-- Tabs for Discounts and Invoices -->
@@ -63,10 +63,10 @@ $this->title = 'Profile';
                                 <?php if (!empty($userDescontos)): ?>
                                     <ul>
                                         <?php foreach ($userDescontos as $userDesconto): ?>
-                                            <li>
+                                            <li class="list-group-item">
                                                 <strong><?= Html::encode($userDesconto->desconto->nome) ?>:</strong>
-                                                <?= Html::encode($userDesconto->desconto->valor) ?>%
-                                                <?= $userDesconto->valido ? '(Valido)' : '(Invalido)' ?>
+                                                <?= Html::encode($userDesconto->desconto->valor) ?>€
+                                                <?= $userDesconto->valido ? '(Valido)' : '(Usado)' ?>
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>
@@ -85,8 +85,8 @@ $this->title = 'Profile';
                                     <ul class="list-group">
                                         <?php foreach ($faturas as $fatura): ?>
                                             <li class="list-group-item">
-                                                <strong>Invoice #<?= Html::encode($fatura->id) ?></strong>
-                                                <span class="float-end"><?= Html::encode(Yii::$app->formatter->asDate($fatura->date, 'long')) ?> - <?= Html::encode($fatura->total) ?>€</span>
+                                                <strong>Fatura</strong>
+                                                <span class="float-end"><?= Html::encode($fatura->dataVenda) ?> - <?= Html::encode($fatura->total) ?>€</span>
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>

@@ -78,18 +78,20 @@ class FaturaController extends \yii\web\Controller
         $fatura = new Fatura();
         $user = Yii::$app->user->identity;
         $userProfile = UserProfile::findOne(['user_id' => $user->id]);
+
         $fatura->userprofile_id = $userProfile->id;
         $fatura->metodoexpedicao_id = $metodoExpedicao->id;
         $fatura->metodopagamento_id = $metodoPagamento->id;
-        $fatura->dataVenda = date('d-m-Y H:i:s', time() );
-        $fatura->estadoEncomenda = 0;//0=pendente
-        $fatura->total=0;// por fazer
-        $fatura->valida=0;//por finalizar
+        $fatura->dataVenda = date('Y-m-d H:i:s', time());
+        $fatura->estadoEncomenda = 0; // 0 = pendente
+        $fatura->total = 0; // Inicializa o total
+        $fatura->valida = 0; // Por finalizar
 
         if ($fatura->save()) {
-            $carrinho= Carrinho::findOne(['id'=>$userProfile->carrinho_id]);
-            foreach ($carrinho->linhascarrinhos as $linhaCarrinho)
-            {
+            $carrinho = Carrinho::findOne(['id' => $userProfile->carrinho_id]);
+            $totalFatura = 0; // Variável para somar o total da fatura
+
+            foreach ($carrinho->linhascarrinhos as $linhaCarrinho) {
                 $linhaFatura = new LinhaFatura();
                 $linhaFatura->fatura_id = $fatura->id;
                 $linhaFatura->produto_id = $linhaCarrinho->produto_id;
@@ -97,16 +99,29 @@ class FaturaController extends \yii\web\Controller
                 $linhaFatura->valorUnitario = $linhaCarrinho->produto->preco;
                 $linhaFatura->total = $linhaCarrinho->quantidade * $linhaFatura->valorUnitario;
 
-                // Calcula Ivas
-                $linhaFatura->porcentagemIva = $linhaCarrinho->produto->iva->valorPorcentagem;//mudar iva  para float na bd
-                $linhaFatura->valorIva = $linhaFatura->total * ($linhaFatura->porcentagemIva /100);
+                // Calcula IVA
+                $linhaFatura->porcentagemIva = $linhaCarrinho->produto->iva->valorPorcentagem;
+                $linhaFatura->valorIva = $linhaFatura->total * ($linhaFatura->porcentagemIva / 100);
                 $linhaFatura->subtotal = $linhaFatura->total - $linhaFatura->valorIva;
+
+                // Acumula o total da fatura
+                $totalFatura += $linhaFatura->total;
 
                 if (!$linhaFatura->save()) {
                     Yii::$app->session->setFlash('error', 'Erro ao salvar item da fatura.');
                     return false;
                 }
             }
+
+            // Atribui o total calculado à fatura
+            $fatura->total = $totalFatura;
+
+            // Salva novamente a fatura com o total atualizado
+            if (!$fatura->save()) {
+                Yii::$app->session->setFlash('error', 'Falha ao atualizar o total da fatura.');
+                return $this->redirect(['carrinho/index']);
+            }
+
             // Clear cart after creating invoice lines
             foreach ($carrinho->linhascarrinhos as $linhaCarrinho) {
                 $linhaCarrinho->delete();
@@ -119,5 +134,18 @@ class FaturaController extends \yii\web\Controller
         return $this->redirect(['carrinho/index']);
     }
 
+    public function actionFinalizar($id)
+    {
+        $user = Yii::$app->user->identity;
+        $userProfile = UserProfile::findOne(['user_id' => $user->id]);
+        $fatura = Fatura::findOne(['id' => $id, 'userprofile_id' => $userProfile->id]);
+
+        $fatura->valida = 1; // Marca como finalizada
+
+        $fatura->save();
+        Yii::$app->session->setFlash('success', 'Compra finalizada com sucesso!Pode vizualizar a fatura no seu profile');
+        return $this->redirect(['site/index']);
+
+    }
 
 }

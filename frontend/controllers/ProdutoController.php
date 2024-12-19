@@ -59,6 +59,7 @@ class ProdutoController extends \yii\web\Controller
             }
         }
 
+
         // aplica filtros do ProdutoSearch
         $produtoSearch = new ProdutoSearch();
         $dataProvider = $produtoSearch->search(Yii::$app->request->queryParams, $query);

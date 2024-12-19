@@ -22,6 +22,9 @@ class ProdutoSearch extends Produto
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 9,  //produtos por pagina
+            ],
         ]);
 
         $this->load($params);

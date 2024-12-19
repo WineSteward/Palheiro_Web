@@ -14,8 +14,6 @@ class ProfileController extends \yii\web\Controller
     {
         // User que esta loged in
         $user = Yii::$app->user->identity;
-
-        // encontra o userprofile do user loged in
         $userProfile = $user->userprofile;
 
         if (!$userProfile) {
@@ -25,9 +23,11 @@ class ProfileController extends \yii\web\Controller
 
         $userDescontos = Userdesconto::find()
             ->where(['userprofile_id' => $userProfile->id])
-            ->with('desconto') // Eager load desconto for better performance
+            ->with('desconto')
             ->all();
-        $faturas = Fatura::find()->where(['userprofile_id' => $userProfile->id  ])->all();
+        $faturas = Fatura::find()
+            ->where(['userprofile_id' => $userProfile->id, 'valida' => 1])
+            ->all();
 
         return $this->render('index', [
             'user'=>$user,
@@ -35,6 +35,13 @@ class ProfileController extends \yii\web\Controller
             'userDescontos' => $userDescontos,
             'faturas' => $faturas,
         ]);
+    }
+
+    public function actionEditarProfile()
+    {
+        $user = Yii::$app->user->identity;
+        $userProfile = $user->userprofile;
+
     }
 
 

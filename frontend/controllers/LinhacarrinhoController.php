@@ -3,29 +3,32 @@
 namespace frontend\controllers;
 
 use common\models\Carrinho;
-use common\models\Iva;
-use common\models\Linhacarrinho;
-use common\models\Produto;
-use common\models\Userprofile;
+use common\models\LinhaCarrinho;
+use Yii;
+use yii\web\Controller;
 
-class LinhacarrinhoController extends \yii\web\Controller
+class LinhacarrinhoController extends Controller
 {
-
-    public function actionUpdateQuantity($linha_id, $quantidade)
+    public function actionUpdateQuantity()
     {
+        $linha_id = Yii::$app->request->post('linha_id');
+        $quantidade = Yii::$app->request->post('quantidade');
+
         $linhaCarrinho = LinhaCarrinho::findOne($linha_id);
 
         if ($linhaCarrinho && $quantidade > 0) {
             $linhaCarrinho->quantidade = $quantidade;
-            $linhaCarrinho->save();
+            $linhaCarrinho->total = $linhaCarrinho->produto->preco * $quantidade;
+            $linhaCarrinho->save(false);
 
-            // Update the cart total
             $carrinho = $linhaCarrinho->carrinho;
-            $this->updateCartTotal($carrinho);
+            $carrinho->updateTotal();
+            Yii::$app->session->setFlash('success', 'Carrinho atualizado com sucesso.');
         }
 
         return $this->redirect(['carrinho/index']);
     }
+
 
     public function actionDelete($id)
     {
@@ -36,29 +39,10 @@ class LinhacarrinhoController extends \yii\web\Controller
             $linhaCarrinho->delete();
 
             if ($carrinho) {
-                // Update the cart total after deleting the item
-                $this->updateCartTotal($carrinho);
+                $carrinho->updateTotal();
             }
         }
 
         return $this->redirect(['carrinho/index']);
     }
-
-    private function updateCartTotal(Carrinho $carrinho)
-    {
-        $total = 0;
-
-        // Iterate over related LinhaCarrinho records
-        foreach ($carrinho->linhascarrinhos as $linha) {
-            $produto = $linha->produto;
-            $total += $produto->preco * $linha->quantidade;
-        }
-
-        $carrinho->total = $total;
-        $carrinho->save();
-    }
-
-
-
-
 }
