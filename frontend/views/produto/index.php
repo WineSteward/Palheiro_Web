@@ -94,7 +94,7 @@ $this->title = 'Palheiro'
                                 'pagination' => $dataProvider->pagination,
                                 'nextPageLabel' => 'Next',
                                 'prevPageLabel' => 'Previous',
-                                'maxButtonCount' => 5, // Numero maximo de produtos
+                                'maxButtonCount' => 5,
                             ]) ?>
                         </div>
                     </div>

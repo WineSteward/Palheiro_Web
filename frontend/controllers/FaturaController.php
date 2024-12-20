@@ -3,12 +3,15 @@
 namespace frontend\controllers;
 
 use common\models\Carrinho;
+use common\models\Desconto;
 use common\models\Fatura;
 use common\models\Linhafatura;
 use common\models\Metodoexpedicao;
 use common\models\Metodopagamento;
+use common\models\Userdesconto;
 use common\models\Userprofile;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 class FaturaController extends \yii\web\Controller
 {
@@ -147,5 +150,55 @@ class FaturaController extends \yii\web\Controller
         return $this->redirect(['site/index']);
 
     }
+
+    public function actionDesconto()
+    {
+        $request = Yii::$app->request;
+        $faturaId = $request->post('faturaId');
+        $codigo = $request->post('discountCode');
+
+        $user = Yii::$app->user->identity;
+        $userProfile = $user->userprofile;
+
+        $fatura = Fatura::findOne(['id' => $faturaId, 'userprofile_id' => $userProfile->id]);
+
+        // Encontra e verifica se o codigo é valido
+        $desconto = Desconto::findOne(['nome' => $codigo]);
+        if (!$desconto) {
+            Yii::$app->session->setFlash('error', 'Código de desconto inválido.');
+            return $this->redirect(['fatura/index', 'id' => $fatura->id]);
+        }
+
+        // Verifica se o utilizador tem o codigo e esta valido
+        $userDesconto = Userdesconto::findOne([
+            'userprofile_id' => $userProfile->id,
+            'desconto_id' => $desconto->id,
+            'valido' => 1,
+        ]);
+
+        if (!$userDesconto) {
+            Yii::$app->session->setFlash('error', 'Código de desconto inválido.');
+            return $this->redirect(['fatura/index', 'id' => $fatura->id]);
+        }
+
+        // aplica desconto e salva
+        $fatura->total -= $userDesconto->desconto->valor;
+        if ($fatura->total < 0) {
+            $fatura->total = 0; //total nao pode ser negativo
+        }
+
+        if ($fatura->save()) {
+            $userDesconto->valido = 0; // Marca codigo como usado
+            $userDesconto->save();
+
+            Yii::$app->session->setFlash('success', 'Desconto aplicado com sucesso!');
+        } else {
+            Yii::$app->session->setFlash('error', 'Erro ao aplicar o desconto.');
+        }
+
+        return $this->redirect(['fatura/index', 'id' => $fatura->id]);
+    }
+
+
 
 }

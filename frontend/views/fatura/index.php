@@ -75,13 +75,15 @@ use yii\helpers\Url;
                 <div class="col-lg-6">
                     <div class="shoping__discount">
                         <h5>Código de Desconto</h5>
-                        <form action="<?= Url::to(['fatura/apply-discount', 'id' => $fatura->id]) ?>" method="post">
+                        <form action="<?= Url::to(['fatura/desconto']) ?>" method="post">
                             <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->csrfToken) ?>
+                            <input type="hidden" name="faturaId" value="<?= Html::encode($fatura->id) ?>">
                             <div class="d-flex">
                                 <input type="text" name="discountCode" class="form-control me-2" placeholder="Insira o código de desconto" required>
                                 <button type="submit" class="btn btn-success">Aplicar</button>
                             </div>
                         </form>
+
                     </div>
                 </div>
                 <div class="col-lg-6">

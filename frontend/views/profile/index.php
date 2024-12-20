@@ -11,9 +11,6 @@ $this->title = 'Profile';
         <div class="col-md-8">
             <div class="card shadow-lg border-0 rounded-lg">
                 <div class="card-header bg-dark text-white text-center">
-                    <div class="profile-image">
-                        <img src="https://via.placeholder.com/100" alt="Profile Image" class="rounded-circle">
-                    </div>
                     <h3 class="mt-3 mb-0"><?= Html::encode($user->username) ?></h3>
                     <p class="text-muted mb-2"><?= Html::encode($user->email) ?></p>
                 </div>
