@@ -1,3 +1,12 @@
+to use mosquitto: 
+start mosquitto service (leave it on)
+
+In the folder of the project
+php yii mqtt/subscribe
+
+
+
+
 <p align="center">
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">

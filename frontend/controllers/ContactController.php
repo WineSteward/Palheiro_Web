@@ -2,40 +2,38 @@
 
 namespace frontend\controllers;
 
-use frontend\models\ContactForm;
+use common\mqtt\MqttClient;
 use Yii;
+use yii\web\Controller;
+use frontend\models\ContactForm;
 
-class ContactController extends \yii\web\Controller
+class ContactController extends Controller
 {
-    /**
-     * Displays contact page.
-     *
-     * @return mixed
-     */
     public function actionIndex()
     {
         $model = new ContactForm();
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate())
-        {
-            if (/*$model->sendEmail(Yii::$app->params['adminEmail'])*/true)
-            {
-                //msg sent to mosquitto OK
+    
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            try {
+                $rawMessage = "nome:" . $model->name . ",email:" . $model->email .",titulo:" . $model->subject . ",corpo:" . $model->body;
+                
+                $mqtt = new MqttClient('localhost', 1883);
+                
+                $mqtt->publish('contactos', $rawMessage);
+                
                 Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
             }
-            else
+            catch (\Exception $e) 
             {
-                //something went wrong
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
+                Yii::$app->session->setFlash('error', 'There was an error sending your message: ' . $e->getMessage());
             }
-
+    
             return $this->refresh();
         }
-
+    
         return $this->render('index', [
             'model' => $model,
         ]);
     }
-
-
+    
 }

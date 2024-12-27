@@ -6,6 +6,11 @@ return [
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'mqtt' => [
+            'class' => 'common/mqtt/MqttClient',
+            'host' => '127.0.0.1',
+            'port' => 1883,
+        ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
             // uncomment if you want to cache RBAC items hierarchy
