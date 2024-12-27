@@ -18,7 +18,7 @@ use Yii;
  * @property int $metodopagamento_id
  *
  * @property Desconto $desconto
- * @property Linhafatura[] $linhasfaturas
+ * @property Linhafatura[] $linhasfatura
  * @property Metodoexpedicao $metodoexpedicao
  * @property Metodopagamento $metodopagamento
  * @property Userprofile $userprofile

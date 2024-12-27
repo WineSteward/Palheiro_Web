@@ -59,6 +59,7 @@ class ProdutoController extends \yii\web\Controller
             }
         }
 
+
         // aplica filtros do ProdutoSearch
         $produtoSearch = new ProdutoSearch();
         $dataProvider = $produtoSearch->search(Yii::$app->request->queryParams, $query);
@@ -76,25 +77,10 @@ class ProdutoController extends \yii\web\Controller
     public function actionShow($id)
     {
 
-        $produto = Produto::findOne($id);
-
-        $dataProvider = new ActiveDataProvider([
-            //'query' => $produto->getImages(),
-            'query' => $produto->getMarca(),
-            'query' => $produto->getCategoria(),
-            'query' => $produto->getIva(),
-
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
+        $produto = Produto::find()
+            ->where(['id' => $id])
+            ->with(['marca', 'imagens', 'categoria', 'valornutricional'])
+            ->one();
 
         if (!$produto) {
             throw new NotFoundHttpException('The requested produto does not exist.');
@@ -102,12 +88,13 @@ class ProdutoController extends \yii\web\Controller
 
         return $this->render('show', [
             'produto' => $produto,
-            'dataProvider' => $dataProvider,
+
         ]);
     }
 
     public function actionAddToCart()
     {
+        //todo verificar a quantidade do stock antes de adicionar
         $request = Yii::$app->request;
         if ($request->isPost) {
             $produtoId = $request->post('produto_id');
@@ -151,9 +138,9 @@ class ProdutoController extends \yii\web\Controller
 
             // Save line item
             if ($linha->save()) {
-                Yii::$app->session->setFlash('success', 'Product added to cart.');
+                Yii::$app->session->setFlash('success', 'Produto adicionado com sucesso.');
             } else {
-                Yii::$app->session->setFlash('error', 'Failed to add product to cart.');
+                Yii::$app->session->setFlash('error', 'Falha a adicionar produto.');
             }
         }
 

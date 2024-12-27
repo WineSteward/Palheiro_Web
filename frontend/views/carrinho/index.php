@@ -13,9 +13,9 @@ use yii\helpers\Url;
                     <table>
                         <thead>
                         <tr>
-                            <th class="shoping__product">Products</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
+                            <th class="shoping__product">Produtos</th>
+                            <th>Preço</th>
+                            <th>Quantidade</th>
                             <th>Total</th>
                             <th></th>
                         </tr>
@@ -24,7 +24,8 @@ use yii\helpers\Url;
                         <?php foreach ($linhascarrinhos as $linhacarrinho): ?>
                             <tr>
                                 <td class="shoping__cart__item">
-                                    <img src="img/cart/cart-1.jpg" alt="">
+                                    <img src="" alt=""><!-- URLHelper::getProductImageUrl($linhacarrinho->produto->imagem->ficheiro)
+                                    -->
                                     <h5><?= Html::encode($linhacarrinho->produto->nome) ?></h5>
                                 </td>
                                 <td class="shoping__cart__price">
@@ -33,12 +34,11 @@ use yii\helpers\Url;
                                 <td class="shoping__cart__quantity">
                                     <?= Html::beginForm(['linhacarrinho/update-quantity'], 'post') ?>
                                     <?= Html::hiddenInput('linha_id', $linhacarrinho->id) ?>
-                                    <input type="number" name="quantidade" value="<?= $linhacarrinho->quantidade ?>" min="1" class="form-control">
-                                    <button type="submit" class="btn btn-sm btn-primary mt-1">Update</button>
+                                    <input type="number" name="quantidade" value="<?= $linhacarrinho->quantidade ?>" min="1" class="form-control"><!--todo max quantidade em stock-->
                                     <?= Html::endForm() ?>
                                 </td>
                                 <td class="shoping__cart__total">
-                                    <?= Html::encode($linhacarrinho->precoUnitario * $linhacarrinho->quantidade) ?>€
+                                    <?= Html::encode($linhacarrinho->total) ?>€
                                 </td>
                                 <td class="shoping__cart__item__close">
                                     <?= Html::a(
@@ -61,30 +61,16 @@ use yii\helpers\Url;
         <div class="row">
             <div class="col-lg-12">
                 <div class="shoping__cart__btns">
-                    <a href="<?= Url::to(['produto/index']) ?>" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
-                    <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                        Upadate Cart</a>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="shoping__continue">
-                    <div class="shoping__discount">
-                        <h5>Discount Codes</h5>
-                        <form action="#">
-                            <input type="text" placeholder="Enter your coupon code">
-                            <button type="submit" class="site-btn">APPLY COUPON</button>
-                        </form>
-                    </div>
+                    <a href="<?= Url::to(['produto/index']) ?>" class="primary-btn cart-btn">Continuar compras</a>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="shoping__checkout">
-                    <h5>Cart Total</h5>
+                    <h5>Total do carrinho</h5>
                     <ul>
-                        <li>Subtotal <span><?= Html::encode(array_sum(array_map(fn($linha) => $linha->precoUnitario * $linha->quantidade, $linhascarrinhos))) ?>€</span></li>
-                        <li>Total <span>$454.98</span></li>
+                        <li>Total <span><?= Html::encode($carrinho->total) ?>€</span></li>
                     </ul>
-                    <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+                    <a href="<?=Url::to(['fatura/metodos'])?>" class="primary-btn">Ir para Checkout</a>
                 </div>
             </div>
         </div>

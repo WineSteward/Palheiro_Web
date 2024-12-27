@@ -2,51 +2,13 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use yii\widgets\LinkPager;
 
 $this->title = 'Palheiro'
 ?>
-
-<!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="breadcrumb__text">
-                    <h2>Organi Shop</h2>
-                    <div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <span>Shop</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Breadcrumb Section End -->
-
 <!-- Product Section Begin -->
 <section class="product spad">
     <div class="container">
-        <div class="col-lg-9">
-            <div class="hero__search">
-                <div class="hero__search__form ">
-                    <div class="search-form">
-                        <?php $form = ActiveForm::begin([
-                            'method' => 'get',
-                            'action' => ['index'], // garante que vai par a action
-                        ]); ?>
-
-                        <?= $form->field($produtoSearch, 'nome')->textInput(['placeholder' => 'Procure por produtos'])->label(false) ?>
-
-                        <div class="form-group">
-                            <?= Html::submitButton('Search', ['class' => 'site-btn']) ?>
-                        </div>
-
-                        <?php ActiveForm::end(); ?>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row">
             <div class="col-lg-3 col-md-5">
                 <div class="sidebar">
@@ -82,15 +44,22 @@ $this->title = 'Palheiro'
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-4">
-                            <div class="filter__found">
-                                <h6><span>16</span> Products found</h6>
-                            </div>
-                        </div>
                         <div class="col-lg-4 col-md-3">
-                            <div class="filter__option">
-                                <span class="icon_grid-2x2"></span>
-                                <span class="icon_ul"></span>
+                            <div class="hero__search__form ">
+                                <div class="search-form">
+                                    <?php $form = ActiveForm::begin([
+                                        'method' => 'get',
+                                        'action' => ['index'], // garante que vai par a action
+                                    ]); ?>
+
+                                    <?= $form->field($produtoSearch, 'nome')->textInput(['placeholder' => 'Procure por produtos'])->label(false) ?>
+
+                                    <div class="form-group">
+                                        <?= Html::submitButton('Procurar', ['class' => 'site-btn']) ?>
+                                    </div>
+
+                                    <?php ActiveForm::end(); ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -120,10 +89,14 @@ $this->title = 'Palheiro'
                         </div>
                     <?php endforeach; ?>
                     <div class="product__pagination">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                        <div class="product__pagination">
+                            <?= LinkPager::widget([
+                                'pagination' => $dataProvider->pagination,
+                                'nextPageLabel' => 'Next',
+                                'prevPageLabel' => 'Previous',
+                                'maxButtonCount' => 5,
+                            ]) ?>
+                        </div>
                     </div>
                 </div>
             </div>
