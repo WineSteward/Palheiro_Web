@@ -65,6 +65,24 @@ class LoginForm extends Model
         return false;
     }
 
+    public function loginAPI($username, $password)
+    {
+        // Find user by username
+        $user = User::findOne(['username' => $username]);
+
+        // Check if user exists
+        if (!$user) {
+            return false; // User not found
+        }
+
+        // Validate password
+        if (!\Yii::$app->security->validatePassword($password, $user->password_hash)) {
+            return false; // Password does not match
+        }
+
+        return $user;
+    }
+
     /**
      * Finds user by [[username]]
      *

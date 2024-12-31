@@ -14,7 +14,7 @@ class UrlHelper
      */
     public static function getCompanyImageUrl($imageName)
     {
-        return \Yii::$app->getRequest()->getHostInfo() . '/palheiro/backend/web/' . 'index.php' . Url::to(['image/company', 'imageName' => $imageName]);
+        return \Yii::$app->getRequest()->getHostInfo() . Url::to('@companyImages') . '?imageName=' . urlencode($imageName);
     }
 
    /**
@@ -25,6 +25,6 @@ class UrlHelper
      */
     public static function getProductImageUrl($imageName)
     {
-        return \Yii::$app->getRequest()->getHostInfo() . '/palheiro/backend/web/' . 'index.php' . Url::to(['image/products', 'imageName' => $imageName]);
+        return \Yii::$app->getRequest()->getHostInfo() . Url::to('@productImages') . '?imageName=' . urlencode($imageName);
     }
 }

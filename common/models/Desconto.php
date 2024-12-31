@@ -3,7 +3,6 @@
 namespace common\models;
 
 use Yii;
-use common\models\Carrinho;
 
 /**
  * This is the model class for table "descontos".
@@ -69,5 +68,24 @@ class Desconto extends \yii\db\ActiveRecord
     public function getUserdescontos()
     {
         return $this->hasMany(Userdesconto::class, ['desconto_id' => 'id']);
+    }
+
+    public static function validateCupao($descontoNome, $id)
+    {
+        $descontos = Userdesconto::find()
+            ->where(['userprofile_id' => $id])
+            ->andWhere(['valido' => 1])
+            ->all();
+
+        foreach ($descontos as $desconto) 
+        {
+            $descontoAtual = Desconto::findOne($desconto->desconto_id);
+
+            if ($descontoAtual->nome == $descontoNome) {
+
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -67,6 +67,11 @@ class ProdutoController extends \yii\web\Controller
         // Categorias para a sidebar
         $categorias = Categoria::find()->all();
 
+        $defaultCategoria = new Categoria();
+        $defaultCategoria->nome ="";
+
+        $categorias[] = $defaultCategoria;
+        
         return $this->render('index', [
             'categorias' => $categorias,
             'produtoSearch' => $produtoSearch,

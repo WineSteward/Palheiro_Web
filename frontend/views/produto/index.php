@@ -1,4 +1,6 @@
 <?php
+
+use common\helpers\UrlHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -10,40 +12,26 @@ $this->title = 'Palheiro'
 <section class="product spad">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-5">
-                <div class="sidebar">
-                    <div class="sidebar__item">
-                        <h4>Categorias</h4>
-                        <ul>
-                            <!-- Link to reset filter -->
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Categorias</span>
+                    </div>
+                    <ul>
+                        <?php foreach ($categorias as $categoria): ?>
                             <li>
-                                <a href="<?= Url::to(['produto/index']) ?>">
-                                    All Categories
+                                <a href="<?= Url::to(['produto/index', 'categoria_nome' => $categoria->nome]) ?>">
+                                    <?= Html::encode($categoria->nome) ?>
                                 </a>
                             </li>
-                            <?php foreach ($categorias as $categoria): ?>
-                                <li>
-                                    <a href="<?= Url::to(['produto/index', 'categoria_nome' => $categoria->nome]) ?>">
-                                        <?= Html::encode($categoria->nome) ?>
-                                    </a>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
+                        <?php endforeach; ?>
+                    </ul>
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
                 <div class="filter__item">
                     <div class="row">
-                        <div class="col-lg-4 col-md-5">
-                            <div class="filter__sort">
-                                <span>Sort By</span>
-                                <select>
-                                    <option value="0">Default</option>
-                                    <option value="0">Default</option>
-                                </select>
-                            </div>
-                        </div>
                         <div class="col-lg-4 col-md-3">
                             <div class="hero__search__form ">
                                 <div class="search-form">
@@ -68,7 +56,7 @@ $this->title = 'Palheiro'
                     <?php foreach ($dataProvider->models as $produto): ?>
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="<?= UrlHelper::getProductImageUrl($produto->imagens[0]->ficheiro) ?>">
                                     <ul class="product__item__pic__hover">
                                         <li>
                                             <a href="<?= Url::to(['produto/show', 'id' => $produto->id]) ?>">

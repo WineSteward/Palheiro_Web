@@ -36,7 +36,7 @@ class Linhafatura extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['valorUnitario', 'quantidade', 'total', 'porcentagemIva', 'valorIva', 'subtotal', 'fatura_id', 'produto_id'], 'required'],
+            [['valorUnitario', 'quantidade', 'total', 'porcentagemIva', 'valorIva', 'subtotal', 'fatura_id'], 'required'],
             [['valorUnitario', 'total', 'valorIva', 'subtotal'], 'number'],
             [['quantidade', 'porcentagemIva', 'fatura_id', 'produto_id'], 'integer'],
             [['fatura_id'], 'exist', 'skipOnError' => true, 'targetClass' => Fatura::class, 'targetAttribute' => ['fatura_id' => 'id']],

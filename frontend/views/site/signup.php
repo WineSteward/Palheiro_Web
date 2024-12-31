@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
                <h2 class="text-center mb-4">Signup</h2>
 
         <?php $form = ActiveForm::begin([
-            'options' => ['class' => 'form-horizontal'], // Adds Bootstrap styling
+            'options' => ['class' => 'form-horizontal'],
             'fieldConfig' => [
                 'template' => "<div class=\"form-group\">
                                 <label class=\"form-label\">{label}</label>

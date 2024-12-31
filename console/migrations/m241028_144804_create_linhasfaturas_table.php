@@ -25,7 +25,7 @@ class m241028_144804_create_linhasfaturas_table extends Migration
             'valorIva' => $this->float()->notNull(),
             'subtotal' => $this->float()->notNull(),
             'fatura_id' => $this->integer()->notNull(),
-            'produto_id' => $this->integer()->notNull(),
+            'produto_id' => $this->integer(),
         ], $tableOptions);
 
         // creates index for column `fatura_id`
