@@ -9,55 +9,62 @@ use yii\widgets\LinkPager;
 $this->title = 'Palheiro'
 ?>
 <!-- Product Section Begin -->
-<section class="product spad">
+<section>
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="hero__categories">
-                    <div class="hero__categories__all">
-                        <i class="fa fa-bars"></i>
-                        <span>Categorias</span>
+        <div class="filter__item" style="border-top:0;">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="hero__search__form">
+                    <div class="search-form">
+                        <?php $form = ActiveForm::begin([
+                            'method' => 'get',
+                            'action' => ['produto/index'],
+                        ]); ?>
+
+                        <?= 
+                            $form->field($produtoSearch, 'nome')
+                                ->textInput([
+                                    'placeholder' => 'Procure por produtos',
+                                    'value' => Yii::$app->request->get('nome')
+                                    ])->label(false)
+                        ?>
+
+                        <div class="form-group">
+                            <?= Html::submitButton('Procurar', ['class' => 'site-btn']) ?>
+                        </div>
+
+                        <?php ActiveForm::end(); ?>
                     </div>
-                    <ul>
-                        <?php foreach ($categorias as $categoria): ?>
-                            <li>
-                                <a href="<?= Url::to(['produto/index', 'categoria_nome' => $categoria->nome]) ?>">
-                                    <?= Html::encode($categoria->nome) ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
                 </div>
             </div>
-            <div class="col-lg-9 col-md-7">
-                <div class="filter__item">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-3">
-                            <div class="hero__search__form ">
-                                <div class="search-form">
-                                    <?php $form = ActiveForm::begin([
-                                        'method' => 'get',
-                                        'action' => ['index'], // garante que vai par a action
-                                    ]); ?>
-
-                                    <?= $form->field($produtoSearch, 'nome')->textInput(['placeholder' => 'Procure por produtos'])->label(false) ?>
-
-                                    <div class="form-group">
-                                        <?= Html::submitButton('Procurar', ['class' => 'site-btn']) ?>
-                                    </div>
-
-                                    <?php ActiveForm::end(); ?>
-                                </div>
-                            </div>
+        </div>
+        <section class="featured spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title">
+                            <h2>Categorias</h2>
+                        </div>
+                        <div class="featured__controls">
+                            <ul>
+                                <li class="active" data-filter="*">Todas</li>
+                                <?php foreach($categorias as $categoria): ?>
+                                    <li data-filter=".<?= $categoria->nome ?>"><?= $categoria->nome ?></li>
+                                <?php endforeach ?>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <?php foreach ($dataProvider->models as $produto): ?>
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="<?= UrlHelper::getProductImageUrl($produto->imagens[0]->ficheiro) ?>">
-                                    <ul class="product__item__pic__hover">
+                <div class="row featured__filter">
+                    <?php foreach ($produtos as $produto): ?>
+                        <div class="col-lg-3 col-md-4 col-sm-6 mix <?= Html::encode($produto->categoria->nome) ?>">
+                            <div class="featured__item">
+                                <div class="featured__item__pic set-bg" data-setbg="<?= UrlHelper::getProductImageUrl($produto->imagens[0]->ficheiro) ?>">
+                                    <ul class="featured__item__pic__hover">
+                                        <li>
+                                            <a href="<?= Url::to(['produto/show', 'id' => $produto->id]) ?>">
+                                                <i class="fa fa-shopping-cart"></i>
+                                            </a>
+                                        </li>
                                         <li>
                                             <a href="<?= Url::to(['produto/show', 'id' => $produto->id]) ?>">
                                                 <i class="fa fa-magnifying-glass"></i>
@@ -65,7 +72,7 @@ $this->title = 'Palheiro'
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="product__item__text">
+                                <div class="featured__item__text">
                                     <h6>
                                         <a href="<?= Url::to(['produto/show', 'id' => $produto->id]) ?>">
                                             <?= Html::encode($produto->nome) ?>
@@ -76,18 +83,18 @@ $this->title = 'Palheiro'
                             </div>
                         </div>
                     <?php endforeach; ?>
-                    <div class="product__pagination">
-                        <div class="product__pagination">
-                            <?= LinkPager::widget([
-                                'pagination' => $dataProvider->pagination,
-                                'nextPageLabel' => 'Next',
-                                'prevPageLabel' => 'Previous',
-                                'maxButtonCount' => 5,
-                            ]) ?>
-                        </div>
-                    </div>
+                </div>
+                <div>
+                    <?= LinkPager::widget([
+                        'pagination' => $pagination,
+                        'nextPageLabel' => 'Next',
+                        'prevPageLabel' => 'Previous',
+                        'maxButtonCount' => 5,
+                        'options' => ['class' => 'pagination class-style-pagination'],
+                        'linkOptions' => ['class' => 'page-link'],
+                    ]) ?>
                 </div>
             </div>
-        </div>
+        </section>
 </section>
 <!-- Product Section End -->

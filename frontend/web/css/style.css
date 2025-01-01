@@ -182,69 +182,114 @@ ol {
 	border: none;
 }
 
+.site-danger-btn {
+	font-size: 14px;
+	color: #ffffff;
+	font-weight: 800;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 13px 30px 12px;
+	background: #707070;
+	border: none;
+}
+
+/* Floating Cart Button Styling */
+.floating-cart-button {
+    position: fixed;        /* Keeps it fixed on the screen */
+    bottom: 20px;           /* Distance from the bottom of the page */
+    right: 20px;            /* Distance from the right edge */
+    z-index: 99999;         /* Makes sure the button is above other content */
+}
+
+.floating-cart-button .btn {
+    background-color: #2e7d32;  /* Deep green color for the button */
+    color: white;
+    border-radius: 50%;         /* Circular button */
+    padding: 12px;              /* Smaller padding for a smaller button */
+    font-size: 20px;            /* Reduced font size */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.floating-cart-button .btn:hover {
+    background-color: #1b5e20;  /* Darker green on hover */
+    transform: translateY(-5px); /* Slight lift effect on hover */
+}
+
+/* Ensure the footer doesn't overlap with the button */
+footer {
+    position: relative;
+    z-index: 1; /* Keeps footer below the floating button */
+}
+
+
 /* Preloder */
 
+/* Preloader container */
 #preloder {
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	z-index: 999999;
-	background: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff; /* White background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
 }
 
+/* Loader container (logo + spinner) */
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Logo styling */
+.loader-container .logo {
+    width: 150px; /* Adjust based on your logo size */
+    margin-bottom: 20px; /* Space between logo and spinner */
+}
+
+/* Spinner styling */
 .loader {
-	width: 40px;
-	height: 40px;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-top: -13px;
-	margin-left: -13px;
-	border-radius: 60px;
-	animation: loader 0.8s linear infinite;
-	-webkit-animation: loader 0.8s linear infinite;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 4px solid #f44336; /* Red color for spinner */
+    border-left-color: transparent;
+    animation: loader 0.8s linear infinite;
 }
 
+/* Spinner animation */
 @keyframes loader {
-	0% {
-		-webkit-transform: rotate(0deg);
-		transform: rotate(0deg);
-		border: 4px solid #f44336;
-		border-left-color: transparent;
-	}
-	50% {
-		-webkit-transform: rotate(180deg);
-		transform: rotate(180deg);
-		border: 4px solid #673ab7;
-		border-left-color: transparent;
-	}
-	100% {
-		-webkit-transform: rotate(360deg);
-		transform: rotate(360deg);
-		border: 4px solid #f44336;
-		border-left-color: transparent;
-	}
+    0% {
+        transform: rotate(0deg);
+        border: 4px solid #f44336; /* Red */
+        border-left-color: transparent;
+    }
+    50% {
+        transform: rotate(180deg);
+        border: 4px solid #673ab7; /* Purple */
+        border-left-color: transparent;
+    }
+    100% {
+        transform: rotate(360deg);
+        border: 4px solid #f44336; /* Red */
+        border-left-color: transparent;
+    }
 }
 
-@-webkit-keyframes loader {
-	0% {
-		-webkit-transform: rotate(0deg);
-		border: 4px solid #f44336;
-		border-left-color: transparent;
-	}
-	50% {
-		-webkit-transform: rotate(180deg);
-		border: 4px solid #673ab7;
-		border-left-color: transparent;
-	}
-	100% {
-		-webkit-transform: rotate(360deg);
-		border: 4px solid #f44336;
-		border-left-color: transparent;
-	}
+/* Smooth transition when page has loaded */
+body.loaded #preloder {
+    opacity: 0;
+    visibility: hidden;
 }
+
 
 /*---------------------
   Header
@@ -1619,41 +1664,88 @@ ol {
 	font-weight: 700;
 }
 
-.product__pagination,
-.blog__pagination {
-	padding-top: 10px;
+/* Ensure pagination container is styled */
+.class-style-pagination {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 20px;
 }
 
-.product__pagination a,
-.blog__pagination a {
-	display: inline-block;
-	width: 30px;
-	height: 30px;
-	border: 1px solid #b2b2b2;
-	font-size: 14px;
-	color: #b2b2b2;
-	font-weight: 700;
-	line-height: 28px;
-	text-align: center;
-	margin-right: 16px;
-	-webkit-transition: all, 0.3s;
-	-moz-transition: all, 0.3s;
-	-ms-transition: all, 0.3s;
-	-o-transition: all, 0.3s;
-	transition: all, 0.3s;
+/* Style for pagination unordered list (ul) */
+.class-style-pagination .pagination {
+    display: inline-flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.product__pagination a:hover,
-.blog__pagination a:hover {
-	background: #7fad39;
-	border-color: #7fad39;
-	color: #ffffff;
+/* Style for pagination items (li) */
+.class-style-pagination .pagination li {
+    margin: 0 5px;
 }
 
-.product__pagination a:last-child,
-.blog__pagination a:last-child {
-	margin-right: 0;
+/* Style for pagination links */
+.class-style-pagination .pagination li a {
+    display: inline-block;
+    padding: 10px 15px;
+    color: #fff;
+    background-color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, border-color 0.3s;
 }
+
+/* Hover effect for links */
+.class-style-pagination .pagination li a:hover,
+.class-style-pagination .pagination li a:focus {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Active page styling */
+.class-style-pagination .pagination li.active a {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+/* Style for Previous and Next buttons */
+.class-style-pagination .pagination li.prev a,
+.class-style-pagination .pagination li.next a {
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Fix the disabled state for Previous and Next buttons */
+.class-style-pagination .pagination li.prev.disabled a,
+.class-style-pagination .pagination li.next.disabled a {
+    background-color: #f1f1f1; /* Light background color */
+    border-color: #ccc; /* Lighter border color */
+    color: #ccc; /* Lighter text color */
+    cursor: not-allowed; /* Prevent pointer cursor */
+}
+
+/* Disabled state for the Previous and Next buttons using <span> */
+.class-style-pagination .pagination li.prev.disabled span,
+.class-style-pagination .pagination li.next.disabled span {
+    background-color: #f1f1f1; /* Light background */
+    color: #ccc; /* Lighter text color */
+    border-color: #ccc; /* Lighter border color */
+    cursor: not-allowed; /* Prevent pointer cursor */
+}
+
+/* Hover effect for the Previous and Next buttons (when not disabled) */
+.class-style-pagination .pagination li.prev a:hover,
+.class-style-pagination .pagination li.next a:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
 
 /*---------------------
   Shop Details

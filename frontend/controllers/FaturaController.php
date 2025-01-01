@@ -6,18 +6,20 @@ use common\models\Carrinho;
 use common\models\Desconto;
 use common\models\Fatura;
 use common\models\Linhafatura;
-use common\models\Metodoexpedicao;
-use common\models\Metodopagamento;
 use common\models\Userdesconto;
 use common\models\Userprofile;
+use Exception;
 use Yii;
-use yii\web\NotFoundHttpException;
+
 
 class FaturaController extends \yii\web\Controller
 {
     public function actionIndex($id)
     {
-        $fatura = Fatura::findOne($id);
+        $fatura = Fatura::find()
+                ->with(['linhasfatura', 'metodoexpedicao', 'metodopagamento'])
+                ->where(['id' => $id])
+                ->one();
 
         if (!$fatura) {
             throw new \yii\web\NotFoundHttpException('Fatura not found.');
@@ -26,179 +28,123 @@ class FaturaController extends \yii\web\Controller
         return $this->render('index' ,['fatura' => $fatura]);
     }
 
-    public function actionMetodos()
+    public function actionCreate()
     {
-        $user = Yii::$app->user->identity;
-        $userProfile = UserProfile::findOne(['user_id' => $user->id]);
-        $carrinho = Carrinho::findOne($userProfile->carrinho_id);
-
-        if (!$carrinho || empty($carrinho->linhascarrinhos)) {
-            // redirect para o carrinho se nao tiver items no carrinho
-            Yii::$app->session->setFlash('error', 'O seu carrinho está vazio. Adicione itens antes de continuar.');
-            return $this->redirect(['carrinho/index']);
-        }
-
-        $request = Yii::$app->request;
-        if ($request->isPost) {
-
-            //todo verificar se é entrege na morada ou na loja e dps mostrar os metodso
-            $metodoPagamentoId = $request->post('metodoPagamentoId');
-            $metodoExpedicaoId = $request->post('metodoExpedicaoId');
-
-            if (!$metodoPagamentoId || !$metodoExpedicaoId) {
-                Yii::$app->session->setFlash('error', 'Por favor, escolha um método de pagamento e um método de expedição.');
-                $metodospagamento = Metodopagamento::find()->where(['vigor' => 1])->all();
-                $metodosexpedicao = Metodoexpedicao::find()->where(['vigor' => 1])->all();
-                return $this->render('metodopagamento', [
-                    'metodospagamento' => $metodospagamento,
-                    'metodosexpedicao' => $metodosexpedicao,
-                ]);
-            }
-
-            return $this->redirect(['fatura/create',
-                'metodoPagamentoId' => $metodoPagamentoId,
-                'metodoExpedicaoId' => $metodoExpedicaoId]);
-        }
-
-        $metodospagamento = Metodopagamento::find()->where(['vigor' => 1])->all();
-        $metodosexpedicao = Metodoexpedicao::find()->where(['vigor' => 1])->all();
-        return $this->render('metodopagamento', [
-            'metodospagamento' => $metodospagamento,
-            'metodosexpedicao' => $metodosexpedicao,
-        ]);
-    }
-
-    public function actionCreate($metodoExpedicaoId, $metodoPagamentoId)
-    {
-        $metodoExpedicao = Metodoexpedicao::findOne($metodoExpedicaoId);
-        $metodoPagamento = Metodopagamento::findOne($metodoPagamentoId);
+        try
+        {
+        $metodoExpedicao = Yii::$app->session->get('metodoExpedicao');
+        $metodoPagamento = Yii::$app->session->get('metodoPagamento');
 
         if (!$metodoExpedicao || !$metodoPagamento) {
-            Yii::$app->session->setFlash('error', 'Forma de pagamento ou expedição inválida.');
-            return $this->redirect(['carrinho/index']);
+            Yii::$app->session->setFlash('error', 'Método de pagamento/expedição inválida.');
+            return $this->redirect(['checkout',
+            'metodoPagamentoId' => $metodoPagamento->id,
+            'metodoExpedicaoId' => $metodoExpedicao->id,
+         ]);
         }
 
-        $fatura = new Fatura();
         $user = Yii::$app->user->identity;
         $userProfile = UserProfile::findOne(['user_id' => $user->id]);
 
+        $carrinho = Carrinho::findOne($userProfile->carrinho_id);
+
+
+        $fatura = new Fatura();
+        $fatura->dataVenda = date('Y-m-d H:i:s');
+        $fatura->valida = 0;
+        $fatura->estadoEncomenda = 0;
         $fatura->userprofile_id = $userProfile->id;
         $fatura->metodoexpedicao_id = $metodoExpedicao->id;
         $fatura->metodopagamento_id = $metodoPagamento->id;
-        $fatura->dataVenda = date('Y-m-d H:i:s', time());
-        $fatura->estadoEncomenda = 0; // 0 = pendente
-        $fatura->total = 0; // Inicializa o total
-        $fatura->valida = 0; // Por finalizar
+        $fatura->total = 0;
+        $fatura->save();
 
-        if ($fatura->save()) {
-            $carrinho = Carrinho::findOne(['id' => $userProfile->carrinho_id]);
-            $totalFatura = 0; // Variável para somar o total da fatura
+        $cupao = Yii::$app->session->get('desconto') ?? '';
 
-            foreach ($carrinho->linhascarrinhos as $linhaCarrinho) {
-                $linhaFatura = new LinhaFatura();
-                $linhaFatura->fatura_id = $fatura->id;
-                $linhaFatura->produto_id = $linhaCarrinho->produto_id;
-                $linhaFatura->quantidade = $linhaCarrinho->quantidade;
-                $linhaFatura->valorUnitario = $linhaCarrinho->produto->preco;
-                $linhaFatura->total = $linhaCarrinho->quantidade * $linhaFatura->valorUnitario;
+        //cupao deixa de ser valido para o utilizador
+        //criar uma linha da fatura para o desconto aplicado
+        //converter todas as linhas do carrinho em linhas fatura
+        //limpar todas as linhas do carrinho
+        //guardar a fatura
+        //limpar o total do carrinho
+        //guardar o carrinho
 
-                // Calcula IVA
-                $linhaFatura->porcentagemIva = $linhaCarrinho->produto->iva->valorPorcentagem;
-                $linhaFatura->valorIva = $linhaFatura->total * ($linhaFatura->porcentagemIva / 100);
-                $linhaFatura->subtotal = $linhaFatura->total - $linhaFatura->valorIva;
+        if ($cupao != "")
+        {
+            $descontos = Userdesconto::find(['userprofile_id' => $user->userprofile->id])->all();
+            
+            if(!Desconto::validateCupao($cupao, $user->userprofile->id))
+                return $this->redirect(['checkout',
+                'metodoPagamentoId' => $metodoPagamento->id,
+                'metodoExpedicaoId' => $metodoExpedicao->id,
+            ]);
 
-                // Acumula o total da fatura
-                $totalFatura += $linhaFatura->total;
+            foreach ($descontos as $desconto) {
+                if ($desconto->valido) 
+                {
+                    $descontoAtual = Desconto::findOne($desconto->desconto_id);
 
-                if (!$linhaFatura->save()) {
-                    Yii::$app->session->setFlash('error', 'Erro ao salvar item da fatura.');
-                    return false;
+                    if ($descontoAtual->nome == $cupao)
+                    {
+                        
+                        $valorDesconto = ($carrinho->total * (1 / $descontoAtual->valor));
+                        $carrinho->total = $carrinho->total - $valorDesconto;
+                        
+                        $desconto->valido = 0;
+                        $desconto->save();
+
+                        $fatura->desconto_id = $descontoAtual->id;
+
+                        $linhaFaturaDesconto = new Linhafatura();
+                        $linhaFaturaDesconto->valorUnitario = $valorDesconto;
+                        $linhaFaturaDesconto->quantidade = 1;
+                        $linhaFaturaDesconto->total = $valorDesconto;
+                        $linhaFaturaDesconto->porcentagemIva = 0;
+                        $linhaFaturaDesconto->valorIva = 0;
+                        $linhaFaturaDesconto->subtotal = $valorDesconto;
+                        $linhaFaturaDesconto->fatura_id = $fatura->id;
+                        $linhaFaturaDesconto->save();
+                        break;
+                    }
                 }
             }
-
-            // Atribui o total calculado à fatura
-            $fatura->total = $totalFatura;
-
-            // Salva novamente a fatura com o total atualizado
-            if (!$fatura->save()) {
-                Yii::$app->session->setFlash('error', 'Falha ao atualizar o total da fatura.');
-                return $this->redirect(['carrinho/index']);
-            }
-
-            // Clear cart after creating invoice lines
-            foreach ($carrinho->linhascarrinhos as $linhaCarrinho) {
-                $linhaCarrinho->delete();
-            }
-
-            return $this->redirect(['fatura/index', 'id' => $fatura->id]);
         }
 
-        Yii::$app->session->setFlash('error', 'Falha ao criar fatura.');
-        return $this->redirect(['carrinho/index']);
-    }
+        foreach($carrinho->linhascarrinhos as $linhaCarrinho)
+        {
+            $linhaFatura = new Linhafatura();
+            $linhaFatura->valorUnitario = $linhaCarrinho->precoUnitario;
+            $linhaFatura->quantidade = $linhaCarrinho->quantidade;
+            $linhaFatura->total = round($linhaCarrinho->precoUnitario * $linhaCarrinho->quantidade, 2);
+            $linhaFatura->porcentagemIva = $linhaCarrinho->produto->iva->valorPorcentagem;
+            $linhaFatura->valorIva = round((1/$linhaFatura->porcentagemIva) * $linhaFatura->valorUnitario, 2);
+            $linhaFatura->subtotal = round($linhaFatura->total - $linhaFatura->valorIva, 2);
+            $linhaFatura->fatura_id = $fatura->id;
+            $linhaFatura->produto_id = $linhaCarrinho->produto_id;
 
-    public function actionFinalizar($id)
-    {
-        $user = Yii::$app->user->identity;
-        $userProfile = UserProfile::findOne(['user_id' => $user->id]);
-        $fatura = Fatura::findOne(['id' => $id, 'userprofile_id' => $userProfile->id]);
+            $linhaFatura->save();
+            $linhaCarrinho->delete();
+        }
 
-        $fatura->valida = 1; // Marca como finalizada
-
+        $fatura->total = round($carrinho->total, 2);
+        $fatura->valida = 1;
         $fatura->save();
-        Yii::$app->session->setFlash('success', 'Compra finalizada com sucesso!Pode vizualizar a fatura no seu profile');
+
+        $carrinho->total = 0;
+        $carrinho->save();
+
+        Yii::$app->session->setFlash('success', 'Compra concluída com sucesso!');
         return $this->redirect(['site/index']);
-
     }
-
-    public function actionDesconto()
+    catch(Exception)
     {
-        $request = Yii::$app->request;
-        $faturaId = $request->post('faturaId');
-        $codigo = $request->post('discountCode');
-
-        $user = Yii::$app->user->identity;
-        $userProfile = $user->userprofile;
-
-        $fatura = Fatura::findOne(['id' => $faturaId, 'userprofile_id' => $userProfile->id]);
-
-        // Encontra e verifica se o codigo é valido
-        $desconto = Desconto::findOne(['nome' => $codigo]);
-        if (!$desconto) {
-            Yii::$app->session->setFlash('error', 'Código de desconto inválido.');
-            return $this->redirect(['fatura/index', 'id' => $fatura->id]);
-        }
-
-        // Verifica se o utilizador tem o codigo e esta valido
-        $userDesconto = Userdesconto::findOne([
-            'userprofile_id' => $userProfile->id,
-            'desconto_id' => $desconto->id,
-            'valido' => 1,
-        ]);
-
-        if (!$userDesconto) {
-            Yii::$app->session->setFlash('error', 'Código de desconto inválido.');
-            return $this->redirect(['fatura/index', 'id' => $fatura->id]);
-        }
-
-        // aplica desconto e salva
-        $fatura->total -= $userDesconto->desconto->valor;
-        if ($fatura->total < 0) {
-            $fatura->total = 0; //total nao pode ser negativo
-        }
-
-        if ($fatura->save()) {
-            $userDesconto->valido = 0; // Marca codigo como usado
-            $userDesconto->save();
-
-            Yii::$app->session->setFlash('success', 'Desconto aplicado com sucesso!');
-        } else {
-            Yii::$app->session->setFlash('error', 'Erro ao aplicar o desconto.');
-        }
-
-        return $this->redirect(['fatura/index', 'id' => $fatura->id]);
+        throw new Exception();
     }
-
-
+        Yii::$app->session->setFlash('error', 'Falha ao criar fatura.');
+        return $this->redirect(['checkout',
+        'metodoPagamentoId' => $metodoPagamento->id,
+        'metodoExpedicaoId' => $metodoExpedicao->id,
+     ]);
+    }
 
 }

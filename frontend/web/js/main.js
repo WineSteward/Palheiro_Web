@@ -14,23 +14,26 @@
     /*------------------
         Preloader
     --------------------*/
-    $(document).ready(function () {
-        $(".loader").fadeOut();
-        $("#preloder").delay(100).fadeOut("slow");
-
-        /*------------------
-            Gallery filter
-        --------------------*/
-        $('.featured__controls li').on('click', function () {
-            $('.featured__controls li').removeClass('active');
-            $(this).addClass('active');
-        });
-        if ($('.featured__filter').length > 0) {
-            var containerEl = document.querySelector('.featured__filter');
-            var mixer = mixitup(containerEl);
+    document.addEventListener("DOMContentLoaded", function () {
+        function hidePreloader() {
+            var loader = document.querySelector(".loader");
+            var preloader = document.getElementById("preloder");
+            if (loader) loader.style.opacity = "0"; // Smooth fade-out for spinner
+            if (preloader) {
+                preloader.style.transition = "opacity 0.5s ease";
+                preloader.style.opacity = "0";
+                setTimeout(function () {
+                    preloader.style.display = "none"; // Ensure it's removed from the flow
+                    document.body.classList.add("loaded");
+                }, 500); // Match fade-out duration
+            }
         }
+    
+        // Attach both window load and fallback
+        window.addEventListener("load", hidePreloader);
+        setTimeout(hidePreloader, 2000); // Fallback in case of issues
     });
-
+    
     /*------------------
         Background Set
     --------------------*/
@@ -53,8 +56,8 @@
     });
 
     /*------------------
-		Navigation
-	--------------------*/
+        Navigation
+    --------------------*/
     $(".mobile-menu").slicknav({
         prependTo: '#mobile-menu-wrap',
         allowParentLinks: true
@@ -96,7 +99,7 @@
     });
 
 
-    $('.hero__categories__all').on('click', function(){
+    $('.hero__categories__all').on('click', function () {
         $('.hero__categories ul').slideToggle(400);
     });
 
@@ -160,8 +163,8 @@
     });
 
     /*-----------------------
-		Price Range Slider
-	------------------------ */
+        Price Range Slider
+    ------------------------ */
     var rangeSlider = $(".price-range"),
         minamount = $("#minamount"),
         maxamount = $("#maxamount"),
@@ -186,8 +189,8 @@
     $("select").niceSelect();
 
     /*------------------
-		Single Product
-	--------------------*/
+        Single Product
+    --------------------*/
     $('.product__details__pic__slider img').on('click', function () {
 
         var imgurl = $(this).data('imgbigurl');
@@ -200,8 +203,8 @@
     });
 
     /*-------------------
-		Quantity change
-	--------------------- */
+        Quantity change
+    --------------------- */
     var proQty = $('.pro-qty');
     proQty.prepend('<span class="dec qtybtn">-</span>');
     proQty.append('<span class="inc qtybtn">+</span>');

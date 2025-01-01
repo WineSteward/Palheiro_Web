@@ -23,7 +23,7 @@ class ImageController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['company', 'products'],
+                        'actions' => ['company', 'products', 'categories'],
                         'allow' => true,
                         'roles' => ['@', '?'],
                     ],
@@ -41,6 +41,19 @@ class ImageController extends Controller
     {
 
         $path = Yii::getAlias('@backend/web/company/') . $imageName;
+        if (file_exists($path)) 
+        {
+            Yii::$app->response->sendFile($path);
+            return;
+        }
+        throw new \yii\web\NotFoundHttpException('Image not found.');
+    
+    }
+
+    public function actionCategories($imageName)
+    {
+
+        $path = Yii::getAlias('@backend/web/categories/') . $imageName;
         if (file_exists($path)) 
         {
             Yii::$app->response->sendFile($path);

@@ -9,7 +9,6 @@ use yii\bootstrap5\ActiveForm;
 use yii\captcha\Captcha;
 
 $this->title = 'Contactos';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-contact">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -24,9 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php if(Yii::$app->user->isGuest): ?>
 
-                <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
+                <?= $form->field($model, 'name')->textInput(['autofocus' => true])->label('Nome') ?>
 
-                <?= $form->field($model, 'email') ?>
+                <?= $form->field($model, 'email')->label('Email') ?>
             
             <?php else: ?>
 

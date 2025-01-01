@@ -36,11 +36,19 @@ AppAsset::register($this);
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
 
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader-container">
+        <?= Html::img(UrlHelper::getCompanyImageUrl('palheiroLogo.png'))?>
+        <div class="loader"></div>
+    </div>
+</div>
+
 <header>
 
     <?php
     NavBar::begin([
-        'brandLabel' => Html::img( UrlHelper::getCompanyImageUrl(urlencode('palheiroLogo.png')), ['alt' => Yii::$app->name,'style' => 'max-width: 40px; height: auto;']),
+        'brandLabel' => Html::img(UrlHelper::getCompanyImageUrl(urlencode('palheiroLogo.png')), ['alt' => Yii::$app->name,'style' => 'max-width: 40px; height: auto;']),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar navbar-expand-md navbar-light bg-light fixed-top',
@@ -49,17 +57,9 @@ AppAsset::register($this);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
         ['label' => 'Produtos', 'url' => ['/produto/index']],
-        ['label' => 'Contact', 'url' => ['/contact/index']],
-        [
-            'label' => Html::tag('i', '', ['class' => 'fa fa-shopping-bag']),
-            'url' => ['/carrinho/index'],
-            'encode' => false, // Allow HTML in the label
-        ],
+        ['label' => 'Contactos', 'url' => ['/contact/index']],
+        ['label' => 'Carrinho', 'url' => ['/carrinho/index']]
     ];
-    if (Yii::$app->user->isGuest) 
-    {
-        $menuItems[] = ['label' =>  'Signup', 'url' => ['/site/signup']];
-    }
 
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
@@ -73,11 +73,16 @@ AppAsset::register($this);
             ['class' => ['btn btn-link login text-dark text-decoration-none fa fa-user ']]),
             ['class' => ['d-flex']]
         );
+        echo Html::tag(
+            'div',Html::a('Signup',['/site/signup'],
+            ['class' => ['btn btn-link login text-dark text-decoration-none fa']]),
+            ['class' => ['d-flex']]
+        );
     }
     else
     {
        echo Html::a(
-           '<i class="fa fa-user"></i> Profile',
+           '<i class="fa fa-user"></i> Perfil',
            ['/profile/index'],
            ['class' => 'btn text-decoration-none'],
        );
@@ -173,6 +178,25 @@ AppAsset::register($this);
     </div>
 </footer>
 <!-- Footer Section End -->
+
+<!-- Floating Cart Button -->
+<?php
+// Pages where the button should NOT appear
+$excludedRoutes = [
+    'profile/index',
+    'site/login',
+    'site/signup',
+    'contact/index',
+    'carrinho/index',
+];
+
+$currentRoute = Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
+
+if (!in_array($currentRoute, $excludedRoutes)): ?>
+    <div class="floating-cart-button">
+        <?= Html::a(Html::tag('i', '', ['class' => 'fa fa-cart-shopping']), ['/carrinho/index'], ['class' => 'btn btn-primary']) ?>
+    </div>
+<?php endif; ?>
 
 <?php $this->endBody() ?>
 </body>

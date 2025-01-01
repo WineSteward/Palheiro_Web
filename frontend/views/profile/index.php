@@ -23,7 +23,7 @@ $this->title = 'Profile';
                         <div class="col-md-6 mb-3">
                             <h5 class="strong">Morada</h5>
                             <p><strong>Morada 1:</strong> <?= Html::encode($userProfile->morada) ?></p>
-                            <p><strong>Morada 2:</strong> <?= Html::encode($userProfile->morada2) ?></p>
+                            <p><strong>Morada 2:</strong><?= Html::encode($userProfile->morada2 ?: '<sem dados>') ?></p>
                         </div>
                     </div>
                     <div class="row">
@@ -39,14 +39,14 @@ $this->title = 'Profile';
                     </div>
                 </div>
                 <div class="card-footer text-end bg-light">
-                    <?= Html::a('Editar Profile', ['profile/editar-profile'], ['class' => 'site-btn']) ?>
+                    <?= Html::a('Editar Perfil', ['profile/edit'], ['class' => 'site-btn']) ?>
                 </div>
             </div>
             <!-- Tabs for Discounts and Invoices -->
             <div class="mt-4">
                 <ul class="nav nav-tabs" id="profile-tabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="descontos-tab" data-bs-toggle="tab" href="#descontos" role="tab" aria-controls="descontos" aria-selected="true">Descontos</a>
+                        <a class="nav-link active" id="descontos-tab" data-bs-toggle="tab" href="#descontos" role="tab" aria-controls="descontos" aria-selected="true">Cupões</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="faturas-tab" data-bs-toggle="tab" href="#faturas" role="tab" aria-controls="faturas" aria-selected="false">Faturas</a>
@@ -62,8 +62,7 @@ $this->title = 'Profile';
                                         <?php foreach ($userDescontos as $userDesconto): ?>
                                             <li class="list-group-item">
                                                 <strong><?= Html::encode($userDesconto->desconto->nome) ?>:</strong>
-                                                <?= Html::encode($userDesconto->desconto->valor) ?>€
-                                                <?= $userDesconto->valido ? '(Valido)' : '(Usado)' ?>
+                                                <?= Html::encode($userDesconto->desconto->valor) ?>% no total da compra
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>

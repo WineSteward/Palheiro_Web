@@ -10,6 +10,7 @@ use common\models\Userprofile;
 use frontend\models\ProdutoSearch;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -45,38 +46,40 @@ class ProdutoController extends \yii\web\Controller
     }
 
 
-    public function actionIndex($categoria_nome = null)
+    public function actionIndex()
     {
+        $produtoSearch = new ProdutoSearch();
+            
+        $produtoSearch->load(Yii::$app->request->queryParams);
+
         $query = Produto::find();
-
-        if ($categoria_nome !== null) {
-            // Get the category based on the name
-            $category = Categoria::find()->where(['nome' => $categoria_nome])->one();
-
-            if ($category) {
-                // Filter products by the found category's ID
-                $query->andWhere(['categoria_id' => $category->id]);
-            }
+            
+        if ($produtoSearch->nome) {
+            $query->andWhere(['like', 'nome', $produtoSearch->nome]);
         }
 
+        $produtos = $query->all();
 
-        // aplica filtros do ProdutoSearch
-        $produtoSearch = new ProdutoSearch();
-        $dataProvider = $produtoSearch->search(Yii::$app->request->queryParams, $query);
+        $totalCount = $query->count();
 
-        // Categorias para a sidebar
-        $categorias = Categoria::find()->all();
+        $pagination = new Pagination([
+            'totalCount' => $totalCount,
+            'pageSize' => 10,
+        ]);
 
-        $defaultCategoria = new Categoria();
-        $defaultCategoria->nome ="";
+        $produtos = $query->offset($pagination->offset)
+                        ->limit($pagination->limit)
+                        ->all();
 
-        $categorias[] = $defaultCategoria;
+                    $categorias = Categoria::find()->all();
         
         return $this->render('index', [
             'categorias' => $categorias,
             'produtoSearch' => $produtoSearch,
-            'dataProvider' => $dataProvider,
+            'produtos' => $produtos,
+            'pagination' => $pagination
         ]);
+
     }
 
     public function actionShow($id)

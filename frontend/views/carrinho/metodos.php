@@ -7,7 +7,7 @@ use yii\helpers\Url;
 ?>
 
 <?php $form = ActiveForm::begin([
-    'action' => Url::to(['fatura/metodos']),
+    'action' => Url::to(['carrinho/metodos']),
     'method' => 'post',
 ]); ?>
 
