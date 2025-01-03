@@ -13,17 +13,16 @@ class ContactController extends Controller
     {
         $model = new ContactForm();
         
-        
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             try {
                 //transformacao dos dados em um formato like JSON para que possam ser enviados inline
-                $rawMessage = "nome:" . $model->name . ",email:" . $model->email .",titulo:" . $model->subject . ",corpo:" . $model->body;
+                $message = "nome:" . $model->name . ",email:" . $model->email .",titulo:" . $model->subject . ",corpo:" . $model->body;
                 
-                //mudar o IP quando se fizer deploy
-                $mqtt = new MqttClient('localhost', 1883);
+                // Criar a instancia do cliente publisher
+		$mqtt = new MqttClient('172.22.21.209', 1883);
                 
                 //mosquitto_pub
-                $mqtt->publish('contactos', $rawMessage);
+                $mqtt->publish('contactos', $message);
                 
                 Yii::$app->session->setFlash('success', 'Obrigado por nos contactar. Iremos responder com a máxima brevidade. Obrigado.');
             }

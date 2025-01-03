@@ -1,9 +1,14 @@
 to use mosquitto: 
-start mosquitto service (leave it on)
+open cmd
+use mosquitto -c "C:\\MQTT\\mosquitto\\mosquitto.conf -v
+verify its working via ipv4
 
-In the folder of the project
-php yii mqtt/subscribe
+next
+open another cmd
+go to the root of the project
+use php yii mqtt/subscribe
 
+done
 
 
 

@@ -20,7 +20,7 @@ use Yii;
  * @property int $valornutricional_id
  *
  * @property Categoria $categoria
- * @property Imagen[] $imagens
+ * @property Imagem[] $imagens
  * @property Iva $iva
  * @property Linhacarrinho[] $linhascarrinhos
  * @property Linhafatura[] $linhasfaturas

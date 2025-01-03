@@ -12,7 +12,7 @@ class MqttController extends Controller
     public function actionSubscribe()
     {
         // Preparação do comando para usar no CMD
-        $cmd = "mosquitto_sub -q 1 -t " . self::TOPIC;
+        $cmd = "mosquitto_sub -q 1 -h 172.22.21.209 -t " . self::TOPIC;
 
         //Inicialização do processo de leitura das msgs
         $process = popen($cmd, 'r');
