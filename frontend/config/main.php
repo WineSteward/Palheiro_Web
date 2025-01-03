@@ -12,6 +12,11 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'currencyCode' => 'EUR',
+            'locale' => 'fr-FR',
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],

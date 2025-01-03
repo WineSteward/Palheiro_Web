@@ -123,8 +123,6 @@ class CarrinhoController extends \yii\web\Controller
         $request = Yii::$app->request;
         $codigo = $request->post('discountCode');
 
-        Yii::$app->session->set('desconto', $codigo);
-
         $user = Yii::$app->user->identity;
         $userProfile = $user->userprofile;
         $carrinho = Carrinho::findOne($userProfile->carrinho_id);
@@ -134,6 +132,7 @@ class CarrinhoController extends \yii\web\Controller
 
         if (!$desconto) {
             Yii::$app->session->setFlash('error', 'Código de desconto inválido.');
+
             return $this->redirect(['checkout',
             'metodoPagamentoId' => $metodoPagamento->id,
             'metodoExpedicaoId' => $metodoExpedicao->id,
@@ -149,6 +148,7 @@ class CarrinhoController extends \yii\web\Controller
 
         if (!$userDesconto) {
                 Yii::$app->session->setFlash('error', 'Código de desconto inválido.');
+
                 return $this->redirect(['checkout',
                 'metodoPagamentoId' => $metodoPagamento->id,
                 'metodoExpedicaoId' => $metodoExpedicao->id,
@@ -159,6 +159,8 @@ class CarrinhoController extends \yii\web\Controller
         $placeholderTotal = $carrinho->total - ($carrinho->total * ($userDesconto->desconto->valor/100));
 
         Yii::$app->session->setFlash('success', 'Desconto aplicado com sucesso!');
+
+        Yii::$app->session->set('desconto', $codigo);
 
         return $this->redirect(['checkout',
             'metodoPagamentoId' => $metodoPagamento->id,

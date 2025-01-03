@@ -256,6 +256,35 @@ footer {
     background-color: #f5f5f5; /* Lighter gray (almost white) */
 }
 
+/* Navbar*/
+.navbar-nav .nav-item .nav-link {
+    color: black; /* Default text color */
+    padding: 4px 12px;
+    border-radius: 25px; /* Rounded corners */
+    transition: background-color 0.3s, color 0.3s; /* Smooth hover and active transitions */
+}
+
+/* Hover effect */
+.navbar-nav .nav-item .nav-link:hover {
+    background-color: #ada9a8; /* Gray background on hover */
+    color: black; /* White text on hover */
+}
+
+/* Active page */
+.navbar-nav .nav-item .nav-link.active {
+    background-color: #7fad39; /* Green background for active item */
+    color: black; /* White text for active item */
+}
+
+
+
+/* Table fatura*/
+
+.tabela-fatura thead tr th,
+.tabela-fatura tbody tr th {
+	background-color: #7fad39;
+}
+
 
 /* Preloder */
 

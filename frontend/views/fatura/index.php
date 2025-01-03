@@ -24,6 +24,7 @@ $this->title = 'Faturas';
                         <div class="info-section" style="background-color: #28a745; padding: 8px; text-align: center;">
                             <p style="margin: 0; font-size: 14px;"><strong>Total: <?= Html::encode($fatura->total) ?>€</strong></p>
                             <p style="margin: 0; font-size: 12px;">Data: <?= Html::encode(Yii::$app->formatter->asDate($fatura->dataVenda, 'php:d/m/Y')) ?></p>
+                            <p style="margin: 0; font-size: 12px;">Nº: <?= Html::encode($fatura->id) ?></p>
                         </div>
                     </div>
                 </a>

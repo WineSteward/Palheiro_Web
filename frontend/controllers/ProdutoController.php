@@ -16,6 +16,8 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
+use function PHPUnit\Framework\returnSelf;
+
 class ProdutoController extends \yii\web\Controller
 {
 
@@ -104,11 +106,15 @@ class ProdutoController extends \yii\web\Controller
     {
         $request = Yii::$app->request;
 
+        $user = Yii::$app->user->identity;
+
+        if(!$user)
+            return $this->redirect(['site/login']);
+        
         if ($request->isPost) {
             $produtoId = $request->post('produto_id');
             $quantidade = $request->post('quantidade', 1); // Default to 1 if not provided
 
-            $user = Yii::$app->user->identity;
             $userProfile = UserProfile::findOne(['user_id' => $user->id]);
             $carrinho = Carrinho::findOne($userProfile->carrinho_id);
 
