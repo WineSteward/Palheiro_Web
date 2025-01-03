@@ -4,6 +4,7 @@ namespace backend\modules\api\controllers;
 
 use backend\modules\api\components\CustomAuth;
 use common\models\Carrinho;
+use common\models\User;
 use Yii;
 use yii\rest\ActiveController;
 use yii\web\Response;
@@ -16,6 +17,7 @@ class UserprofileController extends ActiveController
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => CustomAuth::className(),
+            'except' => ['registar']
         ];
         return $behaviors;
     }
@@ -109,11 +111,11 @@ class UserprofileController extends ActiveController
             $carrinho = Carrinho::defaultCarrinho();
 
             if ($userprofile->signup($userForm->id, $carrinho)) {
-                return 'success';
+                $user = User::findOne($userForm->id);
+                return ['token' => $user->auth_key];
             }
         }
 
-
-        return 'Total Fail';
+        return 'error';
     }
 }

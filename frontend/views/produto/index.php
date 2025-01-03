@@ -20,12 +20,12 @@ $this->title = 'Palheiro'
                             'action' => ['produto/index'],
                         ]); ?>
 
-                        <?= 
-                            $form->field($produtoSearch, 'nome')
-                                ->textInput([
-                                    'placeholder' => 'Procure por produtos',
-                                    'value' => Yii::$app->request->get('nome')
-                                    ])->label(false)
+                        <?=
+                        $form->field($produtoSearch, 'nome')
+                            ->textInput([
+                                'placeholder' => 'Procure por produtos',
+                                'value' => Yii::$app->request->get('nome')
+                            ])->label(false)
                         ?>
 
                         <div class="form-group">
@@ -37,7 +37,7 @@ $this->title = 'Palheiro'
                 </div>
             </div>
         </div>
-        <section class="featured spad">
+        <section class="featured spad" style="padding-top:30px;">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -47,7 +47,7 @@ $this->title = 'Palheiro'
                         <div class="featured__controls">
                             <ul>
                                 <li class="active" data-filter="*">Todas</li>
-                                <?php foreach($categorias as $categoria): ?>
+                                <?php foreach ($categorias as $categoria): ?>
                                     <li data-filter=".<?= $categoria->nome ?>"><?= $categoria->nome ?></li>
                                 <?php endforeach ?>
                             </ul>
@@ -61,9 +61,13 @@ $this->title = 'Palheiro'
                                 <div class="featured__item__pic set-bg" data-setbg="<?= UrlHelper::getProductImageUrl($produto->imagens[0]->ficheiro) ?>">
                                     <ul class="featured__item__pic__hover">
                                         <li>
-                                            <a href="<?= Url::to(['produto/show', 'id' => $produto->id]) ?>">
-                                                <i class="fa fa-shopping-cart"></i>
-                                            </a>
+                                            <form action="<?= Url::to(['produto/add-to-cart']) ?>" method="post" style="display: inline;">
+                                                <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->csrfToken) ?>
+                                                <?= Html::hiddenInput('produto_id', $produto->id) ?>
+                                                <button type="submit" style="all: unset;">
+                                                    <a><i class="fa fa-shopping-cart"></i></a>
+                                                </button>
+                                            </form>
                                         </li>
                                         <li>
                                             <a href="<?= Url::to(['produto/show', 'id' => $produto->id]) ?>">

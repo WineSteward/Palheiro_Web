@@ -12,20 +12,24 @@ class ContactController extends Controller
     public function actionIndex()
     {
         $model = new ContactForm();
-    
+        
+        
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             try {
+                //transformacao dos dados em um formato like JSON para que possam ser enviados inline
                 $rawMessage = "nome:" . $model->name . ",email:" . $model->email .",titulo:" . $model->subject . ",corpo:" . $model->body;
                 
+                //mudar o IP quando se fizer deploy
                 $mqtt = new MqttClient('localhost', 1883);
                 
+                //mosquitto_pub
                 $mqtt->publish('contactos', $rawMessage);
                 
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
+                Yii::$app->session->setFlash('success', 'Obrigado por nos contactar. Iremos responder com a máxima brevidade. Obrigado.');
             }
             catch (\Exception $e) 
             {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message: ' . $e->getMessage());
+                Yii::$app->session->setFlash('error', 'Aconteceu um erro ao enviar a sua mensagem. Volte a tentar mais tarde. Agradecemos a atenção');
             }
     
             return $this->refresh();

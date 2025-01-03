@@ -148,7 +148,6 @@ return [
                     'extraPatterns' => [
                         'Get all' => 'all',
                         'GET nome/{nome}' => 'searchnome',
-                        'GET id/{id}' => 'searchid',
                         'GET categoria/{id}' => 'allofcategoria',
                         'GET {id}/{nome}' => 'searchcomplete',
                     ],

@@ -141,25 +141,6 @@ class ProdutoController extends ActiveController
         return $produtosDetails;
     }
 
-/*     public function actionSearchid($id)
-    {
-        $produtoModel = new $this->modelClass;
-        
-        $res = $produtoModel::find()
-                                ->with(['categoria', 'imagens', 'iva', 'marca' , 'valornutricional'])
-                                ->where(['id' => $id])
-                                ->asArray()
-                                ->one();
-        
-        if (empty($res))
-        {
-            return ['message' => 'No products found matching your search.'];
-        }
-        
-        return $res;
-    } */
-
-
     public function actionSearchcomplete($id, $nome)
     {
         Yii::$app->response->format = Response::FORMAT_JSON;

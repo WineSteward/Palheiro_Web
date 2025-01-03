@@ -10,7 +10,6 @@ class ProfileController extends \yii\web\Controller
 {
     public function actionIndex()
     {
-        // User que esta loged in
         $user = Yii::$app->user->identity;
         $userProfile = $user->userprofile;
 
@@ -25,7 +24,7 @@ class ProfileController extends \yii\web\Controller
             ->with('desconto')
             ->all();
 
-            $faturas = Fatura::find()
+            $encomendas = Fatura::find()
             ->where(['userprofile_id' => $userProfile->id, 'valida' => 1])
             ->all();
 
@@ -33,7 +32,7 @@ class ProfileController extends \yii\web\Controller
             'user'=>$user,
             'userProfile' => $userProfile,
             'userDescontos' => $userDescontos,
-            'faturas' => $faturas,
+            'encomendas' => $encomendas,
         ]);
     }
 

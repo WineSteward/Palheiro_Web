@@ -7,6 +7,7 @@ class MqttClient
     private $host;
     private $port;
 
+    //construcao do nosso mosquitto_pub
     public function __construct($host = 'localhost', $port = 1883)
     {
         $this->host = $host;
@@ -15,10 +16,10 @@ class MqttClient
 
     public function publish($topic, $message)
     {
-        // Directly escape the message to preserve spaces and special characters
-        $escapedMessage = escapeshellarg($message);  // Escape the message but keep spaces
+        // Garantir que os dados nao vem com intencoes maliciosas
+        $escapedMessage = escapeshellarg($message);
 
-        // Prepare the command for mosquitto_pub
+        // preparacao do comando mosquitto_pub com base nos dados recebidos e nos dados do construtor da instancia
         $command = sprintf(
             'mosquitto_pub -r -q 1 -h %s -p %d -t "%s" -m %s',
             escapeshellarg($this->host),
@@ -27,13 +28,13 @@ class MqttClient
             $escapedMessage
         );
 
-        // Execute the command
+        // Execução do comando no CMD
         $output = [];
         $returnVar = 0;
         exec($command, $output, $returnVar);
 
         if ($returnVar !== 0) {
-            throw new \Exception("Failed to publish message. Command output: " . implode("\n", $output));
+            throw new \Exception("Falha ao publicar o seu formulário");
         }
     }
 }

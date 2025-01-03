@@ -6,6 +6,7 @@ use common\models\Carrinho;
 use common\models\Desconto;
 use common\models\Fatura;
 use common\models\Linhafatura;
+use common\models\Produto;
 use common\models\Userdesconto;
 use common\models\Userprofile;
 use Exception;
@@ -14,7 +15,17 @@ use Yii;
 
 class FaturaController extends \yii\web\Controller
 {
-    public function actionIndex($id)
+    public function actionIndex()
+    {
+        $user = Yii::$app->user->identity;
+        
+        $faturas = $user->userprofile->faturas;
+
+        return $this->render('index' ,['faturas' => $faturas]);
+    }
+
+
+    public function actionView($id)
     {
         $fatura = Fatura::find()
                 ->with(['linhasfatura', 'metodoexpedicao', 'metodopagamento'])
@@ -25,7 +36,7 @@ class FaturaController extends \yii\web\Controller
             throw new \yii\web\NotFoundHttpException('Fatura not found.');
         }
 
-        return $this->render('index' ,['fatura' => $fatura]);
+        return $this->render('view' ,['fatura' => $fatura]);
     }
 
     public function actionCreate()
@@ -37,7 +48,7 @@ class FaturaController extends \yii\web\Controller
 
         if (!$metodoExpedicao || !$metodoPagamento) {
             Yii::$app->session->setFlash('error', 'Método de pagamento/expedição inválida.');
-            return $this->redirect(['checkout',
+            return $this->redirect(['carrinho/checkout',
             'metodoPagamentoId' => $metodoPagamento->id,
             'metodoExpedicaoId' => $metodoExpedicao->id,
          ]);
@@ -46,7 +57,23 @@ class FaturaController extends \yii\web\Controller
         $user = Yii::$app->user->identity;
         $userProfile = UserProfile::findOne(['user_id' => $user->id]);
 
-        $carrinho = Carrinho::findOne($userProfile->carrinho_id);
+        $carrinho = Carrinho::find()
+        ->with(['linhascarrinhos', 'linhascarrinhos.produto'])
+        ->where(['id'=>$user->userprofile->carrinho_id])
+        ->one();
+
+        foreach($carrinho->linhascarrinhos as $linha)
+        {
+            $produtoAtual = Produto::findOne($linha->produto->id);
+            if($linha->quantidade > $produtoAtual->quantidade)
+            {
+                Yii::$app->session->setFlash('error', 'Quantidade excedida do stock ' . $produtoAtual->nome);
+                return $this->redirect(['carrinho/checkout',
+                    'metodoPagamentoId' => $metodoPagamento->id,
+                    'metodoExpedicaoId' => $metodoExpedicao->id,
+                ]);
+            }
+        }
 
 
         $fatura = new Fatura();
@@ -59,7 +86,7 @@ class FaturaController extends \yii\web\Controller
         $fatura->total = 0;
         $fatura->save();
 
-        $cupao = Yii::$app->session->get('desconto') ?? '';
+        $cupao = Yii::$app->session->get('desconto') ?? "";
 
         //cupao deixa de ser valido para o utilizador
         //criar uma linha da fatura para o desconto aplicado
@@ -69,14 +96,21 @@ class FaturaController extends \yii\web\Controller
         //limpar o total do carrinho
         //guardar o carrinho
 
+
         if ($cupao != "")
         {
+            var_dump($this);
+            die();
+
             $descontos = Userdesconto::find(['userprofile_id' => $user->userprofile->id])->all();
             
             if(!Desconto::validateCupao($cupao, $user->userprofile->id))
-                return $this->redirect(['checkout',
-                'metodoPagamentoId' => $metodoPagamento->id,
-                'metodoExpedicaoId' => $metodoExpedicao->id,
+                
+                Yii::$app->session->setFlash('error', 'Cupão Inválido');
+
+                return $this->redirect(['carrinho/checkout',
+                    'metodoPagamentoId' => $metodoPagamento->id,
+                    'metodoExpedicaoId' => $metodoExpedicao->id,
             ]);
 
             foreach ($descontos as $desconto) {
@@ -122,6 +156,10 @@ class FaturaController extends \yii\web\Controller
             $linhaFatura->fatura_id = $fatura->id;
             $linhaFatura->produto_id = $linhaCarrinho->produto_id;
 
+            $produtoAtual = Produto::findOne($linhaCarrinho->produto_id);
+            $produtoAtual->quantidade -= $linhaCarrinho->quantidade; 
+            $produtoAtual->save();
+            
             $linhaFatura->save();
             $linhaCarrinho->delete();
         }
@@ -133,18 +171,22 @@ class FaturaController extends \yii\web\Controller
         $carrinho->total = 0;
         $carrinho->save();
 
+        Yii::$app->session->remove('desconto');
+        Yii::$app->session->remove('metodoPagamento');
+        Yii::$app->session->remove('metodoExpedicao');
+
         Yii::$app->session->setFlash('success', 'Compra concluída com sucesso!');
         return $this->redirect(['site/index']);
     }
     catch(Exception)
     {
-        throw new Exception();
-    }
         Yii::$app->session->setFlash('error', 'Falha ao criar fatura.');
-        return $this->redirect(['checkout',
+        return $this->redirect(['carrinho/checkout',
         'metodoPagamentoId' => $metodoPagamento->id,
         'metodoExpedicaoId' => $metodoExpedicao->id,
      ]);
+
+    }
     }
 
 }

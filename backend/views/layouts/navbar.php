@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <!-- Navbar -->
@@ -14,9 +15,8 @@ use yii\helpers\Html;
             <a href="<?=\yii\helpers\Url::home()?>" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">
+            <a href="<?= Url::to(['mensagem/index']) ?>" class="nav-link">
                 Mensagens de Utilizadores
-                <span class="badge badge-warning navbar-badge">1</span>
         </a>
         </li>
     </ul>

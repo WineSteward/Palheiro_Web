@@ -102,8 +102,8 @@ class ProdutoController extends \yii\web\Controller
 
     public function actionAddToCart()
     {
-        //todo verificar a quantidade do stock antes de adicionar
         $request = Yii::$app->request;
+
         if ($request->isPost) {
             $produtoId = $request->post('produto_id');
             $quantidade = $request->post('quantidade', 1); // Default to 1 if not provided
@@ -122,6 +122,14 @@ class ProdutoController extends \yii\web\Controller
             if (!$produto) {
                 Yii::$app->session->setFlash('error', 'Product not found.');
                 return $this->redirect(['produto/index']);
+            }
+
+            if($produto->quantidade < $quantidade)
+            {
+                Yii::$app->session->setFlash('error', 'Quantidade desejada excede o stock existente');
+                return $this->redirect(['produto/show',
+                    'id' => $produto->id
+                ]);
             }
 
             // Check if the product is already in the cart

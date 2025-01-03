@@ -121,7 +121,18 @@ class FaturaController extends ActiveController
 
         $user = $this->userClass::find()->where(['id' => Yii::$app->params['id']])->one();
 
-        $carrinho = $this->carrinhoClass::findOne($user->userprofile->carrinho_id);
+        $carrinho = $this->carrinhoClass::find()
+                                            ->with(['linhascarrinhos', 'linhascarrinhos.produto'])
+                                            ->where(['id'=>$user->userprofile->carrinho_id])
+                                            ->one();
+
+        foreach($carrinho->linhascarrinhos as $linha)
+        {
+            $produtoAtual = Produto::findOne($linha->produto->id);
+            if($linha->quantidade > $produtoAtual->quantidade)
+                return ['response' => 'quantidade excedente do stock ' . $produtoAtual->nome];
+        }
+
 
         $fatura = new $this->modelClass;
         $fatura->dataVenda = date('Y-m-d H:i:s');

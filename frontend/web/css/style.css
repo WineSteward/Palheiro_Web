@@ -222,6 +222,40 @@ footer {
     z-index: 1; /* Keeps footer below the floating button */
 }
 
+/* Fatura Card */
+.card {
+	border: 1px solid #000;
+	border-radius: 5px;
+	overflow: hidden;
+	margin-bottom: 20px;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+	box-shadow: 0 8px 16px rgba(0, 255, 0, 0.5);
+	transform: translateY(-5px);
+}
+
+.card .info-section p {
+	transition: color 0.3s ease, font-weight 0.3s ease;
+}
+
+.card:hover .info-section p {
+	color: #000; /* Black text */
+	font-weight: bold;
+}
+
+/* Improve text contrast for non-hovered state */
+.card .info-section p {
+    color: #e0e0e0; /* Light gray with better contrast */
+    font-weight: normal;
+}
+
+/* Update the image section background */
+.card .image-section {
+    background-color: #f5f5f5; /* Lighter gray (almost white) */
+}
+
 
 /* Preloder */
 

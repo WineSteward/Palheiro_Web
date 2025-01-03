@@ -27,6 +27,18 @@
                     document.body.classList.add("loaded");
                 }, 500); // Match fade-out duration
             }
+
+        /*------------------
+            Gallery filter
+        --------------------*/
+        $('.featured__controls li').on('click', function () {
+            $('.featured__controls li').removeClass('active');
+            $(this).addClass('active');
+        });
+        if ($('.featured__filter').length > 0) {
+            var containerEl = document.querySelector('.featured__filter');
+            var mixer = mixitup(containerEl);
+        }
         }
     
         // Attach both window load and fallback
@@ -152,10 +164,11 @@
     /*---------------------------------
         Product Details Pic Slider
     ----------------------------------*/
+    var imageCount = $('.product__details__pic__slider img').length;
     $(".product__details__pic__slider").owlCarousel({
-        loop: true,
+        loop: imageCount > 1, // Disable looping if there's only one image
         margin: 20,
-        items: 4,
+        items: Math.min(imageCount, 4), // Limit items to the number of images
         dots: true,
         smartSpeed: 1200,
         autoHeight: false,

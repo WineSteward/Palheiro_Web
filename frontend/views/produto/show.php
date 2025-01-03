@@ -1,24 +1,9 @@
-<?php use yii\helpers\Html;
+<?php
+
+use common\helpers\UrlHelper;
+use yii\helpers\Html;
 use yii\helpers\Url; ?>
 
-<!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="breadcrumb__text">
-                    <h2>Vegetable’s Package</h2>
-                    <div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <a href="./index.html">Vegetables</a>
-                        <span>Vegetable’s Package</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Breadcrumb Section End -->
 
 <!-- Product Details Section Begin -->
 <section class="product-details spad">
@@ -26,19 +11,11 @@ use yii\helpers\Url; ?>
         <div class="row">
             <div class="col-lg-6 col-md-6">
                 <div class="product__details__pic">
-                    <div class="product__details__pic__item">
-                        <img class="product__details__pic__item--large"
-                             src="img/product/details/product-details-1.jpg" alt="">
-                    </div>
                     <div class="product__details__pic__slider owl-carousel">
-                        <img data-imgbigurl="img/product/details/product-details-2.jpg"
-                             src="img/product/details/thumb-1.jpg" alt="">
-                        <img data-imgbigurl="img/product/details/product-details-3.jpg"
-                             src="img/product/details/thumb-2.jpg" alt="">
-                        <img data-imgbigurl="img/product/details/product-details-5.jpg"
-                             src="img/product/details/thumb-3.jpg" alt="">
-                        <img data-imgbigurl="img/product/details/product-details-4.jpg"
-                             src="img/product/details/thumb-4.jpg" alt="">
+                        <?php foreach($produto->imagens as $imagem): ?>
+                    <img data-imgbigurl="<?= UrlHelper::getProductImageUrl($imagem->ficheiro)?>"
+                             src="<?= UrlHelper::getProductImageUrl($imagem->ficheiro)?>" alt="">
+                        <?php endforeach ?>
                     </div>
                 </div>
             </div>
@@ -60,8 +37,8 @@ use yii\helpers\Url; ?>
                         <?= Html::endForm() ?>
                     </div>
                     <ul>
-                        <li><b>Availability</b> <span>In Stock</span></li>
-                        <li><b>Weight</b> <span>0.5 kg</span></li>
+                        <li><b>Stock</b> <span><?= $produto->quantidade ?></span></li>
+                        <li><b>Descricao</b> <span><?= $produto->descricao ?></span></li>
                     </ul>
                 </div>
             </div>
@@ -70,24 +47,31 @@ use yii\helpers\Url; ?>
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
-                               aria-selected="true">Descrição</a>
+                               aria-selected="true">Valor Nutricional</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
-                               aria-selected="false">Informação Nutricional</a>
+                               aria-selected="false">Marca</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
+                               aria-selected="false">Iva</a>
                         </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                            <div class="product__details__tab__desc">
-                                <h6>Descrição</h6>
-                                <p><?= Html::encode($produto->descricao)?></p>
+                            <div class="product__details__tab__desc d-flex justify-content-center align-items-center">
+                                <p><?= Html::encode($produto->valornutricional->nome)?></p>
                             </div>
                         </div>
                         <div class="tab-pane" id="tabs-2" role="tabpanel">
-                            <div class="product__details__tab__desc">
-                                <h6>Informação nutricional</h6>
-                                <p><?= Html::encode($produto->descricao)?></p>
+                            <div class="product__details__tab__desc d-flex justify-content-center align-items-center">
+                                <p><?= Html::encode($produto->marca->nome)?></p>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabs-3" role="tabpanel">
+                            <div class="product__details__tab__desc d-flex justify-content-center align-items-center">
+                                <p><?= Html::encode($produto->iva->valorPorcentagem . '%')?></p>
                             </div>
                         </div>
                     </div>

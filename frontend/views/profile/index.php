@@ -1,6 +1,8 @@
 <?php
+
 /** @var $user common\models\User */
 /** @var $userProfile common\models\Userprofile */
+
 use yii\helpers\Html;
 
 $this->title = 'Profile';
@@ -49,7 +51,7 @@ $this->title = 'Profile';
                         <a class="nav-link active" id="descontos-tab" data-bs-toggle="tab" href="#descontos" role="tab" aria-controls="descontos" aria-selected="true">Cupões</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="faturas-tab" data-bs-toggle="tab" href="#faturas" role="tab" aria-controls="faturas" aria-selected="false">Faturas</a>
+                        <a class="nav-link" id="faturas-tab" data-bs-toggle="tab" href="#faturas" role="tab" aria-controls="faturas" aria-selected="false">Encomendas</a>
                     </li>
                 </ul>
                 <div class="tab-content" id="profile-tabs-content">
@@ -73,21 +75,21 @@ $this->title = 'Profile';
                         </div>
                     </div>
 
-                    <!-- Faturas -->
+                    <!-- Encomendas -->
                     <div class="tab-pane fade" id="faturas" role="tabpanel" aria-labelledby="faturas-tab">
                         <div class="card mt-3">
                             <div class="card-body">
-                                <?php if (!empty($faturas)): ?>
+                                <?php if (!empty($encomendas)): ?>
                                     <ul class="list-group">
-                                        <?php foreach ($faturas as $fatura): ?>
+                                        <?php foreach ($encomendas as $encomenda): ?>
                                             <li class="list-group-item">
-                                                <strong>Fatura</strong>
-                                                <span class="float-end"><?= Html::encode($fatura->dataVenda) ?> - <?= Html::encode($fatura->total) ?>€</span>
+                                                <strong>Encomenda</strong>
+                                                <span class="float-end"><?= Html::encode($encomenda->dataVenda) ?> | <?= $encomenda->estadoEncomenda == 0 ? Html::tag('span', 'Em preparação', ['style' => 'color: blue;']) : Html::tag('span', 'Entregue', ['style' => 'color: green;']) ?></span>
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>
                                 <?php else: ?>
-                                    <p class="text-muted">Sem Faturas.</p>
+                                    <p class="text-muted">Sem Encomendas.</p>
                                 <?php endif; ?>
                             </div>
                         </div>
