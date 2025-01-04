@@ -2,12 +2,12 @@
 
 namespace frontend\tests\functional;
 
+use common\models\Userprofile;
 use frontend\tests\FunctionalTester;
 
 class SignupCest
 {
-    protected $formId = '#form-signup';
-
+    protected $formId = '#submit-form';
 
     public function _before(FunctionalTester $I)
     {
@@ -16,44 +16,62 @@ class SignupCest
 
     public function signupWithEmptyFields(FunctionalTester $I)
     {
-        $I->see('Signup', 'h1');
-        $I->see('Please fill out the following fields to signup:');
+        $I->see('Signup', 'h2');
         $I->submitForm($this->formId, []);
-        $I->seeValidationError('Username cannot be blank.');
-        $I->seeValidationError('Email cannot be blank.');
-        $I->seeValidationError('Password cannot be blank.');
-
+        $I->see('Username cannot be blank.', '.help-block');
+        $I->see('Email cannot be blank.', '.help-block');
+        $I->see('Password cannot be blank.', '.help-block');
+        $I->see('Nif cannot be blank.', '.help-block');
+        $I->see('Morada cannot be blank.', '.help-block');
+        $I->see('Codigo Postal cannot be blank.', '.help-block');   
     }
 
     public function signupWithWrongEmail(FunctionalTester $I)
     {
         $I->submitForm(
             $this->formId, [
-            'SignupForm[username]'  => 'tester',
-            'SignupForm[email]'     => 'ttttt',
-            'SignupForm[password]'  => 'tester_password',
+            'SignupFormUser[username]'  => 'andreia',
+            'SignupFormUser[email]'     => 'ttttt',
+            'SignupFormUser[password]'  => 'tester_password',
+            'SignupFormUserProfile[nif]' => '987654321',
+            'SignupFormUserProfile[morada]' => 'Morada teste',
+            'SignupFormUserProfile[codigoPostal]' => '1234-123'
         ]
         );
-        $I->dontSee('Username cannot be blank.', '.invalid-feedback');
-        $I->dontSee('Password cannot be blank.', '.invalid-feedback');
-        $I->see('Email is not a valid email address.', '.invalid-feedback');
+        $I->dontSee('Username cannot be blank.', '.help-block');
+        $I->dontSee('Email cannot be blank.', '.help-block');
+        $I->dontSee('Password cannot be blank.', '.help-block');
+        $I->dontSee('Nif cannot be blank.', '.help-block');
+        $I->dontSee('Morada cannot be blank.', '.help-block');
+        $I->dontSee('Codigo Postal cannot be blank.', '.help-block');
+        $I->see('Email is not a valid email address.', '.help-block');
     }
 
     public function signupSuccessfully(FunctionalTester $I)
     {
-        $I->submitForm($this->formId, [
-            'SignupForm[username]' => 'tester',
-            'SignupForm[email]' => 'tester.email@example.com',
-            'SignupForm[password]' => 'tester_password',
+        $I->submitForm(
+            $this->formId, [
+            'SignupFormUser[username]'  => 'tester',
+            'SignupFormUser[email]'     => 'tester@email.com',
+            'SignupFormUser[password]'  => 'tester_password',
+            'SignupFormUserProfile[nif]' => '987654321',
+            'SignupFormUserProfile[morada]' => 'Morada teste',
+            'SignupFormUserProfile[codigoPostal]' => '1234-123'
+        ]
+        );
+
+        $I->seeRecord(Userprofile::class, [
+            'nif' => '987654321',
+            'morada' => 'Morada teste',
+            'codigoPostal' => '1234-123'
         ]);
 
         $I->seeRecord('common\models\User', [
             'username' => 'tester',
-            'email' => 'tester.email@example.com',
-            'status' => \common\models\User::STATUS_INACTIVE
+            'email' => 'tester@email.com',
+            'status' => \common\models\User::STATUS_ACTIVE
         ]);
 
-        $I->seeEmailIsSent();
-        $I->see('Thank you for registration. Please check your inbox for verification email.');
+        $I->see('O seu registo foi concluido com sucesso!');
     }
 }

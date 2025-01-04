@@ -7,3 +7,4 @@ modules:
             browser: firefox
         - Yii2:
             part: init
+            entry-script: index-test.php

@@ -12,11 +12,11 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="userprofile-form container mt-5 d-flex justify-content-center" style="background-size: cover; background-position: center; background-image: url('<?= UrlHelper::getCompanyImageUrl('fruitsalad.jpg') ?>');">
-<div class="form-wrapper bg-light p-5 rounded shadow-lg" style="max-width: 400px; width: 100%; padding-top: 30px; padding-bottom: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-               <h2 class="text-center mb-4">Signup</h2>
+    <div class="form-wrapper bg-light p-5 rounded shadow-lg" style="max-width: 400px; width: 100%; padding-top: 30px; padding-bottom: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <h2 class="text-center mb-4">Signup</h2>
 
         <?php $form = ActiveForm::begin([
-            'options' => ['class' => 'form-horizontal'],
+            'options' => ['class' => 'form-horizontal', 'id' => 'submit-form'],
             'fieldConfig' => [
                 'template' => "<div class=\"form-group\">
                                 <label class=\"form-label\">{label}</label>

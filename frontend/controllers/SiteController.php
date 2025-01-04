@@ -9,7 +9,6 @@ use common\models\Produto;
 use common\models\SignupFormUser;
 use common\models\SignupFormUserProfile;
 use common\models\User;
-use frontend\models\ContactForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ProdutoSearch;
 use frontend\models\ResendVerificationEmailForm;
@@ -154,7 +153,7 @@ class SiteController extends Controller
                 return $this->goBack();
 
             Yii::$app->user->logout();
-            throw new ForbiddenHttpException;
+            Yii::$app->session->setFlash('forbidden', "Acesso Negado");
         }
 
         $model->password = '';
@@ -191,18 +190,21 @@ class SiteController extends Controller
         //TRANSACTIONS!!!!!!!!!!!!!!!!!!!!!!!!!
 
         if ($this->request->isPost) {
-            if($userForm->load($this->request->post()) && $userprofile->load($this->request->post()) && $userprofile->validate() && $userForm->signup())
+            if($userForm->load($this->request->post()) && $userprofile->load($this->request->post()) && $userprofile->validate()&& $userForm->signup())
             {
                 $carrinho = Carrinho::defaultCarrinho();
 
                 if ($userprofile->signup($userForm->id, $carrinho))
                 {
+                    Yii::$app->session->setFlash('success', "O seu registo foi concluido com sucesso!");
                     return $this->redirect(['index']);
                 }
             }
-        } else 
-        {
-            //$userprofile->loadDefaultValues();
+            if($userForm->validate())
+            return $this->render('signup', [
+                'userprofile' => $userprofile,
+                'user' => $userForm
+            ]);
         }
 
         return $this->render('signup', [

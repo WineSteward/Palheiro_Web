@@ -10,8 +10,8 @@ use Yii;
  * @property int $id
  * @property string $nome
  *
- * @property Produto[] $produtos
  */
+
 class Valornutricional extends \yii\db\ActiveRecord
 {
     /**
