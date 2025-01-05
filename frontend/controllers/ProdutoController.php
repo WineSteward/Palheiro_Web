@@ -21,7 +21,7 @@ use function PHPUnit\Framework\returnSelf;
 class ProdutoController extends \yii\web\Controller
 {
 
-        /**
+    /**
      * {@inheritdoc}
      */
     public function behaviors()
@@ -34,7 +34,7 @@ class ProdutoController extends \yii\web\Controller
                     [
                         'actions' => ['index', 'shop', 'contact', 'produto'],
                         'allow' => true,
-                        'roles' => ['?','client'],
+                        'roles' => ['?', 'client'],
                     ],
                 ],
             ],
@@ -51,11 +51,11 @@ class ProdutoController extends \yii\web\Controller
     public function actionIndex()
     {
         $produtoSearch = new ProdutoSearch();
-            
+
         $produtoSearch->load(Yii::$app->request->queryParams);
 
         $query = Produto::find();
-            
+
         if ($produtoSearch->nome) {
             $query->andWhere(['like', 'nome', $produtoSearch->nome]);
         }
@@ -69,19 +69,29 @@ class ProdutoController extends \yii\web\Controller
             'pageSize' => 10,
         ]);
 
-        $produtos = $query->offset($pagination->offset)
-                        ->limit($pagination->limit)
-                        ->all();
+        $produtosQuery = $query->offset($pagination->offset)
+            ->limit($pagination->limit);
 
-                    $categorias = Categoria::find()->all();
+        $categoriaId = Yii::$app->request->getQueryParam('categoria_id');
         
+        if ($categoriaId)
+        {
+            $produtos = $produtosQuery->where(['categoria_id' => $categoriaId])->all();    
+        }
+        else
+        {
+            $produtos = $produtosQuery->all();
+        }
+    
+
+        $categorias = Categoria::find()->all();
+
         return $this->render('index', [
             'categorias' => $categorias,
             'produtoSearch' => $produtoSearch,
             'produtos' => $produtos,
             'pagination' => $pagination
         ]);
-
     }
 
     public function actionShow($id)
@@ -108,9 +118,9 @@ class ProdutoController extends \yii\web\Controller
 
         $user = Yii::$app->user->identity;
 
-        if(!$user)
+        if (!$user)
             return $this->redirect(['site/login']);
-        
+
         if ($request->isPost) {
             $produtoId = $request->post('produto_id');
             $quantidade = $request->post('quantidade', 1); // Default to 1 if not provided
@@ -123,17 +133,16 @@ class ProdutoController extends \yii\web\Controller
                 return $this->redirect(['produto/index']);
             }
 
-            // Fetch product details
             $produto = Produto::findOne($produtoId);
             if (!$produto) {
                 Yii::$app->session->setFlash('error', 'Product not found.');
                 return $this->redirect(['produto/index']);
             }
 
-            if($produto->quantidade < $quantidade)
-            {
+            if ($produto->quantidade < $quantidade) {
                 Yii::$app->session->setFlash('error', 'Quantidade desejada excede o stock existente');
-                return $this->redirect(['produto/show',
+                return $this->redirect([
+                    'produto/show',
                     'id' => $produto->id
                 ]);
             }
@@ -168,6 +177,4 @@ class ProdutoController extends \yii\web\Controller
 
         return $this->redirect(['carrinho/index']);
     }
-
-
 }

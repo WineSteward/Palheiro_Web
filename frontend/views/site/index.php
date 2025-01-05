@@ -56,7 +56,7 @@ $this->title = 'Palheiro';
         <div class="row">
             <div class="categories__slider owl-carousel">
                 <?php foreach ($categorias as $categoria): ?>
-                    <a href="<?= Url::to(['produto/index', 'categoria_nome' => $categoria->nome]) ?>">
+                    <a href="<?= Url::to(['produto/index', 'categoria_id' => $categoria->id]) ?>">
                         <div class="col-lg-3">
                             <div class="categories__item set-bg" data-setbg="<?= UrlHelper::getCategoriesImageUrl($categoria->id . '.jpg') ?>">
                                 <h5 style="background-color: #EEEEEE; padding: 10px; width: fit-content; margin-left: 75px;"><?= $categoria->nome ?></h5>

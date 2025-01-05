@@ -17,13 +17,18 @@ class LinhacarrinhoController extends Controller
         $linhaCarrinho = LinhaCarrinho::findOne($linha_id);
 
         if ($linhaCarrinho && $quantidade > 0) {
-            $linhaCarrinho->quantidade = $quantidade;
-            $linhaCarrinho->total = $linhaCarrinho->produto->preco * $quantidade;
-            $linhaCarrinho->save(false);
+            if ($linhaCarrinho->produto->quantidade > $quantidade) {
+                $linhaCarrinho->quantidade = $quantidade;
+                $linhaCarrinho->total = $linhaCarrinho->precoUnitario * $quantidade;
+                $linhaCarrinho->save();
 
-            $carrinho = $linhaCarrinho->carrinho;
-            $carrinho->updateTotal();
-            Yii::$app->session->setFlash('success', 'Carrinho atualizado com sucesso.');
+                $carrinho = $linhaCarrinho->carrinho;
+                $carrinho->updateTotal();
+
+                Yii::$app->session->setFlash('success', 'Carrinho atualizado com sucesso.');
+            }
+            else
+                Yii::$app->session->setFlash('error', 'Quantidade desejada excede o stock existente');
         }
 
         return $this->redirect(['carrinho/index']);

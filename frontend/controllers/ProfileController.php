@@ -26,7 +26,9 @@ class ProfileController extends \yii\web\Controller
 
             $encomendas = Fatura::find()
             ->where(['userprofile_id' => $userProfile->id, 'valida' => 1])
+            ->orderBy(['id' => SORT_DESC]) // Sort by ascending IDs
             ->all();
+        
 
         return $this->render('index', [
             'user'=>$user,

@@ -47,6 +47,52 @@ class SignupCest
         $I->see('Email is not a valid email address.', '.help-block');
     }
 
+    public function signupWithEmailAlreadyInUse(FunctionalTester $I)
+    {
+        $I->submitForm(
+            $this->formId, [
+            'SignupFormUser[username]'  => 'andreia',
+            'SignupFormUser[email]'     => 'miguel@email.com',
+            'SignupFormUser[password]'  => '12312312',
+            'SignupFormUserProfile[nif]' => '987654321',
+            'SignupFormUserProfile[morada]' => 'Morada teste',
+            'SignupFormUserProfile[codigoPostal]' => '1234-123'
+        ]
+        );
+
+        $I->dontSee('Username cannot be blank.', '.help-block');
+        $I->dontSee('Email cannot be blank.', '.help-block');
+        $I->dontSee('Password cannot be blank.', '.help-block');
+        $I->dontSee('Nif cannot be blank.', '.help-block');
+        $I->dontSee('Morada cannot be blank.', '.help-block');
+        $I->dontSee('Codigo Postal cannot be blank.', '.help-block');
+        $I->see('This email address has already been taken', '.help-block');
+    
+    }
+
+    public function signupWithUsernameAlreadyInUse(FunctionalTester $I)
+    {
+        $I->submitForm(
+            $this->formId, [
+            'SignupFormUser[username]'  => 'miguel',
+            'SignupFormUser[email]'     => 'andreia@email.com',
+            'SignupFormUser[password]'  => '21123',
+            'SignupFormUserProfile[nif]' => '987654321',
+            'SignupFormUserProfile[morada]' => 'Morada teste',
+            'SignupFormUserProfile[codigoPostal]' => '1234-123'
+        ]
+        );
+
+        $I->dontSee('Username cannot be blank.', '.help-block');
+        $I->dontSee('Email cannot be blank.', '.help-block');
+        $I->dontSee('Password cannot be blank.', '.help-block');
+        $I->dontSee('Nif cannot be blank.', '.help-block');
+        $I->dontSee('Morada cannot be blank.', '.help-block');
+        $I->dontSee('Codigo Postal cannot be blank.', '.help-block');
+        $I->see('This username has already been taken', '.help-block');
+    
+    }
+
     public function signupSuccessfully(FunctionalTester $I)
     {
         $I->submitForm(

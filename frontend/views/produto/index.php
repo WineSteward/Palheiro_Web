@@ -46,7 +46,7 @@ $this->title = 'Palheiro'
                         </div>
                         <div class="featured__controls">
                             <ul>
-                                <li class="active" data-filter="*">Todas</li>
+                                <li class="active" data-filter="*"><a href="<?= Url::to(['index']) ?>" style="all: unset;">Todas</a></li>
                                 <?php foreach ($categorias as $categoria): ?>
                                     <li data-filter=".<?= $categoria->nome ?>"><?= $categoria->nome ?></li>
                                 <?php endforeach ?>
@@ -64,7 +64,7 @@ $this->title = 'Palheiro'
                                             <form action="<?= Url::to(['produto/add-to-cart']) ?>" method="post" style="display: inline;">
                                                 <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->csrfToken) ?>
                                                 <?= Html::hiddenInput('produto_id', $produto->id) ?>
-                                                <button type="submit" style="all: unset;">
+                                                <button type="submit" style="all: unset;" id="<?= $produto->id  ?>">
                                                     <a><i class="fa fa-shopping-cart"></i></a>
                                                 </button>
                                             </form>

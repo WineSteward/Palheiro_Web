@@ -12,17 +12,17 @@ use yii\helpers\Url; ?>
             <div class="col-lg-6 col-md-6">
                 <div class="product__details__pic">
                     <div class="product__details__pic__slider owl-carousel">
-                        <?php foreach($produto->imagens as $imagem): ?>
-                    <img data-imgbigurl="<?= UrlHelper::getProductImageUrl($imagem->ficheiro)?>"
-                             src="<?= UrlHelper::getProductImageUrl($imagem->ficheiro)?>" alt="">
+                        <?php foreach ($produto->imagens as $imagem): ?>
+                            <img data-imgbigurl="<?= UrlHelper::getProductImageUrl($imagem->ficheiro) ?>"
+                                src="<?= UrlHelper::getProductImageUrl($imagem->ficheiro) ?>" alt="">
                         <?php endforeach ?>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="product__details__text">
-                    <h3><?= Html::encode($produto->nome)?></h3>
-                    <div class="product__details__price"><?= Html::encode($produto->preco)?>€</div>
+                    <h3><?= Html::encode($produto->nome) ?></h3>
+                    <div class="product__details__price"><?= Html::encode($produto->preco) ?>€</div>
                     <div class="product__details__quantity">
                         <?= Html::beginForm(['produto/add-to-cart'], 'post') ?>
                         <?= Html::hiddenInput('produto_id', $produto->id) ?>
@@ -47,31 +47,31 @@ use yii\helpers\Url; ?>
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
-                               aria-selected="true">Valor Nutricional</a>
+                                aria-selected="true">Valor Nutricional</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
-                               aria-selected="false">Marca</a>
+                                aria-selected="false">Marca</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
-                               aria-selected="false">Iva</a>
+                                aria-selected="false">Iva</a>
                         </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                             <div class="product__details__tab__desc d-flex justify-content-center align-items-center">
-                                <p><?= Html::encode($produto->valornutricional->nome)?></p>
+                                <p><?= Html::encode($produto->valornutricional->nome) ?></p>
                             </div>
                         </div>
                         <div class="tab-pane" id="tabs-2" role="tabpanel">
                             <div class="product__details__tab__desc d-flex justify-content-center align-items-center">
-                                <p><?= Html::encode($produto->marca->nome)?></p>
+                                <p><?= Html::encode($produto->marca->nome) ?></p>
                             </div>
                         </div>
                         <div class="tab-pane" id="tabs-3" role="tabpanel">
                             <div class="product__details__tab__desc d-flex justify-content-center align-items-center">
-                                <p><?= Html::encode($produto->iva->valorPorcentagem . '%')?></p>
+                                <p><?= Html::encode($produto->iva->valorPorcentagem . '%') ?></p>
                             </div>
                         </div>
                     </div>

@@ -68,7 +68,7 @@ class Carrinho extends \yii\db\ActiveRecord
         return $this->hasOne(Userprofile::class, ['carrinho_id' => 'id']);
     }
 
-        /**
+    /**
      * Creates carrinho for default.
      *
      * @return 
@@ -87,12 +87,11 @@ class Carrinho extends \yii\db\ActiveRecord
     {
         $total = 0;
 
-
         foreach ($this->linhascarrinhos as $linha) {
             $total += $linha->quantidade * $linha->produto->preco;
         }
 
         $this->total = $total;
-        $this->save(false);
+        $this->save();
     }
 }

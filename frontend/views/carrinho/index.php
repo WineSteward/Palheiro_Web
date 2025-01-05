@@ -15,9 +15,9 @@ use yii\helpers\Url;
                         <thead>
                         <tr>
                             <th class="shoping__product">Produtos</th>
-                            <th>Preço</th>
+                            <th>Preço Unitário</th>
                             <th>Quantidade</th>
-                            <th>Total</th>
+                            <th>Total da Linha</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -32,9 +32,9 @@ use yii\helpers\Url;
                                     <?= Html::encode($linhacarrinho->precoUnitario) ?>€
                                 </td>
                                 <td class="shoping__cart__quantity">
-                                    <?= Html::beginForm(['linhacarrinho/update-quantity'], 'post') ?>
+                                    <?= Html::beginForm(['linhacarrinho/update-quantity'], 'post', ['id' => 'form-id-'.$linhacarrinho->produto->id]) ?>
                                     <?= Html::hiddenInput('linha_id', $linhacarrinho->id) ?>
-                                    <input type="number" name="quantidade" value="<?= $linhacarrinho->quantidade ?>" min="1" class="form-control"><!--todo max quantidade em stock-->
+                                    <input type="number" name="quantidade" value="<?= $linhacarrinho->quantidade ?>" min="1" class="form-control">
                                     <?= Html::endForm() ?>
                                 </td>
                                 <td class="shoping__cart__total">
@@ -42,7 +42,7 @@ use yii\helpers\Url;
                                 </td>
                                 <td class="shoping__cart__item__close">
                                     <?= Html::a(
-                                        '<i class="fa-solid fa-xmark"></i>', // força o icon a funcionar
+                                        '<i class="fa-solid fa-xmark"></i>',
                                         ['linhacarrinho/delete', 'id' => $linhacarrinho->id],
                                         [
                                             'class' => 'btn btn-danger',
@@ -63,7 +63,7 @@ use yii\helpers\Url;
                 <div class="shoping__checkout">
                     <h5>Total do carrinho</h5>
                     <ul>
-                        <li>Total <span><?= Html::encode($carrinho->total) ?>€</span></li>
+                        <li>Total:<span><?= Html::encode($carrinho->total) ?>€</span></li>
                     </ul>
                     <a href="<?=Url::to(['carrinho/metodos'])?>" class="primary-btn">Ir para Checkout</a>
                 </div>

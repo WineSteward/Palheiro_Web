@@ -21,6 +21,15 @@ class FunctionalTester extends \Codeception\Actor
 {
     use _generated\FunctionalTesterActions;
 
+    public function seeFlashSuccess($message)
+    {
+        $this->see($message, '.alert-success');
+    }
+
+    public function seeFlashError($message)
+    {
+        $this->see($message, '.alert-danger');
+    }
 
     public function seeValidationError($message)
     {

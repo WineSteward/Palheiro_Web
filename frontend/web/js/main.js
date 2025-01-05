@@ -216,7 +216,7 @@
     });
 
     /*-------------------
-        Quantity change
+        Quantity change Produto Show
     --------------------- */
     var proQty = $('.pro-qty');
     proQty.prepend('<span class="dec qtybtn">-</span>');
@@ -236,5 +236,6 @@
         }
         $button.parent().find('input').val(newVal);
     });
+
 
 })(jQuery);
