@@ -9,6 +9,7 @@ use yii\helpers\Url;
 <?php $form = ActiveForm::begin([
     'action' => Url::to(['carrinho/metodos']),
     'method' => 'post',
+    'id' => 'form-metodos'
 ]); ?>
 
 <h3>Selecione o metodo de expedição</h3>

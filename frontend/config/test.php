@@ -4,6 +4,9 @@ return [
     'components' => [
         'db' => [
                 'dsn' => 'mysql:host=localhost;dbname=palheiro_testes',
+                'username' => 'root',
+                'password' => '',
+                'charset' => 'utf8',
         ],
         'assetManager' => [
             'basePath' => __DIR__ . '/../web/assets',

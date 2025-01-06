@@ -12,9 +12,11 @@ class SeeProdutosCest
         $I->amLoggedInAs(3);
     }
 
-    public function tryToTest(FunctionalTester $I)
+    public function checkSeeAllProdutos(FunctionalTester $I)
     {
         $I->amOnPage('/');
         $I->click('Produtos');
+        $I->see('Maça Royal Gala', 'a');
+        $I->see('Cenoura', 'a');
     }
 }

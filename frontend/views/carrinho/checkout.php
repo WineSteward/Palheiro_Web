@@ -17,8 +17,8 @@ use yii\helpers\Url;
         <p class="lead">Confira os detalhes abaixo antes de finalizar sua compra.</p>
     </div>
 
-    <div class="card mb-5">
-        <div class="card-header bg-success text-white">
+    <div class="mb-5" style=" border: 1px solid #93ba8d; border-radius: 5px;">
+        <div class="card-header bg-success text-white d-flex align-items-center justify-content-center">
             <h4>Resumo</h4>
         </div>
         <div class="card-body">
@@ -74,9 +74,9 @@ use yii\helpers\Url;
                         <form action="<?= Url::to(['carrinho/desconto']) ?>" method="post">
 
                             <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->csrfToken) ?>
-                            <div class="d-flex">
+                            <div class="d-flex align-items-center">
                                 <input type="text" name="discountCode" class="form-control me-2" placeholder="Insira o código de desconto" required>
-                                <button type="submit" class="btn btn-success">Aplicar</button>
+                                <button type="submit" style="font-size:large; font-weight:bold;" class="btn btn-success">Aplicar</button>
                             </div>
 
                         </form>
@@ -84,7 +84,7 @@ use yii\helpers\Url;
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="shoping__checkout">
+                    <div class="shoping__checkout card">
                         <h5>Total do seu Carrinho</h5>
                         <ul>
                             <li>Total IVA <span><?= Html::encode($totalIva) ?>€</span></li>
@@ -102,7 +102,7 @@ use yii\helpers\Url;
                     <form action="<?= Url::to(['fatura/create']) ?>" method="post">
                         <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->csrfToken) ?>
 
-                        <button type="submit" class="btn btn-success btn-lg">Finalizar Compra</button>
+                        <button type="submit" class="btn btn-success btn-lg" id="btn-comprar">Finalizar Compra</button>
                     </form>
                 </div>
             </div>

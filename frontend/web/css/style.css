@@ -195,31 +195,30 @@ ol {
 
 /* Floating Cart Button Styling */
 .floating-cart-button {
-    position: fixed;        /* Keeps it fixed on the screen */
-    bottom: 20px;           /* Distance from the bottom of the page */
-    right: 20px;            /* Distance from the right edge */
-    z-index: 99999;         /* Makes sure the button is above other content */
+    position: fixed;        
+    bottom: 20px;           
+    right: 20px;            
+    z-index: 99999;         
 }
 
 .floating-cart-button .btn {
-    background-color: #2e7d32;  /* Deep green color for the button */
+    background-color: #2e7d32; 
     color: white;
-    border-radius: 50%;         /* Circular button */
-    padding: 12px;              /* Smaller padding for a smaller button */
-    font-size: 20px;            /* Reduced font size */
+    border-radius: 50%;         
+    padding: 12px;              
+    font-size: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
 }
 
 .floating-cart-button .btn:hover {
-    background-color: #1b5e20;  /* Darker green on hover */
-    transform: translateY(-5px); /* Slight lift effect on hover */
+    background-color: #1b5e20;
+    transform: translateY(-5px);
 }
 
-/* Ensure the footer doesn't overlap with the button */
 footer {
     position: relative;
-    z-index: 1; /* Keeps footer below the floating button */
+    z-index: 1;
 }
 
 /* Fatura Card */
