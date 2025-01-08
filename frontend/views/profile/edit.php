@@ -30,7 +30,7 @@ $this->title = 'Edit Profile';
                             <?= Html::textInput('email', $user->email, ['class' => 'form-control', 'readonly' => true]) ?>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <?= $form->field($userProfile, 'morada')->textInput(['maxlength' => true, 'class' => 'form-control']) ?>
+                            <?= $form->field($userProfile,  'morada')->textInput(['maxlength' => true, 'class' => 'form-control']) ?>
                         </div>
                     </div>
                     <div class="row">
