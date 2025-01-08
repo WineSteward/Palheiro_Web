@@ -46,10 +46,21 @@ $this->title = 'Palheiro'
                         </div>
                         <div class="featured__controls">
                             <ul>
-                                <li class="active" data-filter="*"><a href="<?= Url::to(['index']) ?>" style="all: unset;">Todas</a></li>
-                                <?php foreach ($categorias as $categoria): ?>
-                                    <li data-filter=".<?= $categoria->nome ?>"><?= $categoria->nome ?></li>
-                                <?php endforeach ?>
+                                <?php if (Yii::$app->request->get('categoria_id') !== null) : ?>
+                                    <li data-filter="*"><a href="<?= Url::to(['index']) ?>" style="all: unset;">Todas</a></li>
+                                    <?php foreach ($categorias as $categoria): ?>
+                                        <?php if ($categoria->id == Yii::$app->request->get('categoria_id')) : ?>
+                                            <li class="active" data-filter=".<?= $categoria->nome ?>"><?= $categoria->nome ?></li>
+                                        <?php else : ?>
+                                            <li data-filter=".<?= $categoria->nome ?>"><?= $categoria->nome ?></li>
+                                        <?php endif ?>
+                                    <?php endforeach ?>
+                                <?php else: ?>
+                                    <li class="active" data-filter="*">Todas</li>
+                                    <?php foreach ($categorias as $categoria): ?>
+                                        <li data-filter=".<?= $categoria->nome ?>"><?= $categoria->nome ?></li>
+                                    <?php endforeach ?>
+                                <?php endif ?>
                             </ul>
                         </div>
                     </div>
@@ -101,4 +112,3 @@ $this->title = 'Palheiro'
             </div>
         </section>
 </section>
-<!-- Product Section End -->

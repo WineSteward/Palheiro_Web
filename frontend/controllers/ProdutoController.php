@@ -70,7 +70,7 @@ class ProdutoController extends \yii\web\Controller
 
         $pagination = new Pagination([
             'totalCount' => $totalCount,
-            'pageSize' => 10,
+            'pageSize' => 8,
         ]);
 
         $produtosQuery = $query->offset($pagination->offset)
