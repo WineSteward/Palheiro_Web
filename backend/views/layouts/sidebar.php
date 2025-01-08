@@ -33,7 +33,7 @@ use yii\helpers\Url;
                     ['label' => 'Valores Nutricionais',  'icon' => 'th', 'url' => Url::to(['valornutricional/index'])],
                     ['label' => 'Métodos de Pagamento',  'icon' => 'th', 'url' => Url::to(['metodopagamento/index'])],
                     ['label' => 'Métodos de Expedição',  'icon' => 'th', 'url' => Url::to(['metodoexpedicao/index'])],
-                    ['label' => 'Cupões',  'icon' => 'th', 'url' => Url::to(['desconto/index']),'visible' => Yii::$app->user->isAdmin],
+                    ['label' => 'Descontos',  'icon' => 'th', 'url' => Url::to(['desconto/index']),'visible' => Yii::$app->user->isAdmin],
                     ['label' => 'Contabilidade e Encomendas', 'header' => true],
                     ['label' => 'Faturas',  'icon' => 'th', 'url' => Url::to(['fatura/index'])],
                     ['label' => 'Encomendas',  'icon' => 'th', 'url' => Url::to(['encomenda/index'])],
