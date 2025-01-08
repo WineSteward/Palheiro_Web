@@ -29,19 +29,23 @@ class ProdutoController extends \yii\web\Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup', 'shop', 'contact', 'faturas', 'encomendas', 'cupoes', 'carrinho', 'produto'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'shop', 'contact', 'produto'],
+                        'actions' => ['index', 'show'],
                         'allow' => true,
                         'roles' => ['?', 'client'],
                     ],
+                    [
+                        'actions' => ['add-to-cart'],
+                        'allow' => true,
+                        'roles' => ['client'],
+                    ]
                 ],
             ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    'logout' => ['post'],
+                    'add-to-cart' => ['POST'],
                 ],
             ],
         ];
@@ -121,7 +125,8 @@ class ProdutoController extends \yii\web\Controller
         if (!$user)
             return $this->redirect(['site/login']);
 
-        if ($request->isPost) {
+        if ($request->isPost) 
+        {
             $produtoId = $request->post('produto_id');
             $quantidade = $request->post('quantidade', 1); // Default to 1 if not provided
 
@@ -129,13 +134,12 @@ class ProdutoController extends \yii\web\Controller
             $carrinho = Carrinho::findOne($userProfile->carrinho_id);
 
             if (!$carrinho) {
-                Yii::$app->session->setFlash('error', 'Cart not found.');
                 return $this->redirect(['produto/index']);
             }
 
             $produto = Produto::findOne($produtoId);
             if (!$produto) {
-                Yii::$app->session->setFlash('error', 'Product not found.');
+                Yii::$app->session->setFlash('error', 'Product não encontrado.');
                 return $this->redirect(['produto/index']);
             }
 
@@ -152,12 +156,13 @@ class ProdutoController extends \yii\web\Controller
                 ->where(['carrinho_id' => $carrinho->id, 'produto_id' => $produtoId])
                 ->one();
 
-            if ($linha) {
-                // Update quantity if already in cart
+            if ($linha)
+            {
                 $linha->quantidade += $quantidade;
                 $linha->total = $linha->precoUnitario * $linha->quantidade;
-            } else {
-                // Add new line item
+            }
+            else 
+            {
                 $linha = new LinhaCarrinho([
                     'carrinho_id' => $carrinho->id,
                     'produto_id' => $produtoId,
@@ -167,14 +172,17 @@ class ProdutoController extends \yii\web\Controller
                 ]);
             }
 
-            // Save line item
-            if ($linha->save()) {
+            if ($linha->save())
+            {
                 Yii::$app->session->setFlash('success', 'Produto adicionado com sucesso.');
-            } else {
+            }
+            else
+            {
                 Yii::$app->session->setFlash('error', 'Falha a adicionar produto.');
             }
+            return $this->redirect(['carrinho/index']);
         }
 
-        return $this->redirect(['carrinho/index']);
+        return $this->redirect(['site/index']);
     }
 }

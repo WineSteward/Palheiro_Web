@@ -40,7 +40,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Fatura $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                 },
+                 'buttons' => [
+                    'delete' => function ($url, $model, $key) {
+                        if (Yii::$app->user->isAdmin)
+                        {
+                            return Html::a('<i class="fas fa-trash"></i>', $url, [
+                                'title' => Yii::t('app', 'Delete'),
+                                'data-confirm' => Yii::t('yii', 'Deseja eliminar a encomenda selecionada?'),
+                                'data-method' => 'post',
+                            ]);
+                        }
+                    },
+                ],
+                'template' => '{delete} {update} {view}',
             ],
         ],
     ]); ?>

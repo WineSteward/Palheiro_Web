@@ -5,16 +5,43 @@ namespace frontend\controllers;
 use common\models\Userdesconto;
 use common\models\Fatura;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 
 class ProfileController extends \yii\web\Controller
 {
+        /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index', 'edit', 'update'],
+                        'allow' => true,
+                        'roles' => ['client'],
+                    ]
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'update' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         $user = Yii::$app->user->identity;
         $userProfile = $user->userprofile;
 
         if (!$userProfile) {
-            Yii::$app->session->setFlash('error', 'Utilizador não encontrado.');
+            Yii::$app->session->setFlash('error', 'Perfil não encontrado.');
             return $this->redirect(['/site/index']);
         }
 
@@ -24,9 +51,9 @@ class ProfileController extends \yii\web\Controller
             ->with('desconto')
             ->all();
 
-            $encomendas = Fatura::find()
+        $encomendas = Fatura::find()
             ->where(['userprofile_id' => $userProfile->id, 'valida' => 1])
-            ->orderBy(['id' => SORT_DESC]) // Sort by ascending IDs
+            ->orderBy(['id' => SORT_DESC]) //newest encomendas appear first
             ->all();
         
 
@@ -58,12 +85,11 @@ class ProfileController extends \yii\web\Controller
      */
     public function actionUpdate()
     {
-        //TRANSACTIONS!!!!!!!!!!!!!!!!!!!!!!!!!
 
         $user = Yii::$app->user->identity;
         $userprofile = $user->userprofile;
 
-        if ($this->request->isPost &&$userprofile->load($this->request->post()) && $userprofile->save())
+        if ($this->request->isPost && $userprofile->load($this->request->post()) && $userprofile->save())
         {
             Yii::$app->session->setFlash('success', 'Perfil editado com sucesso.');
             return $this->redirect(['index']);

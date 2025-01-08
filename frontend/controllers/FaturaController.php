@@ -11,20 +11,44 @@ use common\models\Userdesconto;
 use common\models\Userprofile;
 use Exception;
 use Yii;
-
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 
 class FaturaController extends \yii\web\Controller
 {
+    /**
+     * @inheritDoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create'],
+                        'allow' => true,
+                        'roles' => ['client'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'create' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         $user = Yii::$app->user->identity;
 
-        $faturas = $user->userprofile->faturas;
-
-        // Sort faturas by dataVenda most recent first
-        usort($faturas, function ($a, $b) {
-            return strtotime($b->dataVenda) - strtotime($a->dataVenda);
-        });
+        $faturas = Fatura::find()
+        ->where(['userprofile_id' => $user->userprofile->id])
+        ->orderBy(['dataVenda' => SORT_DESC])
+        ->all();
 
         return $this->render('index', ['faturas' => $faturas]);
     }

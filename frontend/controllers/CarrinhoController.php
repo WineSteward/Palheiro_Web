@@ -10,10 +10,37 @@ use common\models\Metodoexpedicao;
 use common\models\Metodopagamento;
 use common\models\Userdesconto;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\Url;
 
 class CarrinhoController extends \yii\web\Controller
 {
+    /**
+     * @inheritDoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index', 'metodos', 'checkout', 'desconto'],
+                        'allow' => true,
+                        'roles' => ['client'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'desconto' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         if (Yii::$app->user->isGuest) {
@@ -73,9 +100,11 @@ class CarrinhoController extends \yii\web\Controller
                 ]);
             }
 
-            return $this->redirect(['checkout',
+            return $this->redirect([
+                'checkout',
                 'metodoPagamentoId' => $metodoPagamentoId,
-                'metodoExpedicaoId' => $metodoExpedicaoId]);
+                'metodoExpedicaoId' => $metodoExpedicaoId
+            ]);
         }
 
         $metodospagamento = Metodopagamento::find()->where(['vigor' => 1])->all();
@@ -87,14 +116,19 @@ class CarrinhoController extends \yii\web\Controller
         ]);
     }
 
-    public function actionCheckout($metodoExpedicaoId, $metodoPagamentoId)
+    public function actionCheckout($metodoExpedicaoId = null, $metodoPagamentoId = null)
     {
+        if ($metodoExpedicaoId === null || $metodoPagamentoId === null) {
+            Yii::$app->session->setFlash('error', 'Por favor, preencha o formulário por completo.');
+            return $this->redirect('metodos');
+        }
+
         $user = Yii::$app->user->identity;
         $userProfile = UserProfile::findOne(['user_id' => $user->id]);
         $carrinho = Carrinho::find()
-                    ->with(['linhascarrinhos', 'linhascarrinhos.produto', 'linhascarrinhos.produto.iva'])
-                    ->where(['id' => $userProfile->carrinho_id])
-                    ->one();
+            ->with(['linhascarrinhos', 'linhascarrinhos.produto', 'linhascarrinhos.produto.iva'])
+            ->where(['id' => $userProfile->carrinho_id])
+            ->one();
 
         $metodoExpedicao = Metodoexpedicao::findOne($metodoExpedicaoId);
         $metodoPagamento = Metodopagamento::findOne($metodoPagamentoId);
@@ -129,11 +163,12 @@ class CarrinhoController extends \yii\web\Controller
 
         if (!$desconto) {
             Yii::$app->session->setFlash('error', 'Código de desconto inválido.');
-
-            return $this->redirect(['checkout',
-            'metodoPagamentoId' => $metodoPagamento->id,
-            'metodoExpedicaoId' => $metodoExpedicao->id,
-        ]);
+            Yii::$app->session->remove('desconto');
+            return $this->redirect([
+                'checkout',
+                'metodoPagamentoId' => $metodoPagamento->id,
+                'metodoExpedicaoId' => $metodoExpedicao->id,
+            ]);
         }
 
         // Verifica se o utilizador tem o codigo e esta valido
@@ -144,26 +179,27 @@ class CarrinhoController extends \yii\web\Controller
         ]);
 
         if (!$userDesconto) {
-                Yii::$app->session->setFlash('error', 'Código de desconto inválido.');
-
-                return $this->redirect(['checkout',
+            Yii::$app->session->setFlash('error', 'Código de desconto inválido.');
+            Yii::$app->session->remove('desconto');
+            return $this->redirect([
+                'checkout',
                 'metodoPagamentoId' => $metodoPagamento->id,
                 'metodoExpedicaoId' => $metodoExpedicao->id,
             ]);
         }
 
         // aplicar desconto provisoriamente
-        $placeholderTotal = $carrinho->total - ($carrinho->total * ($userDesconto->desconto->valor/100));
+        $placeholderTotal = $carrinho->total - ($carrinho->total * ($userDesconto->desconto->valor / 100));
 
         Yii::$app->session->setFlash('success', 'Desconto aplicado com sucesso!');
 
         Yii::$app->session->set('desconto', $codigo);
 
-        return $this->redirect(['checkout',
+        return $this->redirect([
+            'checkout',
             'metodoPagamentoId' => $metodoPagamento->id,
             'metodoExpedicaoId' => $metodoExpedicao->id,
             'placeholderTotal' => $placeholderTotal
         ]);
-        
     }
 }

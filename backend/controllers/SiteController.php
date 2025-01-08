@@ -43,7 +43,7 @@ class SiteController extends Controller
                     [
                         'actions' => ['logout', 'index'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['admin', 'employee'],
                     ],
                 ],
             ],
@@ -61,7 +61,8 @@ class SiteController extends Controller
      */
     public function actions()
     {
-        return [
+//        $this->layout = 'blank';
+        return [        
             'error' => [
                 'class' => \yii\web\ErrorAction::class,
             ],
@@ -98,7 +99,7 @@ class SiteController extends Controller
         $chartData['data'][] = $entry['count'];
     }
 
-    // Pie Chart Data for Categoria Distribution as Percentages
+    // dados para preencher o pie chart como percentagens
     $categoriaData = (new \yii\db\Query())
         ->select(['categorias.nome as categoria', 'SUM(linhasfaturas.quantidade) as total'])
         ->from('linhasfaturas')
@@ -116,7 +117,7 @@ class SiteController extends Controller
         }, $categoriaData)
     ];
 
-        // Fetch fatura total by month
+        // Fetch faturas por mes
         $faturasTotalByMes = (new \yii\db\Query())
             ->select(['MONTH(dataVenda) as month', 'SUM(total) as total'])
             ->from(Fatura::tableName())

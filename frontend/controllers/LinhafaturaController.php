@@ -7,9 +7,36 @@ use common\models\Fatura;
 use common\models\Linhafatura;
 use common\models\Userprofile;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 
 class LinhafaturaController extends \yii\web\Controller
 {
+        /**
+     * @inheritDoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index', 'metodos', 'checkout', 'desconto'],
+                        'allow' => true,
+                        'roles' => ['client', '?'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'desconto' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
     public function updateTotalFatura($faturaId)
     {
         $fatura = Fatura::findOne($faturaId);

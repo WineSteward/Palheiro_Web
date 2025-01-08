@@ -76,19 +76,21 @@ AppAsset::register($this);
                 'url' => ['/contact/index'],
                 'options' => ['class' => Yii::$app->controller->id === 'contact' ? 'active' : ''],
             ],
-            [
-                'label' => 'Carrinho',
-                'url' => ['/carrinho/index'],
-                'options' => ['class' => Yii::$app->controller->id === 'carrinho' ? 'active' : ''],
-            ],
         ];
 
         if (!Yii::$app->user->isGuest) {
-            $menuItems[] = [
-                'label' => 'Faturas',
-                'url' => ['/fatura/index'],
-                'options' => ['class' => Yii::$app->controller->id === 'fatura' ? 'active' : ''],
-            ];
+            $menuItems = array_merge($menuItems, [
+                [
+                    'label' => 'Faturas',
+                    'url' => ['/fatura/index'],
+                    'options' => ['class' => Yii::$app->controller->id === 'fatura' ? 'active' : ''],
+                ],
+                [
+                    'label' => 'Carrinho',
+                    'url' => ['/carrinho/index'],
+                    'options' => ['class' => Yii::$app->controller->id === 'carrinho' ? 'active' : ''],
+                ],
+            ]);
         }
 
         echo Nav::widget([
@@ -131,7 +133,7 @@ AppAsset::register($this);
                 )
                 . Html::endForm();
         }
-        
+
 
         NavBar::end();
         ?>
