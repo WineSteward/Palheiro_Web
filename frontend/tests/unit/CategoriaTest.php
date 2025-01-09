@@ -33,16 +33,16 @@ class CategoriaTest extends \Codeception\Test\Unit
 
     public function testCategoriaAddToDatabase()
     {
-        $this->categoria->nome = "Frutos Secos";
+        $this->categoria->nome = "CategoriaNome";
         
         $this->categoria->save();
 
-        $this->tester->seeRecord('common\models\categoria', ['nome' => 'Frutos Secos']);
+        $this->tester->seeRecord('common\models\categoria', ['nome' => 'CategoriaNome']);
     }
 
     public function testCategoriaCanChangeNome()
     {
-        $id = $this->tester->haveRecord('common\models\categoria', ['nome' => 'Frutos Secos']);
+        $id = $this->tester->haveRecord('common\models\categoria', ['nome' => 'CategoriaNome']);
 
         $this->categoria = Categoria::findOne($id);
         
@@ -50,20 +50,20 @@ class CategoriaTest extends \Codeception\Test\Unit
         $this->categoria->save();
         
         $this->tester->seeRecord('common\models\categoria', ['nome' => 'Bebidas']); 
-        $this->tester->dontSeeRecord('common\models\categoria', ['nome' => 'Frutos Secos']); 
+        $this->tester->dontSeeRecord('common\models\categoria', ['nome' => 'CategoriaNome']); 
     }
 
     public function testCategoriaDeleteFromDatabase()
     {
-        $this->categoria->nome = "Frutos Secos";
+        $this->categoria->nome = "CategoriaNome";
         
         $this->categoria->save();
 
-        $this->tester->seeRecord('common\models\categoria', ['nome' => 'Frutos Secos']);
+        $this->tester->seeRecord('common\models\categoria', ['nome' => 'CategoriaNome']);
 
         $this->categoria->delete();
 
-        $this->tester->dontSeeRecord('common\models\categoria', ['nome' => 'Frutos Secos']);
+        $this->tester->dontSeeRecord('common\models\categoria', ['nome' => 'CategoriaNome']);
     }
 
 }

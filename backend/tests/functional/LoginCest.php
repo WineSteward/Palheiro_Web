@@ -37,7 +37,7 @@ class LoginCest
 
     public function checkDeniedClient(FunctionalTester $I)
     {
-        $I->submitForm('#login-form', $this->formParams('miguel', '123456789'));
+        $I->submitForm('#login-form', $this->formParams('cliente_teste', '123456789'));
         $I->seeFlashError('Acesso Negado');
     }
 
