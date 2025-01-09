@@ -3,12 +3,9 @@
 namespace frontend\tests\Unit;
 
 use common\models\Categoria;
-use common\models\User;
-use \Codeception\Verify\Verify;
 use frontend\tests\UnitTester;
-use \Codeception\Attribute\Skip;
 
-class UserCestTest extends \Codeception\Test\Unit
+class CategoriaTest extends \Codeception\Test\Unit
 {
 
     protected UnitTester $tester;
@@ -58,13 +55,13 @@ class UserCestTest extends \Codeception\Test\Unit
 
     public function testCategoriaDeleteFromDatabase()
     {
-        $this->marca->nome = "Frutos Secos";
+        $this->categoria->nome = "Frutos Secos";
         
-        $this->marca->save();
+        $this->categoria->save();
 
         $this->tester->seeRecord('common\models\categoria', ['nome' => 'Frutos Secos']);
 
-        $this->marca->delete();
+        $this->categoria->delete();
 
         $this->tester->dontSeeRecord('common\models\categoria', ['nome' => 'Frutos Secos']);
     }

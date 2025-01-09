@@ -52,7 +52,7 @@ class SignupCest
         $I->submitForm(
             $this->formId, [
             'SignupFormUser[username]'  => 'andreia',
-            'SignupFormUser[email]'     => 'miguel@email.com',
+            'SignupFormUser[email]'     => 'cliente_teste@email.com',
             'SignupFormUser[password]'  => '12312312',
             'SignupFormUserProfile[nif]' => '987654321',
             'SignupFormUserProfile[morada]' => 'Morada teste',
@@ -74,7 +74,7 @@ class SignupCest
     {
         $I->submitForm(
             $this->formId, [
-            'SignupFormUser[username]'  => 'miguel',
+            'SignupFormUser[username]'  => 'cliente_teste',
             'SignupFormUser[email]'     => 'andreia@email.com',
             'SignupFormUser[password]'  => '21123',
             'SignupFormUserProfile[nif]' => '987654321',
@@ -106,17 +106,19 @@ class SignupCest
         ]
         );
 
-        $I->seeRecord(Userprofile::class, [
-            'nif' => '987654321',
-            'morada' => 'Morada teste',
-            'codigoPostal' => '1234-123'
-        ]);
 
         $I->seeRecord('common\models\User', [
             'username' => 'tester',
             'email' => 'tester@email.com',
             'status' => \common\models\User::STATUS_ACTIVE
         ]);
+
+        $I->seeRecord(Userprofile::class, [
+            'nif' => '987654321',
+            'morada' => 'Morada teste',
+            'codigoPostal' => '1234-123'
+        ]);
+
 
         $I->see('O seu registo foi concluido com sucesso!');
     }

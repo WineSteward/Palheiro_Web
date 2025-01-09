@@ -9,7 +9,7 @@ class SeeProdutosCest
 {
     public function _before(FunctionalTester $I)
     {
-        $I->amLoggedInAs(3);
+        $I->amLoggedInAs(2);
     }
 
     public function checkSeeAllProdutos(FunctionalTester $I)

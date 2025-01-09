@@ -9,15 +9,14 @@ class UpdateLinhaCarrinhoCest
 {
     public function _before(FunctionalTester $I)
     {
-        $I->amLoggedInAs(3);
+        $I->amLoggedInAs(2);
 
     }
 
-    protected function formParams($quantidade, $linha_id)
+    protected function formParams($quantidade)
     {
         return [
             'FormId1[quantidade]' => $quantidade,
-            'FormId1[linha_id]' => $linha_id,
         ];
     }
 
@@ -27,8 +26,7 @@ class UpdateLinhaCarrinhoCest
         $I->click('Produtos');
         $I->click('#1');
         $I->seeFlashSuccess('Produto adicionado com sucesso.');
-        $linha_id = $I->grabValueFrom('input[name=linha_id]');
-        $I->submitForm('#form-id-1', $this->formParams(5, $linha_id));
+        $I->submitForm('#form-id-1', $this->formParams(5));
         $I->seeFlashSuccess('Carrinho atualizado com sucesso.');
     }
 }

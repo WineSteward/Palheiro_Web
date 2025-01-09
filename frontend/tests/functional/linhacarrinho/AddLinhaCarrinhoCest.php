@@ -10,13 +10,13 @@ class AddLinhaCarrinhoCest
 
     public function _before(FunctionalTester $I)
     {
-        $I->amLoggedInAs(3);
+        $I->amLoggedInAs(2);
     }
 
     public function AddLinhaCarrinho(FunctionalTester $I)
     {
         $I->amOnPage('/');
-        $I->see('Logout (miguel)');
+        $I->see('Logout (cliente_teste)');
         $I->click('Produtos');
         $I->see('Categorias');
         $I->click('#1');
@@ -28,7 +28,7 @@ class AddLinhaCarrinhoCest
     public function AddLinhaCarrinhoNoStock(FunctionalTester $I)
     {
         $I->amOnPage('/');
-        $I->see('Logout (miguel)');
+        $I->see('Logout (cliente_teste)');
         $I->click('Produtos');
         $I->see('Categorias');
         $I->click('#2');
