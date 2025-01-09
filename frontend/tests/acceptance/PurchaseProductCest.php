@@ -9,7 +9,7 @@ class PurchaseProductCest
 {
     public function _before(AcceptanceTester $I)
     {
-        $I->login('miguel', '123456789');
+        $I->login('cliente_teste', '123456789');
     }
 
     protected function formQuantity($quantidade)
