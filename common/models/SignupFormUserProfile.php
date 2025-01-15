@@ -27,7 +27,7 @@ class SignupFormUserProfile extends Model
             [['user_id', 'carrinho_id'], 'integer'],
             [['nif', 'morada', 'morada2', 'codigoPostal'], 'string', 'max' => 30],
             ['nif', 'string', 'min' => 9, 'max' => 9, 'tooShort' => 'NIF must be exactly 9.', 'tooLong' => 'NIF must be exactly 9.'],
-            ['nif', 'unique', 'targetClass' => Userprofile::class],
+            ['nif', 'unique', 'targetClass' => Userprofile::class, 'message' => 'This NIF is already in use.'],
             ['morada', 'string', 'min' => 2, 'max' => 30],
             ['morada2', 'string', 'min' => 2, 'max' => 30],
             ['codigoPostal', 'string', 'min' => 8, 'max' => 8],

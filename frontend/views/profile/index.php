@@ -4,6 +4,7 @@
 /** @var $userProfile common\models\Userprofile */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->title = 'Profile';
 ?>
@@ -53,6 +54,9 @@ $this->title = 'Profile';
                     <li class="nav-item">
                         <a class="nav-link" id="faturas-tab" data-bs-toggle="tab" href="#faturas" role="tab" aria-controls="faturas" aria-selected="false">Encomendas</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="tarefas-tab" data-bs-toggle="tab" href="#tarefas" role="tab" aria-controls="tarefas" aria-selected="false">Tarefas</a>
+                    </li>
                 </ul>
                 <div class="tab-content" id="profile-tabs-content">
                     <!-- Descontos -->
@@ -90,6 +94,26 @@ $this->title = 'Profile';
                                     </ul>
                                 <?php else: ?>
                                     <p class="text-muted">Sem Encomendas.</p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tarefas -->
+                    <div class="tab-pane fade" id="tarefas" role="tabpanel" aria-labelledby="tarefas-tab">
+                        <div class="card mt-3">
+                            <div class="card-body">
+                                <?php if (!empty($tarefas)): ?>
+                                    <ul class="list-group">
+                                        <?php foreach ($tarefas as $tarefa): ?>
+                                            <a href="<?= Url::to(['tarefa/view', 'id' => $tarefa->id]) ?>"><li class="list-group-item">
+                                                <strong>Tarefa</strong>
+                                                <span class="float-end" <?= $tarefa->feito == 0 ? Html::tag('span', 'Por Fazer', ['style' => 'color: blue;']) : Html::tag('span', 'Feita', ['style' => 'color: green;']) ?></span>
+                                            </li>
+                                            </a>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                <?php else: ?>
+                                    <p class="text-muted">Sem Tarefas.</p>
                                 <?php endif; ?>
                             </div>
                         </div>

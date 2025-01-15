@@ -39,14 +39,21 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Url::toRoute([$action, 'id' => $model->userprofile->id]);
                 },
                 'buttons' => [
-                'custom-button' => function ($url, $model, $key) {
+                'cupoes-button' => function ($url, $model, $key) {
                     return Html::a('<i class="fas fa-info-circle">Cupões do Cliente</i>', [Url::to('userdesconto/index'), 'id' => $model->userprofile->id], [
                         'title' => Yii::t('app', 'Custom Action'),
                         'class' => 'btn btn-sm btn-info',
                     ]);
                 },
+                'tarefas-button' => function ($url, $model, $key) {
+                    return Html::a('<i class="fas fa-info-circle">Tarefas Cliente</i>', [Url::to('tarefa/index'), 'id' => $model->userprofile->id], [
+                        'title' => Yii::t('app', 'Custom Action'),
+                        'class' => 'btn btn-sm btn-info',
+                    ]);
+                },
+
             ],
-            'template' => '{view} {update} {delete} {custom-button}',
+            'template' => '{view} {update} {delete} {cupoes-button} {tarefas-button}',
             ],
         ],
     ]); ?>

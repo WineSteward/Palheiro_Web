@@ -20,7 +20,7 @@ class AuthController extends ActiveController
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         $request = \Yii::$app->request;
-        
+
         $username = $request->getBodyParam('username');
         $password = $request->getBodyParam('password');
         

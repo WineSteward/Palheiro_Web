@@ -139,6 +139,7 @@ return [
                         'GET all' => 'my',
                         'POST add' => 'add',
                         'PUT id/{id}' => 'edit',
+                        'DELETE id/{id}' => 'delete'
                     ],
                 ],
                 [

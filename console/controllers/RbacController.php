@@ -280,6 +280,28 @@ class RbacController extends Controller
         $deleteListas->description = 'User can delete Listas';
         $auth->add($deleteListas);
 
+
+
+        //View Listas
+        $viewTarefas = $auth->createPermission('viewTarefas');
+        $viewTarefas->description = 'User can view Tarefas';
+        $auth->add($viewTarefas);
+
+        //Create Tarefas
+        $createTarefas = $auth->createPermission('createTarefas');
+        $createTarefas->description = 'User can createTarefas';
+        $auth->add($createTarefas);
+
+        //Edit Tarefas
+        $editTarefas = $auth->createPermission('editTarefas');
+        $editTarefas->description = 'User can edit Tarefas';
+        $auth->add($editTarefas);
+
+        //Delete Tarefas
+        $deleteTarefas = $auth->createPermission('deleteTarefas');
+        $deleteTarefas->description = 'User can delete Tarefas';
+        $auth->add($deleteTarefas);
+
         // create all the roles
         $client = $auth->createRole('client');
         $admin = $auth->createRole('admin');
@@ -292,6 +314,22 @@ class RbacController extends Controller
         $auth->addChild($admin, $employee);
 
         // associate all the roles with their permissions
+
+        $auth->addChild($client, $viewTarefas);
+        $auth->addChild($admin, $viewTarefas);
+
+        $auth->addChild($admin, $createTarefas);
+        
+        $auth->addChild($client, $editTarefas);
+        $auth->addChild($admin, $editTarefas);
+        
+        $auth->addChild($admin, $deleteTarefas);
+
+
+
+
+
+
         $auth->addChild($client, $viewProdutos);
         $auth->addChild($employee, $viewProdutos);
 
@@ -416,5 +454,6 @@ class RbacController extends Controller
         $auth->addChild($client, $deleteListas);
 
         $auth->assign($admin, 1);
+        $auth->assign($client, 2);
     }
 }

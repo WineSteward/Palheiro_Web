@@ -80,6 +80,19 @@ class ListacompraController extends ActiveController
 
         $listaCompras->save();
 
+        return $listaCompras;
+    }
+
+    public function actionDelete($id)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $request = \Yii::$app->request;
+        
+        $listaCompras = $this->modelClass::findOne($id);
+
+        $listaCompras->delete();
+
         return 'success';
     }
 }

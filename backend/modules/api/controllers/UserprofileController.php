@@ -5,6 +5,7 @@ namespace backend\modules\api\controllers;
 use backend\modules\api\components\CustomAuth;
 use common\models\Carrinho;
 use common\models\User;
+use common\models\Userprofile;
 use Yii;
 use yii\rest\ActiveController;
 use yii\web\Response;
@@ -72,9 +73,8 @@ class UserprofileController extends ActiveController
         $profile->morada2 = $morada2;
         $profile->codigoPostal = $codigoPostal;
 
-        if($profile->save())
+        if ($profile->save())
             return ['response' => 'success'];
-            
     }
 
 
@@ -96,26 +96,64 @@ class UserprofileController extends ActiveController
         ];
 
         $profileData = [
-            'SignupFormUserprofile' => [
-                'morada' => $request->getBodyParam('morada') ?? null,
-                'morada2' => $request->getBodyParam('morada2') ?? null,
-                'codigoPostal' => $request->getBodyParam('codigoPostal') ?? null,
-                'nif' => $request->getBodyParam('NIF') ?? null,
-            ],
+            'morada' => $request->getBodyParam('morada') ?? null,
+            'morada2' => $request->getBodyParam('morada2') ?? null,
+            'codigoPostal' => $request->getBodyParam('codigoPostal') ?? null,
+            'nif' => $request->getBodyParam('NIF') ?? null,
         ];
-        
-        $userprofile->attributes = $profileData['SignupFormUserprofile'];
 
-        if ($userForm->load($userData) && $userprofile->validate() && $userForm->signup()) 
-        {
-            $carrinho = Carrinho::defaultCarrinho();
+        $userprofile->attributes = $profileData;
 
-            if ($userprofile->signup($userForm->id, $carrinho)) {
-                $user = User::findOne($userForm->id);
-                return ['token' => $user->auth_key];
+        if (!$userprofile->validate()) {
+            // Get all errors for 'nif' attribute
+            $nifErrors = $userprofile->getErrors('nif');
+
+            foreach ($nifErrors as $error) {
+                if ($error === 'This NIF is already in use.')
+                    return ['response' => 'NIF'];
             }
         }
 
-        return 'error';
+        if ($userForm->load($userData)) 
+        {
+            if (!$userForm->validate()) 
+            {
+                // Get all errors for the model
+                $errors = $userForm->getErrors();
+
+                if (isset($errors['username'])) 
+                {
+                    foreach ($errors['username'] as $error) {
+                        if ($error === 'This username has already been taken.') {
+                            return ['response' => 'username'];
+                        }
+                    }
+                }
+
+                if (isset($errors['email'])) {
+                    foreach ($errors['email'] as $error) {
+                        if ($error === 'This email address has already been taken.') {
+                            return ['response' => 'email'];
+                        }
+                    }
+                }
+                
+                return ['response' => 'validation user error'];
+            }
+
+            if ($userForm->signup())
+            {
+                $carrinho = Carrinho::defaultCarrinho();
+
+                if ($userprofile->signup($userForm->id, $carrinho)) 
+                {
+                    $user = User::findOne($userForm->id);
+                    return ['response' => $user->auth_key];
+                }
+                return ['response' => 'error profile'];
+            }
+            return ['response' => 'error user'];
+        }
+        return ['response' => 'error'];
     }
 }

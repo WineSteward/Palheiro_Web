@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\Userdesconto;
 use common\models\Fatura;
+use common\models\Tarefa;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -56,12 +57,16 @@ class ProfileController extends \yii\web\Controller
             ->orderBy(['id' => SORT_DESC]) //newest encomendas appear first
             ->all();
         
+        $tarefas = Tarefa::find()
+            ->where(['userprofile_id' => $userProfile->id])
+            ->all();
 
         return $this->render('index', [
             'user'=>$user,
             'userProfile' => $userProfile,
             'userDescontos' => $userDescontos,
             'encomendas' => $encomendas,
+            'tarefas' => $tarefas,
         ]);
     }
 

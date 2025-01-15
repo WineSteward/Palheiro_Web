@@ -62,7 +62,7 @@ class Userprofile extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'nif' => 'Nif',
+            'nif' => 'NIF',
             'morada' => 'Morada',
             'morada2' => 'Morada2',
             'codigoPostal' => 'Codigo Postal',
